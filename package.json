@@ -1,0 +1,15 @@
+{
+  "name": "kira-core",
+  "description": "Kira",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+
+  },
+  "devDependencies": {
+    "typescript": "^3.8.3"
+  }
+}
