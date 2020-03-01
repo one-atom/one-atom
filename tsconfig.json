@@ -1,0 +1,38 @@
+{
+  "exclude": ["node_modules", "dist", "lib"],
+  "files": [],
+  "compilerOptions": {
+    "stripInternal": true,
+    "skipLibCheck": true,
+    "target": "es2019" /*Jest does not work with anything above this*/,
+    "module": "esnext",
+    "lib": [],
+    "jsx": "react",
+    "rootDir": ".",
+    "outDir": "lib",
+    "downlevelIteration": true,
+    "strict": true,
+    "removeComments": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "@kira/*": ["packages/*/src"]
+    },
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true
+  },
+  "references": [
+
+  ]
+}
