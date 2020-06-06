@@ -33,6 +33,6 @@
     "sourceMap": true
   },
   "references": [
-
+    { "path": "packages/helper-filesystem" },
   ]
 }
