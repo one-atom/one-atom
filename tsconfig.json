@@ -36,5 +36,6 @@
     { "path": "packages/helper-filesystem" },
     { "path": "packages/logger" },
     { "path": "packages/bundler" },
+    { "path": "packages/std" },
   ]
 }
