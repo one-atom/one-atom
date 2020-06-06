@@ -34,5 +34,6 @@
   },
   "references": [
     { "path": "packages/helper-filesystem" },
+    { "path": "packages/logger" },
   ]
 }

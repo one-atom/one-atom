@@ -1,0 +1,10 @@
+{
+  "include": ["src"],
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "lib": [],
+    "outDir": "lib",
+    "rootDir": "./src",
+    "module": "commonjs",
+  }
+}
