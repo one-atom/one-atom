@@ -1,0 +1,31 @@
+{
+  "name": "@kira/bundler",
+  "version": "1.0.0-alpha-01",
+  "license": "MIT",
+  "description": "Public kira-core module",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kiraxapp/kira-core.git",
+    "directory": "packages/bundler"
+  },
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "fork-ts-checker-webpack-plugin": "^4.1.3",
+    "html-webpack-plugin": "^4.3.0",
+    "terser-webpack-plugin": "^3.0.1",
+    "ts-loader": "^7.0.4",
+    "webpack": "^4.43.0",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "devDependencies": {
+    "@kira/helper-filesystem": "1.0.0-alpha-01",
+    "@kira/logger": "1.0.0-alpha-01",
+    "@types/terser-webpack-plugin": "^3.0.0",
+    "@types/webpack": "^4.41.12",
+    "@types/webpack-dev-server": "^3.11.0"
+  }
+}

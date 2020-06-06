@@ -1,0 +1,13 @@
+{
+  "include": ["src"],
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "lib",
+    "rootDir": "./src",
+    "module": "commonjs",
+  },
+  "references": [
+    { "path": "../helper-filesystem" },
+    { "path": "../logger" },
+  ]
+}
