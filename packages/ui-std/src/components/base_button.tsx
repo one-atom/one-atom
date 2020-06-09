@@ -26,6 +26,17 @@ export namespace BaseButton {
     onTouchStart?: (event: React.TouchEvent<HTMLButtonElement>) => void;
   }
 
+  // The base_button component does not include "cursor: pointer;" due to
+  // official standards specifying that: "The cursor is a pointer that indicates
+  // a link." https://www.w3.org/TR/CSS21/ui.html#propdef-cursor
+  //
+  // Microsoft and Apple also specifies that the "correct" interaction is to
+  // reserve the pointing hand to URL links
+  // https://docs.microsoft.com/en-gb/windows/win32/uxguide/inter-mouse?redirectedfrom=MSDN
+  // https://developer.apple.com/design/human-interface-guidelines/macos/user-interaction/mouse-and-trackpad/
+  //
+  // If you'd want to have buttons with cursors, that's fine, but you'll need to
+  // extend the base_button component in order to get that interaction
   const elements = {
     base_button: styled.button`
       border: none;
@@ -40,7 +51,6 @@ export namespace BaseButton {
       -webkit-font-smoothing: inherit;
       -moz-osx-font-smoothing: inherit;
       -webkit-appearance: none;
-      cursor: pointer;
     `,
   };
 
