@@ -42,6 +42,10 @@ export namespace AnchorPoint {
         top,
         left,
       });
+
+      return () => {
+        AnchorPointConsumer.destroy(name);
+      };
     }, EMPTY_ARRAY);
 
     return <elements.e ref={ref}>{children}</elements.e>;
