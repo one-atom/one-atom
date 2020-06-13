@@ -20,6 +20,7 @@
   "devDependencies": {
     "@kira/bundler": "1.0.0-alpha-01",
     "@kira/logger": "1.0.0-alpha-01",
+    "@kira/std": "1.0.0-alpha-01",
     "@testing-library/react": "^10.0.4",
     "@types/react": "^16.9.34",
     "@types/react-dev-utils": "^9.0.4",

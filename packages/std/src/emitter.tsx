@@ -1,4 +1,4 @@
-import { EMPTY_ARRAY } from './constants';
+import { EMPTY_ARRAY } from './universal_empty_constants';
 
 export type EventHandler<T = any> = (event: T) => void;
 

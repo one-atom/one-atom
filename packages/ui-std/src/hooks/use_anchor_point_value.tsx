@@ -1,4 +1,4 @@
-import { EMPTY_ARRAY } from '../constants';
+import { EMPTY_ARRAY } from '@kira/std';
 import { useEffect, useState } from 'react';
 import { AnchorPointConsumer } from '../helpers/anchor_point_consumer';
 

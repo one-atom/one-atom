@@ -30,5 +30,6 @@
   "references": [
     { "path": "../bundler" },
     { "path": "../logger" },
+    { "path": "../std" },
   ],
 }
