@@ -4,3 +4,4 @@ export * from './vec_2';
 export * from './vec_3';
 export * from './emitter';
 export * from './universal_empty_constants';
+export * from './timer';
