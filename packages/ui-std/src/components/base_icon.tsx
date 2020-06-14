@@ -11,10 +11,11 @@ export namespace BaseIcon {
     viewBox?: string;
     rotation?: number;
     mirror?: Mirror;
+    center?: boolean;
   }
 
   const elements = {
-    svg: styled.svg<{ rotation: number; mirror: Mirror }>`
+    svg: styled.svg<{ rotation: number; mirror: Mirror; center: boolean }>`
       width: 1em;
       height: 1em;
       display: inline-block;
@@ -24,11 +25,12 @@ export namespace BaseIcon {
       stroke: currentColor;
       flex-shrink: 0;
 
-      ${({ rotation, mirror }): string | null => {
-        let builder = '';
+      ${({ rotation, mirror, center }): string | null => {
+        // Needs to concat "transform" so they won't interfere with each other
+        let transform_builder = '';
 
         if (rotation !== 0) {
-          builder += `rotate(${rotation}deg) `;
+          transform_builder += `rotate(${rotation}deg) `;
         }
 
         if (mirror !== null) {
@@ -36,16 +38,26 @@ export namespace BaseIcon {
           const vertical: boolean = mirror === 'Vertical' || mirror === true || false;
 
           if (horizontal) {
-            builder += 'scaleX(-1) ';
+            transform_builder += 'scaleX(-1) ';
           }
 
           if (vertical) {
-            builder += 'scaleY(-1) ';
+            transform_builder += 'scaleY(-1) ';
           }
         }
 
-        if (builder !== '') {
-          return `transform: ${builder.trim()};`;
+        if (center) {
+          transform_builder += 'translateY(50%)';
+
+          return `
+            position: relative;
+            top: 50%;
+            transform: ${transform_builder.trim()};
+            transform-origin: 50% 100%;
+            vertical-align: super;
+          `;
+        } else if (transform_builder !== '') {
+          return `transform: ${transform_builder.trim()};`;
         }
 
         return null;
@@ -53,7 +65,7 @@ export namespace BaseIcon {
     `,
   };
 
-  export const h: React.FC<Props> = function __kira__icon({ children, viewBox, rotation, mirror }) {
+  export const h: React.FC<Props> = function __kira__icon({ children, viewBox, rotation, mirror, center }) {
     return (
       <elements.svg
         data-testid='svg'
@@ -61,6 +73,7 @@ export namespace BaseIcon {
         viewBox={viewBox ?? '0 0 512 512'}
         rotation={rotation ?? 0}
         mirror={mirror ?? null}
+        center={center ?? false}
       >
         {children}
       </elements.svg>
