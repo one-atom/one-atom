@@ -15,6 +15,8 @@ export namespace VStack {
         {({ childClassName, parentClassName }) => (
           <div className={`${className ?? ''} ${parentClassName}`.trim()}>
             {React.Children.map(children as React.ReactElement[], (child) => {
+              if (child === null) return child;
+
               return React.cloneElement(child, {
                 ...child.props,
                 className: `${child.props.className ?? ''} ${childClassName}`.trim(),
