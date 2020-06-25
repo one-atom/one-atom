@@ -5,7 +5,7 @@ export function unwrap_fragment(children: React.ReactNode): React.ReactElement[]
 
   const new_arr: React.ReactElement[] = child_arr.reduce<React.ReactElement[]>((builder, child) => {
     if (child.type === Fragment) {
-      return unwrap_fragment(child.props.children);
+      return builder.concat(unwrap_fragment(child.props.children));
     }
 
     builder.push(child);
