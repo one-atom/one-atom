@@ -19,7 +19,7 @@ export namespace Separator {
     inner: styled.div<{ padding: number }>`
       height: 2px;
       width: calc(100% - ${({ padding }) => padding}px);
-      background: #343438;
+      background: var(--kira_separator_bg, #343438);
     `,
   };
 
