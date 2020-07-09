@@ -1,0 +1,23 @@
+{
+  "name": "@kira/instantiation",
+  "version": "1.0.0-alpha-01",
+  "description": "Public kira-core module",
+  "license": "MIT",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kiraxapp/kira-core.git",
+    "directory": "packages/ui"
+  },
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "reflect-metadata": "^0.1.13"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "dev": "node run.dev.js"
+  }
+}
