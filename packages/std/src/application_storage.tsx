@@ -1,32 +1,35 @@
 import { safeJsonParse } from './safe_json_parse';
 
-export namespace ApplicationStorage {
-  type StoreType = 'session' | 'local';
+export class ApplicationStorage<T extends object> {
+  private readonly store: Storage;
+  private readonly prefix: string;
 
-  export class Instance {
-    private readonly store: Storage;
-    private readonly prefix: string;
+  constructor(type: ApplicationStorage.StoreType, prefix?: string) {
+    this.prefix = prefix ?? '';
 
-    constructor(type: StoreType, prefix?: string) {
-      this.prefix = prefix ?? '';
-
-      this.store = type === 'local' ? localStorage : sessionStorage;
-    }
-
-    public get<T = string>(key: string): T | null {
-      const item = this.store.getItem(`${this.prefix || ''}${key}`);
-
-      if (!item) return null;
-
-      return safeJsonParse<T>(item);
-    }
-
-    public set(key: string, data: any) {
-      this.store.setItem(`${this.prefix || ''}${key}`, JSON.stringify(data));
-    }
-
-    public remove_item(key: string) {
-      this.store.removeItem(`${this.prefix || ''}${key}`);
-    }
+    this.store = type === 'local' ? localStorage : sessionStorage;
   }
+
+  public get(key: keyof T): T[typeof key] | null {
+    const item = this.store.getItem(this.retrieve_prefix(key));
+
+    if (!item) return null;
+
+    return safeJsonParse(item);
+  }
+
+  public set(key: keyof T, data: T[typeof key] | null) {
+    this.store.setItem(this.retrieve_prefix(key), JSON.stringify(data));
+  }
+
+  public remove_item(key: keyof T) {
+    this.store.removeItem(this.retrieve_prefix(key));
+  }
+
+  private retrieve_prefix(key: keyof T): string {
+    return `${this.prefix || ''}${key}`;
+  }
+}
+export namespace ApplicationStorage {
+  export type StoreType = 'session' | 'local';
 }
