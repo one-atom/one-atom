@@ -14,26 +14,26 @@
     "clean": "rimraf packages/*/{tsconfig.tsbuildinfo,lib,dist}"
   },
   "devDependencies": {
-    "@babel/core": "^7.10.2",
-    "@babel/plugin-transform-modules-commonjs": "^7.10.1",
-    "@babel/plugin-transform-runtime": "^7.10.3",
-    "@babel/preset-env": "^7.10.2",
-    "@babel/preset-react": "^7.10.1",
-    "@babel/preset-typescript": "^7.10.1",
+    "@babel/core": "^7.10.5",
+    "@babel/plugin-transform-modules-commonjs": "^7.10.4",
+    "@babel/plugin-transform-runtime": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-react": "^7.10.4",
+    "@babel/preset-typescript": "^7.10.4",
     "@types/jest": "^25.2.2",
     "@types/json5": "^0.0.30",
     "@types/mock-fs": "^4.10.0",
-    "@types/node": "^14.0.1",
+    "@types/node": "^14.0.23",
     "jest": ">=26.0.1",
-    "lerna": "^3.21.0",
+    "lerna": "^3.22.1",
     "mock-fs": "^4.12.0",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
-    "rollup": "^2.10.0",
+    "rollup": "^2.21.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-replace": "^2.2.0",
     "ts-jest": "^25.5.1",
-    "typescript": "^3.9.2"
+    "typescript": "^3.9.6"
   }
 }
