@@ -1,3 +1,7 @@
+// @ts-check
+
 const { Run } = require('../../../lib');
 
-Run.development(process.cwd());
+Run.development({
+  root: process.cwd(),
+});
