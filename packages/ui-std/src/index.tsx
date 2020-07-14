@@ -5,7 +5,6 @@ export * from './components/base_input';
 export * from './components/base_icon';
 export * from './components/headless_stack';
 export * from './components/headless_popover';
-export * from './components/frame';
 
 // Helpers
 export * from './helpers/focus_context';

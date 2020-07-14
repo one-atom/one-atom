@@ -9,3 +9,4 @@ export * from './components/static_button';
 export * from './components/separator';
 export * from './components/v_stack';
 export * from './components/h_stack';
+export * from './components/frame';
