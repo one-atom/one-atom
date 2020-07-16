@@ -3,17 +3,25 @@ import styled from 'styled-components';
 
 export namespace Frame {
   export interface Prop {
+    alignment?: Alignment | AlignmentStr;
     height?: number;
     width?: number;
+    grow?: boolean;
     direction?: Direction | DirectionStr;
-    alignment?: Alignment | AlignmentStr;
+    background?: string;
+    cornerRadius?: number;
+    shadow?: string;
   }
 
   interface ElementBodyProp {
+    alignment: Alignment;
     height?: number;
     width?: number;
+    grow?: boolean;
     direction?: Direction | DirectionStr;
-    alignment: Alignment;
+    background?: string;
+    cornerRadius?: number | string;
+    shadow?: string;
   }
 
   type DirectionStr = 'row' | 'column';
@@ -73,9 +81,14 @@ export namespace Frame {
 
   const elements = {
     body: styled.div<ElementBodyProp>`
+      display: flex;
+      flex: ${({ grow }) => (grow ? '1' : null)};
       height: ${({ height }) => (height !== undefined ? `${height}px` : '100%')};
       width: ${({ width }) => (width !== undefined ? `${width}px` : '100%')};
-      display: flex;
+      background: ${({ background }) => background ?? null};
+      border-radius: ${({ cornerRadius }) =>
+        cornerRadius ? (cornerRadius === typeof 'string' ? cornerRadius : `${cornerRadius}px`) : null};
+      box-shadow: ${({ shadow }) => shadow ?? null};
 
       ${({ direction }) => {
         if (direction !== undefined) {
@@ -87,55 +100,109 @@ export namespace Frame {
         return null;
       }}
 
-      ${({ alignment }) => {
-        switch (alignment) {
-          case Alignment.Center:
-            return `
+      ${({ alignment, direction }) => {
+        const directionParsed = typeof direction === 'string' ? convert_direction_str_to_enum(direction) : direction;
+
+        if (directionParsed === Direction.Row) {
+          switch (alignment) {
+            case Alignment.Center:
+              return `
               justify-content: center;
               align-items: center;
             `;
-          case Alignment.Leading:
-            return `
+            case Alignment.Leading:
+              return `
               justify-content: flex-start;
               align-items: center;
             `;
-          case Alignment.Trailing:
-            return `
+            case Alignment.Trailing:
+              return `
               justify-content: flex-end;
               align-items: center;
             `;
-          case Alignment.Top:
-            return `
+            case Alignment.Top:
+              return `
               justify-content: center;
               align-items: flex-start;
             `;
-          case Alignment.Bottom:
-            return `
+            case Alignment.Bottom:
+              return `
               justify-content: center;
               align-items: flex-end;
             `;
-          case Alignment.TopLeading:
-            return `
+            case Alignment.TopLeading:
+              return `
               justify-content: flex-start;
               align-items: flex-start;
             `;
-          case Alignment.TopTrailing:
-            return `
+            case Alignment.TopTrailing:
+              return `
               justify-content: flex-end;
               align-items: flex-start;
             `;
-          case Alignment.BottomLeading:
-            return `
+            case Alignment.BottomLeading:
+              return `
               justify-content: flex-start;
               align-items: flex-end;
             `;
-          case Alignment.BottomTrailing:
-            return `
+            case Alignment.BottomTrailing:
+              return `
               justify-content: flex-end;
               align-items: flex-end;
             `;
-          default:
-            throw new Error('unsupported alignment');
+            default:
+              throw new Error('unsupported alignment');
+          }
+        } else {
+          switch (alignment) {
+            case Alignment.Center:
+              return `
+              justify-content: center;
+              align-items: center;
+            `;
+            case Alignment.Leading:
+              return `
+              justify-content: center;
+              align-items: flex-start;
+            `;
+            case Alignment.Trailing:
+              return `
+              justify-content: center;
+              align-items: flex-end;
+            `;
+            case Alignment.Top:
+              return `
+              justify-content: flex-start;
+              align-items: center;
+            `;
+            case Alignment.Bottom:
+              return `
+              justify-content: flex-end;
+              align-items: center;
+            `;
+            case Alignment.TopLeading:
+              return `
+              justify-content: flex-start;
+              align-items: flex-start;
+            `;
+            case Alignment.TopTrailing:
+              return `
+              justify-content: flex-start;
+              align-items: flex-end;
+            `;
+            case Alignment.BottomLeading:
+              return `
+              justify-content: flex-end;
+              align-items: flex-start;
+            `;
+            case Alignment.BottomTrailing:
+              return `
+              justify-content: flex-end;
+              align-items: flex-end;
+            `;
+            default:
+              throw new Error('unsupported alignment');
+          }
         }
       }}
     `,
