@@ -5,7 +5,7 @@ import { HeadLessStack, unwrap_fragment } from '@kira/ui-std';
  * VStack
  */
 export namespace VStack {
-  interface Props extends Partial<Omit<HeadLessStack.Props, 'axis'>> {
+  export interface Props extends Partial<Omit<HeadLessStack.Props, 'axis'>> {
     className?: string;
   }
 

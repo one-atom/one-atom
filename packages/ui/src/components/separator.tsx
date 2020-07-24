@@ -5,7 +5,7 @@ import styled from 'styled-components';
  * Separator
  */
 export namespace Separator {
-  interface Props {
+  export interface Props {
     padding?: number;
     className?: string;
   }

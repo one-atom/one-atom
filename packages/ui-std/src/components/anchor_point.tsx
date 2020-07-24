@@ -7,13 +7,7 @@ import { EMPTY_ARRAY } from '@kira/std';
  * AnchorPoint
  */
 export namespace AnchorPoint {
-  const elements = {
-    e: styled.div`
-      display: contents;
-    `,
-  };
-
-  interface Props {
+  export interface Props {
     /** Name of registered anchor point */
     name: string;
 
@@ -23,6 +17,12 @@ export namespace AnchorPoint {
     /** String containing multiple "-" and one "x" */
     left?: string;
   }
+
+  const elements = {
+    anchor: styled.div`
+      display: contents;
+    `,
+  };
 
   export const h: React.FC<Props> = function __kira__anchor_point({ name, top, left, children }) {
     const ref = useRef<HTMLDivElement>(null);
@@ -48,6 +48,6 @@ export namespace AnchorPoint {
       };
     }, EMPTY_ARRAY);
 
-    return <elements.e ref={ref}>{children}</elements.e>;
+    return <elements.anchor ref={ref}>{children}</elements.anchor>;
   };
 }

@@ -7,7 +7,7 @@ import { Size } from './size';
  * Button
  */
 export namespace Button {
-  interface Props extends BaseButton.Props, Size.Props {}
+  export interface Props extends BaseButton.Props, Size.Props {}
 
   const elements = {
     button: styled(BaseButton.h)`

@@ -5,7 +5,7 @@ import styled from 'styled-components';
  * Article
  */
 export namespace Article {
-  interface Props {
+  export interface Props {
     center?: boolean;
     className?: string;
   }

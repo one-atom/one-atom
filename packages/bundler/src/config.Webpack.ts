@@ -102,7 +102,7 @@ export namespace WebpackConfig {
         filename: 'scripts/[name]-[hash].js',
         chunkFilename: 'scripts/[name]-[chunkhash].chunk.js',
         path: configuration.output,
-        publicPath: '/',
+        publicPath: '',
       },
       devtool: 'source-map',
       resolve: {

@@ -18,9 +18,9 @@ export class StyleSheetController {
     this.styles.add(selector);
 
     const newCSSVariables = `
-			${selector} {
+      ${selector} {
         ${style}
-			}
+      }
     `;
 
     css_style_sheet.insertRule(newCSSVariables, css_style_sheet.cssRules.length);

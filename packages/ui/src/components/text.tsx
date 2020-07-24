@@ -5,7 +5,7 @@ import styled from 'styled-components';
  * Text
  */
 export namespace Text {
-  interface Props {
+  export interface Props {
     className?: string;
   }
 

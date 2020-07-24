@@ -7,6 +7,8 @@ import { Logger } from '@kira/logger';
  * Portal
  */
 export namespace Portal {
+  export interface Props {}
+
   const id = 'kira-portal';
   const className = `${id}-container`;
 
@@ -39,7 +41,7 @@ export namespace Portal {
     `,
   );
 
-  export const h: React.FC = ({ children }) => {
+  export const h: React.FC<Props> = ({ children }) => {
     const mount = document.getElementById(id);
     const el = document.createElement('div');
     el.className = className;

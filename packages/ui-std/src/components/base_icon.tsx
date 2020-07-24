@@ -5,14 +5,14 @@ import styled from 'styled-components';
  * BaseIcon
  */
 export namespace BaseIcon {
-  type Mirror = 'Vertical' | 'Horizontal' | true | null;
-
   export interface Props {
     viewBox?: string;
     rotation?: number;
     mirror?: Mirror;
     center?: boolean;
   }
+
+  type Mirror = 'Vertical' | 'Horizontal' | true | null;
 
   const elements = {
     svg: styled.svg<{ rotation: number; mirror: Mirror; center: boolean }>`

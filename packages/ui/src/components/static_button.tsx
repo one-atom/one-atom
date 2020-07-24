@@ -6,7 +6,7 @@ import { Size } from './size';
  * StaticButton
  */
 export namespace StaticButton {
-  interface Props extends Size.Props {}
+  export interface Props extends Size.Props {}
 
   const elements = {
     button: styled.div`

@@ -7,7 +7,7 @@ import { Size } from './size';
  * Input
  */
 export namespace Input {
-  interface Props extends BaseInput.Props, Size.Props {}
+  export interface Props extends BaseInput.Props, Size.Props {}
 
   const elements = {
     label: styled.label`
