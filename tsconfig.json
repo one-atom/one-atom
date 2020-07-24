@@ -39,5 +39,7 @@
     { "path": "packages/std" },
     { "path": "packages/ui-std" },
     { "path": "packages/ui" },
+    { "path": "packages/instantiation" },
+    { "path": "packages/application-state" },
   ]
 }
