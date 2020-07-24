@@ -1,0 +1,26 @@
+{
+  "name": "@kira/application-state",
+  "version": "1.0.0-alpha-01",
+  "description": "Application state",
+  "license": "MIT",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kiraxapp/kira-core.git",
+    "directory": "packages/application-state"
+  },
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "@kira/std": "1.0.0-alpha-01"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.43",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-test-renderer": "^16.9.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}

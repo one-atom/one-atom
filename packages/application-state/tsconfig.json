@@ -1,0 +1,15 @@
+{
+  "include": ["src"],
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "lib",
+    "rootDir": "./src",
+    "target": "ES2018",
+    "lib": ["esnext"],
+    "module": "esnext",
+    "importHelpers": true,
+  },
+  "references": [
+    { "path": "../std" },
+  ],
+}
