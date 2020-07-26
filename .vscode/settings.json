@@ -1,4 +1,10 @@
 {
+  "cSpell.words": [
+    "Kira",
+    "esnext",
+    "devtool",
+    "toplevel",
+	],
 	"files.exclude": {
 		"node_modules": true,
 		".npm-offline-cache": true
