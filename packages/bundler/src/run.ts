@@ -10,12 +10,11 @@ export namespace Run {
     loadConfig?: string;
   }
 
-  export function development({ root, customEnv, loadConfig }: Specification) {
+  export function development({ root, customEnv, loadConfig }: Specification): void {
     process.env.NODE_ENV = 'development';
     process.env['CUSTOM_ENV'] = customEnv ?? 'development';
 
     const paths = Paths.get(root);
-
     const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 8000;
 
     const webpackDevServerConfiguration: WebpackDevServer.Configuration = {
@@ -34,7 +33,9 @@ export namespace Run {
       watchOptions: {
         ignored: /node_modules/,
       },
-      setup() {},
+      setup() {
+        // noop
+      },
     };
 
     const webpackConfiguration = WebpackConfig.development({
@@ -52,18 +53,16 @@ export namespace Run {
     });
   }
 
-  export function production({ root, customEnv, loadConfig }: Specification) {
+  export function production({ root, customEnv, loadConfig }: Specification): Promise<void> {
     process.env.NODE_ENV = 'production';
     process.env['CUSTOM_ENV'] = customEnv ?? 'production';
 
     const paths = Paths.get(root);
-
     const webpackConfiguration = WebpackConfig.production({
       output: paths.outDir,
       paths,
       loadConfig,
     });
-
     const compiler = webpack(webpackConfiguration);
 
     return new Promise((resolve, reject) => {

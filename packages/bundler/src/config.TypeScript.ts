@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any*/
+
 import ts from 'typescript';
 import { Locator } from '@kira/helper-filesystem';
 import { Logger } from '@kira/logger';
