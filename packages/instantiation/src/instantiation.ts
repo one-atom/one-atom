@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any*/
+
 import 'reflect-metadata';
 
 export namespace Instantiation {
@@ -12,7 +14,10 @@ export namespace Instantiation {
     new (...args: any[]): T;
   };
   export type GenericClassDecorator<T> = (target: T) => void;
-  export interface Specification {}
+  export interface Specification {
+    /* Not implemented */
+    independent?: boolean;
+  }
 
   const persistence_ctors = new Map<string, any>();
   const garbage_collectable_ctors = new WeakMap<Ctor<unknown>, any>();

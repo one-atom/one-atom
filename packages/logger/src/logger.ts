@@ -31,7 +31,7 @@ export namespace Logger {
     verbose: console.log,
   });
 
-  export function assert(level: Level, message: string) {
+  export function assert(level: Level, message: string): void {
     const timestamp = new Date();
 
     const hour = new Intl.DateTimeFormat(LOCALE, { hour: DETAILS }).format(timestamp);
@@ -45,13 +45,13 @@ export namespace Logger {
     }
   }
 
-  export function setLevel(level: Level) {
+  export function setLevel(level: Level): void {
     const newFlag = getBitFlag(level);
 
     flag = newFlag;
   }
 
-  export function setPrintFn(fns: MessageFns) {
+  export function setPrintFn(fns: MessageFns): void {
     printFns = fns;
   }
 

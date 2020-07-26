@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any*/
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 type CurrStateFn<T> = (curr_state: T) => T;
 
 export type Disposer = () => void;
@@ -27,7 +30,9 @@ class State<T> implements IState<T> {
 
   constructor(private data: T, designatedFlowState?: FlowState) {
     if (Array.isArray(data)) {
+      // noop
     } else if (typeof data === 'object') {
+      // noop
     } else {
       throw new Error('a state can only be represented as an array or object literal');
     }
@@ -38,7 +43,7 @@ class State<T> implements IState<T> {
   public read(): Wrapped<T> {
     // The following is purposely being ignored by TypeScript, when the state is
     // not accessible it should deliberately cause an error so a correct
-    // behaviour can be written
+    // Behavior can be written
     switch (this.flow_state) {
       case FlowState.PENDING:
         // @ts-ignore
@@ -87,6 +92,6 @@ class State<T> implements IState<T> {
   }
 }
 
-export function new_application_state<T extends Array<any> | Object>(state: T): State<T> {
+export function new_application_state<T extends Array<any> | Record<string, unknown>>(state: T): State<T> {
   return new State(state);
 }

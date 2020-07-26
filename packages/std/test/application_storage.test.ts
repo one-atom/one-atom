@@ -1,10 +1,12 @@
 import { ApplicationStorage } from '../src/application_storage';
 
-interface Typing {
+type Typing = {
   a: string;
   b: number;
-  c: {};
-}
+  c: {
+    empty: 'empty';
+  };
+};
 
 describe('ApplicationStorage', () => {
   it('should create an instance with type', () => {

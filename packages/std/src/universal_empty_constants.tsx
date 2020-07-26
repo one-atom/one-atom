@@ -1,4 +1,7 @@
-function meta<T extends object>(target: T): T {
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable no-debugger */
+
+function meta<T extends Record<string, unknown>>(target: T): T {
   const handler = {
     set() {
       debugger;
@@ -14,4 +17,4 @@ function meta<T extends object>(target: T): T {
 export const EMPTY_OBJ = process?.env?.NODE_ENV === 'development' ? meta({}) : {};
 
 // @ts-ignore
-export const EMPTY_ARRAY = process?.env?.NODE_ENV === 'development' ? meta([]) : [];
+export const EMPTY_ARRAY = (process?.env?.NODE_ENV === 'development' ? meta([]) : []) as never[];

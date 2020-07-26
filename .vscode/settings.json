@@ -4,6 +4,9 @@
     "esnext",
     "devtool",
     "toplevel",
+    "unmount",
+    "paramtypes",
+    "chunkhash",
 	],
 	"files.exclude": {
 		"node_modules": true,

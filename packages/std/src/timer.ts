@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any*/
+
+type AnyFunction = (args?: any) => any;
+
 export class Timer {
   private disposers = new Map<number, Timer.Disposer>();
-  private registered_id: number = 0;
+  private registered_id = 0;
 
-  public wait(callback: Function, duration: number): Timer.Disposer {
-    // @ts-ignore TODO fix so node types does not interfere with DOM lib
+  public wait(callback: AnyFunction, duration: number): Timer.Disposer {
     const timeout = setTimeout(callback, duration);
 
     const disposer = () => {
@@ -13,12 +16,11 @@ export class Timer {
     return this.register_disposer(disposer);
   }
 
-  public repeat(callback: Function, duration: number, callOnceOnInvoke = false): Timer.Disposer {
+  public repeat(callback: AnyFunction, duration: number, callOnceOnInvoke = false): Timer.Disposer {
     if (callOnceOnInvoke) {
       callback();
     }
 
-    // @ts-ignore TODO fix so node types does not interfere with DOM lib
     const interval = setInterval(callback, duration);
 
     const disposer = () => {
@@ -28,12 +30,12 @@ export class Timer {
     return this.register_disposer(disposer);
   }
 
-  public flush() {
+  public flush(): void {
     this.disposers.forEach((disposer) => disposer());
   }
 
   private register_disposer(disposer: Timer.Disposer): Timer.Disposer {
-    let local_id = this.registered_id++;
+    const local_id = this.registered_id++;
 
     this.disposers.set(local_id, disposer);
 
@@ -50,7 +52,7 @@ export class Timer {
  */
 export namespace Timer {
   export type Disposer = () => void;
-  type GetArgumentTypes<T extends Function> = T extends (...x: infer argumentsType) => any ? argumentsType : never;
+  type GetArgumentTypes<T> = T extends (...x: infer argumentsType) => any ? argumentsType : never;
 
   export function wait(...args: GetArgumentTypes<Timer['wait']>): Disposer {
     const time = new Timer();

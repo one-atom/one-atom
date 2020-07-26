@@ -78,7 +78,7 @@ export namespace AnchorPointConsumer {
     }
   }
 
-  export function add(configuration: Configuration) {
+  export function add(configuration: Configuration): void {
     if (list.has(configuration.name)) {
       throw new Error(`Tried to add ${configuration.name} twice`);
     }
@@ -88,12 +88,9 @@ export namespace AnchorPointConsumer {
     notifier.emit(Events.Notify, configuration.name);
   }
 
-  export function destroy(name: string) {
-    if (!list.has(name)) {
-      throw new Error(`Could not find an event with the name ${name}`);
-    }
-
-    const anchor_point_instance = list.get(name)!;
+  export function destroy(name: string): void {
+    const anchor_point_instance = list.get(name);
+    if (anchor_point_instance === undefined) throw new Error(`Could not find an event with the name ${name}`);
 
     anchor_point_instance.destroy();
 

@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-explicit-any*/
+
 import { useState, useEffect } from 'react';
 
 type FormPrimitiveValue = string | number | boolean;
@@ -55,7 +58,9 @@ export function create_form_group<T extends FormSpec<any, any>>(controllers: T):
   return {
     controllers,
     refs: {},
-    is_valid() {},
+    is_valid() {
+      // noop
+    },
     state(): { [key in keyof T]: string } {
       const builder: { [key: string]: any } = {};
 
@@ -65,7 +70,9 @@ export function create_form_group<T extends FormSpec<any, any>>(controllers: T):
 
       return builder as { [key in keyof T]: string };
     },
-    reset() {},
+    reset() {
+      // noop
+    },
   };
 }
 
@@ -80,12 +87,15 @@ export function form_control<T extends FormPrimitiveValue>(defaultValue: T, ...v
 }
 
 /** Form hook */
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function use_form<T extends FormSpec<any, any>>(control: T) {
   const [formState] = useState<T>(control);
 
   let formGroup: FormGroup<T>;
   if (formStates.has(formState)) {
-    formGroup = formStates.get(formState)!;
+    const state = formStates.get(formState);
+    if (state === undefined) throw new Error(`missing state`);
+    formGroup = state;
   } else {
     formGroup = create_form_group(formState);
 
