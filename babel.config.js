@@ -1,3 +1,4 @@
+/* eslint-disable */
 // To get Jest to work Babel is needed
 
 module.exports = {
