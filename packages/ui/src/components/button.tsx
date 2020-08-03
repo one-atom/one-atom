@@ -15,8 +15,8 @@ export namespace Button {
       padding: 0px 16px;
       border-radius: 20px;
       box-sizing: border-box;
-      color: #ffffff;
-      background-color: #0099ff;
+      color: var(--kira_button_clr, #ffffff);
+      background-color: var(--kira_button_bg, #0099ff);
     `,
   };
 
