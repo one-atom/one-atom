@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-empty-interface*/
+
 import React from 'react';
 import styled from 'styled-components';
 import { Size } from './size';

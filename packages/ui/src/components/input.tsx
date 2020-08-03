@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-empty-interface*/
+
 import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 import { BaseInput } from '@kira/ui-std';
