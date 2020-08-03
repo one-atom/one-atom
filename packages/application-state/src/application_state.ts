@@ -1,7 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any*/
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
-type CurrStateFn<T> = (curr_state: T) => T;
+import { DataStruct, ValidStateData } from './data_struct';
+
+type CurrStateFn<T extends ValidStateData> = (curr_state: Omit<DataStruct<T>, 'insert'>) => Partial<T>;
 
 export type Disposer = () => void;
 
@@ -12,35 +13,35 @@ export enum FlowState {
   ERROR,
 }
 
-export type Wrapped<T> = [Readonly<T>, FlowState];
+export type CurrStateTulip<T> = [Readonly<T>, FlowState];
 
-export interface IState<T> {
+export interface IState<T extends ValidStateData> {
   flow_state: FlowState;
   in_flow(action: FlowState): void;
   subscribe(event: () => void): Disposer;
   mutate(fn: CurrStateFn<T>): void;
-  read(): Wrapped<T>;
+  read(): CurrStateTulip<T>;
 }
 
 let ids = 0;
 
-class State<T> implements IState<T> {
+class State<T extends ValidStateData> implements IState<T> {
   public flow_state = FlowState.UNSET;
   private readonly hooks: Map<string, () => void> = new Map();
 
-  constructor(private data: T, designatedFlowState?: FlowState) {
-    if (Array.isArray(data)) {
-      // noop
-    } else if (typeof data === 'object') {
-      // noop
-    } else {
-      throw new Error('a state can only be represented as an array or object literal');
+  private readonly data: DataStruct<T>;
+
+  constructor(data: T, designatedFlowState?: FlowState) {
+    if (typeof data !== 'object') {
+      throw new Error('a state can only be represented as object literal');
     }
+
+    this.data = new DataStruct(data);
 
     if (designatedFlowState !== undefined) this.flow_state = designatedFlowState;
   }
 
-  public read(): Wrapped<T> {
+  public read(): CurrStateTulip<T> {
     // The following is purposely being ignored by TypeScript, when the state is
     // not accessible it should deliberately cause an error so a correct
     // Behavior can be written
@@ -55,8 +56,14 @@ class State<T> implements IState<T> {
         // @ts-ignore
         return [undefined, FlowState.ERROR];
       default:
-        return [this.data, FlowState.ACCESSIBLE];
+        return [this.data.extract(), FlowState.ACCESSIBLE];
     }
+  }
+
+  public peek_state(): Readonly<T> {
+    const [state] = this.read();
+
+    return state;
   }
 
   public in_flow(action: FlowState) {
@@ -69,12 +76,12 @@ class State<T> implements IState<T> {
     try {
       const new_state = curr_state(this.data);
 
-      this.data = new_state;
+      this.data.insert(new_state);
       this.flow_state = FlowState.ACCESSIBLE;
 
       this.dispatch();
     } catch (error) {
-      console.error('could not mutate the state');
+      console.error(`could not mutate the state:\n\n${error}`);
     }
   }
 
@@ -92,6 +99,6 @@ class State<T> implements IState<T> {
   }
 }
 
-export function new_application_state<T extends Array<any> | Record<string, unknown>>(state: T): State<T> {
-  return new State(state);
+export function new_application_state<T extends ValidStateData>(state: T): State<T> {
+  return new State<T>(state);
 }

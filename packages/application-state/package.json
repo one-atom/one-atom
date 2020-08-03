@@ -1,6 +1,6 @@
 {
   "name": "@kira/application-state",
-  "version": "1.0.0-alpha-01",
+  "version": "1.0.0-alpha-02",
   "description": "Application state",
   "license": "MIT",
   "main": "./lib/index.js",
@@ -13,13 +13,12 @@
   "files": [
     "lib"
   ],
-  "dependencies": {
-    "@kira/std": "1.0.0-alpha-01"
-  },
   "devDependencies": {
+    "@testing-library/react": "^10.4.6",
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
     "@types/react-test-renderer": "^16.9.2",
+    "@kira/std": "1.0.0-alpha-01",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   }
