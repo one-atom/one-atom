@@ -9,4 +9,7 @@ export * from './components/static_button';
 export * from './components/separator';
 export * from './components/v_stack';
 export * from './components/h_stack';
+export * from './components/v_spacing';
+export * from './components/h_spacing';
 export * from './components/frame';
+export * from './components/shimmer';
