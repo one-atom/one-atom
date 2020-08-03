@@ -5,12 +5,12 @@ import 'reflect-metadata';
 export namespace Instantiation {
   export type Ctor<T> = {
     /**
-     * If ctor_name is assigned, the class instance will be persistence. If it's
-     * left unassigned there's a chance the class instance will end up garbage
+     * If ctor_name is noy null, the class instance will be persistence. If it's
+     * null there's a chance the class instance will end up garbage
      * collected. For instances that should live an entire session, it's
-     * recommended to assign this
+     * recommended to
      */
-    ctor_name?: string;
+    ctor_name: string | null;
     new (...args: any[]): T;
   };
   export type GenericClassDecorator<T> = (target: T) => void;
@@ -29,7 +29,7 @@ export namespace Instantiation {
   }
 
   export function resolve<T>(ctor: Instantiation.Ctor<T>): T {
-    const name = ctor.name;
+    const name = ctor.ctor_name;
     const instance = name !== null ? persistence_ctors.get(name) : garbage_collectable_ctors.get(ctor);
 
     if (instance) return instance;
