@@ -14,19 +14,20 @@
     "lib"
   ],
   "dependencies": {
+    "react-is": "^16.13.1",
     "shortid": "^2.2.15",
     "styled-components": "^5.1.1"
   },
   "devDependencies": {
     "@kira/bundler": "1.0.0-alpha-01",
     "@kira/ui-std": "1.0.0-alpha-01",
-    "@testing-library/react": "^10.4.6",
-    "@types/react": "^16.9.43",
+    "@testing-library/react": "^10.4.7",
+    "@types/react": "^16.9.44",
     "@types/react-dev-utils": "^9.0.4",
     "@types/react-dom": "^16.9.8",
     "@types/react-test-renderer": "^16.9.2",
     "@types/shortid": "^0.0.29",
-    "@types/styled-components": "5.1.1",
+    "@types/styled-components": "5.1.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
