@@ -13,14 +13,14 @@ export enum FlowState {
   ERROR,
 }
 
-export type CurrStateTulip<T> = [Readonly<T>, FlowState];
+export type CurrStateTuple<T> = [Readonly<T>, FlowState];
 
 export interface IState<T extends ValidStateData> {
   flow_state: FlowState;
   in_flow(action: FlowState): void;
   subscribe(event: () => void): Disposer;
   mutate(fn: CurrStateFn<T>): void;
-  read(): CurrStateTulip<T>;
+  read(): CurrStateTuple<T>;
 }
 
 let ids = 0;
@@ -41,7 +41,7 @@ class State<T extends ValidStateData> implements IState<T> {
     if (designatedFlowState !== undefined) this.flow_state = designatedFlowState;
   }
 
-  public read(): CurrStateTulip<T> {
+  public read(): CurrStateTuple<T> {
     // The following is purposely being ignored by TypeScript, when the state is
     // not accessible it should deliberately cause an error so a correct
     // Behavior can be written
