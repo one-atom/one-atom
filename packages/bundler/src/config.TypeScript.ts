@@ -41,6 +41,8 @@ export namespace TypeScriptConfig {
     esnext: ts.ScriptTarget.ESNext,
   };
 
+  export let cached_compiler_option: ParsedCompilerOptions | null = null;
+
   /**
    * Returns a CompilerOption. If file system can not locate or validate a
    * tsconfig.json file, a default CompilerOption will be provided
@@ -49,16 +51,20 @@ export namespace TypeScriptConfig {
    * @public
    */
   export function get_compiler_options(location: string): ParsedCompilerOptions {
-    const tsconfig = Locator.read_json_sync<TsConfigLike>(`${location}/tsconfig.json`);
+    cached_compiler_option = null;
 
-    if (tsconfig === null) {
+    const ts_config = Locator.read_json_sync<TsConfigLike>(`${location}/tsconfig.json`);
+    if (ts_config === null) {
       throw new Error(`could not locate a tsconfig at ${location}`);
     }
 
-    return parse_typeScript_compiler_options(tsconfig);
+    const parsed_compiler_option = parse_typeScript_compiler_options(ts_config);
+    cached_compiler_option = parsed_compiler_option;
+
+    return cached_compiler_option;
   }
 
-  function parse_typeScript_compiler_options(tsConfigLike?: TsConfigLike): Readonly<ParsedCompilerOptions> {
+  function parse_typeScript_compiler_options(ts_config_like?: TsConfigLike): Readonly<ParsedCompilerOptions> {
     const builder: ParsedCompilerOptions = {
       // Defaults
       target: ts.ScriptTarget.ES2019,
@@ -72,7 +78,7 @@ export namespace TypeScriptConfig {
 
     // If compilerOptions is provided, validate it and mutate the builder with
     // provided configuration
-    const { compilerOptions } = tsConfigLike ?? {};
+    const { compilerOptions } = ts_config_like ?? {};
 
     if (compilerOptions) {
       Logger.assert(Logger.Level.INFO, 'compilerOptions found, replacing defaults ...');
