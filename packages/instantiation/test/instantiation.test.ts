@@ -1,6 +1,10 @@
-import { Instantiation, Service } from '../src/instantiation';
+import { Instantiation, Service, flush_all } from '../src/instantiation';
 
 describe('Instantiation', () => {
+  afterEach(() => {
+    flush_all();
+  });
+
   it('should register and resolve', () => {
     @Service()
     class Cls {
@@ -28,5 +32,26 @@ describe('Instantiation', () => {
     const clsGarb = Instantiation.resolve(ClsGarb);
     expect(clsGarb).toBeInstanceOf(ClsGarb);
     expect(clsGarb.clsRef).toBeInstanceOf(Cls);
+  });
+
+  it('should not use same instances after a flush', () => {
+    @Service()
+    class Cls {
+      public static readonly ctor_name = 'E';
+      public data = {
+        nbr: 1,
+      };
+    }
+
+    const instant1 = Instantiation.resolve(Cls);
+    expect(instant1.data.nbr).toBe(1);
+    instant1.data.nbr++;
+
+    const instant2 = Instantiation.resolve(Cls);
+    expect(instant2.data.nbr).toBe(2);
+
+    flush_all();
+    const instant3 = Instantiation.resolve(Cls);
+    expect(instant3.data.nbr).toBe(1);
   });
 });
