@@ -1,22 +1,32 @@
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
+import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware';
 import { Paths } from './Paths';
 import { WebpackConfig } from './config.Webpack';
 
 export namespace Run {
-  interface Specification {
+  interface DevSpecification {
     root: string;
     customEnv?: string;
     loadConfig?: string;
+    parseWithBabel?: boolean;
+    hmr?: boolean;
   }
 
-  export function development({ root, customEnv, loadConfig }: Specification): void {
+  interface ProdSpecification {
+    root: string;
+    customEnv?: string;
+    loadConfig?: string;
+    parseWithBabel?: boolean;
+  }
+
+  export function development({ root, customEnv, loadConfig, parseWithBabel, hmr }: DevSpecification): void {
     process.env.NODE_ENV = 'development';
     process.env['CUSTOM_ENV'] = customEnv ?? 'development';
+    hmr = hmr ?? false;
 
     const paths = Paths.get(root);
     const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 8000;
-
     const webpackDevServerConfiguration: WebpackDevServer.Configuration = {
       port,
       host: 'localhost',
@@ -24,7 +34,8 @@ export namespace Run {
       contentBase: paths.dir,
       disableHostCheck: true,
       compress: true,
-      hot: false, // Currently no support for HMR
+      hot: hmr,
+      inline: hmr,
       quiet: true,
       watchContentBase: true,
       overlay: false,
@@ -33,8 +44,11 @@ export namespace Run {
       watchOptions: {
         ignored: /node_modules/,
       },
-      setup() {
-        // noop
+      setup(app) {
+        if (parseWithBabel) {
+          // This lets us open files from the runtime error overlay.
+          app.use(errorOverlayMiddleware());
+        }
       },
     };
 
@@ -42,8 +56,9 @@ export namespace Run {
       port,
       paths,
       loadConfig,
+      hmr,
+      parseWithBabel: parseWithBabel ?? false,
     });
-
     const server = new WebpackDevServer(webpack(webpackConfiguration), webpackDevServerConfiguration);
 
     server.listen(port, 'localhost', (error) => {
@@ -53,7 +68,7 @@ export namespace Run {
     });
   }
 
-  export function production({ root, customEnv, loadConfig }: Specification): Promise<void> {
+  export function production({ root, customEnv, loadConfig, parseWithBabel }: ProdSpecification): Promise<void> {
     process.env.NODE_ENV = 'production';
     process.env['CUSTOM_ENV'] = customEnv ?? 'production';
 
@@ -62,6 +77,7 @@ export namespace Run {
       output: paths.outDir,
       paths,
       loadConfig,
+      parseWithBabel: parseWithBabel ?? false,
     });
     const compiler = webpack(webpackConfiguration);
 
