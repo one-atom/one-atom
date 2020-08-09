@@ -9,7 +9,8 @@ export namespace Frame {
     grow?: boolean;
     direction?: Direction | DirectionStr;
     background?: string;
-    cornerRadius?: number;
+    cornerRadius?: number | string;
+    padding?: number | string;
     shadow?: string;
   }
 
@@ -21,6 +22,8 @@ export namespace Frame {
     direction?: Direction | DirectionStr;
     background?: string;
     cornerRadius?: number | string;
+
+    padding?: number | string;
     shadow?: string;
   }
 
@@ -82,9 +85,11 @@ export namespace Frame {
   const elements = {
     body: styled.div<ElementBodyProp>`
       display: flex;
+      box-sizing: border-box;
       flex: ${({ grow }) => (grow ? '1' : null)};
       height: ${({ height }) => (height !== undefined ? `${height}px` : '100%')};
       width: ${({ width }) => (width !== undefined ? `${width}px` : '100%')};
+      padding: ${({ padding }) => (padding !== undefined ? (padding === typeof 'string' ? padding : `${padding}px`) : '0')};
       background: ${({ background }) => background ?? null};
       border-radius: ${({ cornerRadius }) =>
         cornerRadius ? (cornerRadius === typeof 'string' ? cornerRadius : `${cornerRadius}px`) : null};
@@ -208,11 +213,11 @@ export namespace Frame {
     `,
   };
 
-  export const h: React.FC<Prop> = function __kira__frame({ alignment = Alignment.Center, height, width, direction, children }) {
+  export const h: React.FC<Prop> = function __kira__frame({ alignment = Alignment.Center, children, ...rest }) {
     const parsed_alignment = typeof alignment === 'string' ? convert_alignment_str_to_enum(alignment) : alignment;
 
     return (
-      <elements.body alignment={parsed_alignment} height={height} width={width} direction={direction}>
+      <elements.body alignment={parsed_alignment} {...rest}>
         {children}
       </elements.body>
     );
