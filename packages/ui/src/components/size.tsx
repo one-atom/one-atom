@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import { KiraPropType } from '@kira/ui-std';
 
 /**
  * Size
  */
 export namespace Size {
-  export interface Props {
+  export interface Props extends KiraPropType {
     fluid?: boolean;
-    className?: string;
   }
 
   const elements = {

@@ -3,12 +3,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Size } from './size';
+import { KiraPropType } from '@kira/ui-std';
 
 /**
  * StaticButton
  */
 export namespace StaticButton {
-  export interface Props extends Size.Props {}
+  export interface Props extends Size.Props, KiraPropType {}
 
   const elements = {
     button: styled.div`

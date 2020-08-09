@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import { KiraPropType } from '@kira/ui-std';
 
 /**
  * Article
  */
 export namespace Article {
-  export interface Props {
+  export interface Props extends KiraPropType {
     center?: boolean;
-    className?: string;
   }
 
   const elements = {

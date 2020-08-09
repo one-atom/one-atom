@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { StyleSheetController } from '../helpers/style_sheet_controller';
 import { Logger } from '@kira/logger';
+import { KiraPropType } from '../prop_type';
 
 /**
  * Portal
  */
 export namespace Portal {
-  export interface Props {}
+  export interface Props extends KiraPropType {}
 
   const id = 'kira-portal';
   const className = `${id}-container`;

@@ -4,12 +4,13 @@ import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 import { BaseInput } from '@kira/ui-std';
 import { Size } from './size';
+import { KiraPropType } from '@kira/ui-std';
 
 /**
  * Input
  */
 export namespace Input {
-  export interface Props extends BaseInput.Props, Size.Props {}
+  export interface Props extends BaseInput.Props, Size.Props, KiraPropType {}
 
   const elements = {
     label: styled.label`

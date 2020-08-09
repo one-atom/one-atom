@@ -1,11 +1,12 @@
 import React from 'react';
 import { StyleSheetController } from '../helpers/style_sheet_controller';
+import { KiraPropType } from '../prop_type';
 
 /**
  * HeadLessStack
  */
 export namespace HeadLessStack {
-  interface HeadLessProps {
+  interface HeadLessProps extends KiraPropType {
     parentClassName: string;
     childClassName: string;
   }

@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import { KiraPropType } from '@kira/ui-std';
 
 /**
  * Separator
  */
 export namespace Separator {
-  export interface Props {
+  export interface Props extends KiraPropType {
     padding?: number;
-    className?: string;
   }
 
   const elements = {

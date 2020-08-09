@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import { KiraPropType } from '../prop_type';
 
 /**
  * BaseIcon
  */
 export namespace BaseIcon {
-  export interface Props {
+  export interface Props extends KiraPropType {
     viewBox?: string;
     rotation?: number;
     mirror?: Mirror;

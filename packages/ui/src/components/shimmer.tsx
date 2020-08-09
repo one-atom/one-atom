@@ -1,16 +1,16 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
+import { KiraPropType } from '@kira/ui-std';
 
 /**
  * change this
  */
 export namespace Shimmer {
-  export interface Props {
+  export interface Props extends KiraPropType {
     width: number;
     height: number;
     cornerRadius?: number;
     opacity?: number;
-    className?: string;
   }
 
   interface InternalProps {

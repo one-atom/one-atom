@@ -1,15 +1,15 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { focusContext } from '../helpers/focus_context';
+import { KiraPropType } from '../prop_type';
 
 /**
  * BaseButton
  */
 export namespace BaseButton {
-  export interface Props {
+  export interface Props extends KiraPropType {
     tabIndex?: number;
     disabled?: boolean;
-    className?: string;
     type?: 'submit' | 'reset' | 'button';
     onBlur?: (event: React.FocusEvent<HTMLButtonElement>) => void;
     onFocus?: (event: React.FocusEvent<HTMLButtonElement>) => void;

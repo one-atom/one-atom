@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import { KiraPropType } from '@kira/ui-std';
 
 /**
  * Spacer
  */
 export namespace Spacer {
-  export interface Props {
+  export interface Props extends KiraPropType {
     height?: number;
     width?: number;
   }

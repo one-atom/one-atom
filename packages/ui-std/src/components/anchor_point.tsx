@@ -2,12 +2,13 @@ import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { AnchorPointConsumer } from '../helpers/anchor_point_consumer';
 import { EMPTY_ARRAY } from '@kira/std';
+import { KiraPropType } from '../prop_type';
 
 /**
  * AnchorPoint
  */
 export namespace AnchorPoint {
-  export interface Props {
+  export interface Props extends KiraPropType {
     /** Name of registered anchor point */
     name: string;
 

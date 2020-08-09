@@ -1,13 +1,12 @@
 import React from 'react';
 import { HeadLessStack, unwrap_fragment } from '@kira/ui-std';
+import { KiraPropType } from '@kira/ui-std';
 
 /**
  * HStack
  */
 export namespace HStack {
-  export interface Props extends Partial<Omit<HeadLessStack.Props, 'axis'>> {
-    className?: string;
-  }
+  export interface Props extends Partial<Omit<HeadLessStack.Props, 'axis'>>, KiraPropType {}
 
   export const h: React.FC<Props> = function __kira__horizontal_stack({ className, spacing = 0, fluid = true, children }) {
     const flatten = unwrap_fragment(children);

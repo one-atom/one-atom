@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { BaseButton } from '@kira/ui-std';
+import { BaseButton, KiraPropType } from '@kira/ui-std';
 import { Size } from './size';
 
 /**
  * Button
  */
 export namespace Button {
-  export interface Props extends BaseButton.Props, Size.Props {}
+  export interface Props extends BaseButton.Props, Size.Props, KiraPropType {}
 
   const elements = {
     button: styled(BaseButton.h)`

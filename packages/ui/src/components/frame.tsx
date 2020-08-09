@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import { KiraPropType } from '@kira/ui-std';
 
 export namespace Frame {
-  export interface Prop {
+  export interface Prop extends KiraPropType {
     alignment?: Alignment | AlignmentStr;
     height?: number;
     width?: number;

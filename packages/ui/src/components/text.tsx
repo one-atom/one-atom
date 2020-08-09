@@ -1,13 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import { KiraPropType } from '@kira/ui-std';
 
 /**
  * Text
  */
 export namespace Text {
-  export interface Props {
-    className?: string;
-  }
+  export interface Props extends KiraPropType {}
 
   interface PropsForCustom extends Props {
     size?: number;

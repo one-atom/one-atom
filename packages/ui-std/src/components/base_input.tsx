@@ -1,11 +1,12 @@
 import React, { useState, InputHTMLAttributes, forwardRef } from 'react';
 import styled from 'styled-components';
+import { KiraPropType } from '../prop_type';
 
 /**
  * BaseInput
  */
 export namespace BaseInput {
-  export interface Props extends InputHTMLAttributes<HTMLInputElement> {
+  export interface Props extends InputHTMLAttributes<HTMLInputElement>, KiraPropType {
     ref?: any;
     type:
       | 'button'

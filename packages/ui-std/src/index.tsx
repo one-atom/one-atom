@@ -16,3 +16,5 @@ export * from './helpers/unwrap_fragment';
 export * from './hooks/use_form';
 export * from './hooks/use_key_press';
 export * from './hooks/use_outside_click';
+
+export * from './prop_type';
