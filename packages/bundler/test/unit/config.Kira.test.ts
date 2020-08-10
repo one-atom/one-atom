@@ -4,16 +4,18 @@ import mock from 'mock-fs';
 beforeEach(() => {
   mock({
     'standard/test_env.json': JSON.stringify({
-      env: {
+      deep: {
         property1: 'value',
         property2: 'value2',
       },
+      top: true,
     }),
     'json5/test_env.json5': JSON.stringify({
-      env: {
+      deep: {
         json5property1: 'value',
         json5property2: 'value2',
       },
+      top: true,
     }),
   });
 });
@@ -23,18 +25,14 @@ describe('TypeScript Config', () => {
   it('should be able to located kira.env.json5', () => {
     const env = KiraConfig.get_custom_env('json5/test_env.json5') as any;
 
-    expect(env['env']).toMatchObject({
-      json5property1: 'value',
-      json5property2: 'value2',
-    });
+    expect(env['deep']).toEqual('{"json5property1":"value","json5property2":"value2"}');
+    expect(env['top']).toEqual(true);
   });
 
   it('should be able to located kira.env.json', () => {
     const env = KiraConfig.get_custom_env('standard/test_env.json') as any;
 
-    expect(env['env']).toMatchObject({
-      property1: 'value',
-      property2: 'value2',
-    });
+    expect(env['deep']).toEqual('{"property1":"value","property2":"value2"}');
+    expect(env['top']).toEqual(true);
   });
 });
