@@ -8,7 +8,7 @@ export namespace Run {
   interface DevSpecification {
     root: string;
     customEnv?: string;
-    loadConfig?: string;
+    loadConfigPathToFile?: string;
     parseWithBabel?: boolean;
     hmr?: boolean;
   }
@@ -16,13 +16,12 @@ export namespace Run {
   interface ProdSpecification {
     root: string;
     customEnv?: string;
-    loadConfig?: string;
+    loadConfigPathToFile?: string;
     parseWithBabel?: boolean;
   }
 
-  export function development({ root, customEnv, loadConfig, parseWithBabel, hmr }: DevSpecification): void {
+  export function development({ root, customEnv, loadConfigPathToFile, parseWithBabel, hmr }: DevSpecification): void {
     process.env.NODE_ENV = 'development';
-    process.env['CUSTOM_ENV'] = customEnv ?? 'development';
     hmr = hmr ?? false;
 
     const paths = Paths.get(root);
@@ -55,7 +54,8 @@ export namespace Run {
     const webpackConfiguration = WebpackConfig.development({
       port,
       paths,
-      loadConfig,
+      loadConfigPathToFile,
+      customEnv,
       hmr,
       parseWithBabel: parseWithBabel ?? false,
     });
@@ -68,15 +68,15 @@ export namespace Run {
     });
   }
 
-  export function production({ root, customEnv, loadConfig, parseWithBabel }: ProdSpecification): Promise<void> {
+  export function production({ root, customEnv, loadConfigPathToFile, parseWithBabel }: ProdSpecification): Promise<void> {
     process.env.NODE_ENV = 'production';
-    process.env['CUSTOM_ENV'] = customEnv ?? 'production';
 
     const paths = Paths.get(root);
     const webpackConfiguration = WebpackConfig.production({
       output: paths.outDir,
       paths,
-      loadConfig,
+      loadConfigPathToFile,
+      customEnv,
       parseWithBabel: parseWithBabel ?? false,
     });
     const compiler = webpack(webpackConfiguration);

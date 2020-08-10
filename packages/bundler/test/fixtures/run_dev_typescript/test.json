@@ -1,0 +1,14 @@
+{
+  "test": true,
+  "test2": "test",
+  "test3": ["test"],
+  "test4": {
+    "test": false,
+    "test2": null,
+    "test3": ["test"],
+    "test4": {
+      "test": 0,
+      "test2": 1
+    }
+  }
+}

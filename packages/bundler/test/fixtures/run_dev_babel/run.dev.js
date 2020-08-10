@@ -7,4 +7,6 @@ Run.development({
   hmr: true,
   parseWithBabel: true,
   root: process.cwd(),
+  customEnv: 'test',
+  loadConfigPathToFile: `${process.cwd()}/test.json`,
 });

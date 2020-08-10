@@ -13,27 +13,43 @@ export namespace WebpackConfig {
     parseWithBabel: boolean;
     hmr: boolean;
     port: number;
-    loadConfig?: string;
+    loadConfigPathToFile?: string;
+    customEnv?: string;
   }
 
   interface ProductionConfiguration {
     paths: Paths.Dictionary;
     parseWithBabel: boolean;
     output: string;
-    loadConfig?: string;
+    loadConfigPathToFile?: string;
+    customEnv?: string;
   }
 
-  export function development({ hmr, parseWithBabel, paths, loadConfig }: DevelopmentConfiguration): webpack.Configuration {
-    let custom_env = {};
+  function createKiraConfigLike(customEnv?: string, loadConfigPathToFile?: string): KiraConfig.KiraConfigLike {
+    const defined_env: KiraConfig.KiraConfigLike = {};
 
-    if (loadConfig) {
-      const kira_config = KiraConfig.get_custom_env(paths.root);
+    if (customEnv) {
+      defined_env[`process.env.${KiraConfig.CUSTOM_ENV}`] = JSON.stringify(customEnv);
+    }
 
-      if (kira_config) {
-        custom_env = kira_config;
+    if (loadConfigPathToFile) {
+      const kira_config = KiraConfig.get_custom_env(loadConfigPathToFile);
+
+      if (kira_config !== null) {
+        defined_env[`process.env.${KiraConfig.CUSTOM_GLOBAL_ENV}`] = kira_config;
       }
     }
 
+    return defined_env;
+  }
+
+  export function development({
+    hmr,
+    parseWithBabel,
+    paths,
+    loadConfigPathToFile,
+    customEnv,
+  }: DevelopmentConfiguration): webpack.Configuration {
     const base: Partial<webpack.Configuration> = {
       context: paths.root,
       mode: 'development',
@@ -81,7 +97,7 @@ export namespace WebpackConfig {
           ],
         },
         plugins: [
-          new webpack.DefinePlugin(custom_env),
+          new webpack.DefinePlugin(createKiraConfigLike(customEnv, loadConfigPathToFile)),
           new webpack.EnvironmentPlugin({
             NODE_ENV: 'development',
             CUSTOM_ENV: 'development',
@@ -122,7 +138,7 @@ export namespace WebpackConfig {
         },
         plugins: [
           hmr && new webpack.HotModuleReplacementPlugin(),
-          new webpack.DefinePlugin(custom_env),
+          new webpack.DefinePlugin(createKiraConfigLike(customEnv, loadConfigPathToFile)),
           new webpack.EnvironmentPlugin({
             NODE_ENV: 'development',
             CUSTOM_ENV: 'development',
@@ -137,25 +153,21 @@ export namespace WebpackConfig {
     }
   }
 
-  export function production(configuration: ProductionConfiguration): webpack.Configuration {
-    let custom_env = {};
-
-    if (configuration.loadConfig) {
-      const kira_config = KiraConfig.get_custom_env(configuration.paths.root);
-
-      if (kira_config) {
-        custom_env = kira_config;
-      }
-    }
-
+  export function production({
+    parseWithBabel,
+    paths,
+    loadConfigPathToFile,
+    customEnv,
+    output,
+  }: ProductionConfiguration): webpack.Configuration {
     const base: Partial<webpack.Configuration> = {
-      context: configuration.paths.root,
+      context: paths.root,
       mode: 'production',
-      entry: [configuration.paths.main],
+      entry: [paths.main],
       output: {
         filename: 'scripts/[name]-[hash].js',
         chunkFilename: 'scripts/[name]-[chunkhash].chunk.js',
-        path: configuration.output,
+        path: output,
         publicPath: '',
       },
       devtool: 'source-map',
@@ -207,7 +219,7 @@ export namespace WebpackConfig {
       },
     };
 
-    if (configuration.parseWithBabel) {
+    if (parseWithBabel) {
       return {
         ...base,
         module: {
@@ -223,7 +235,7 @@ export namespace WebpackConfig {
           ],
         },
         plugins: [
-          new webpack.DefinePlugin(custom_env),
+          new webpack.DefinePlugin(createKiraConfigLike(customEnv, loadConfigPathToFile)),
           new webpack.EnvironmentPlugin({
             NODE_ENV: 'production',
             CUSTOM_ENV: 'production',
@@ -237,7 +249,7 @@ export namespace WebpackConfig {
             },
           }),
           new HtmlWebpackPlugin({
-            template: configuration.paths.html,
+            template: paths.html,
             inject: true,
             useShortDoctype: true,
             keepClosingSlash: true,
@@ -268,14 +280,14 @@ export namespace WebpackConfig {
           ],
         },
         plugins: [
-          new webpack.DefinePlugin(custom_env),
+          new webpack.DefinePlugin(createKiraConfigLike(customEnv, loadConfigPathToFile)),
           new webpack.EnvironmentPlugin({
             NODE_ENV: 'production',
             CUSTOM_ENV: 'production',
           }),
           new ForkTsCheckerWebpackPlugin(),
           new HtmlWebpackPlugin({
-            template: configuration.paths.html,
+            template: paths.html,
             inject: true,
             useShortDoctype: true,
             keepClosingSlash: true,
