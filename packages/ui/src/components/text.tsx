@@ -16,11 +16,12 @@ export namespace Text {
 
   const elements = {
     text: styled.div`
-      color: inherit;
+      color: var(--kira-text-color, inherit);
       transition: color 250ms ease;
+      display: contents;
 
       strong {
-        color: #000;
+        color: var(--kira-text-strong, #09f);
         letter-spacing: 0;
       }
 
@@ -31,7 +32,7 @@ export namespace Text {
 
       a {
         word-wrap: break-word;
-        color: var(--kira-link, #09f);
+        color: var(--kira-text-link, #09f);
 
         &:link,
         &:visited {
@@ -40,33 +41,46 @@ export namespace Text {
       }
     `,
     p: styled.p`
-      font-size: 1.125rem;
-      line-height: 1.7;
-      font-weight: 400;
+      font-size: var(--kira-text-p-size, 1.125rem);
+      line-height: var(--kira-text-p-line-height, 1.7rem);
+      font-weight: var(--kira-text-p-weight, 400);
+      letter-spacing: var(--kira-text-p-letter-spacing, normal);
     `,
     h1: styled.h1`
-      font-size: 6rem;
-      font-weight: 200;
-      letter-spacing: -1.5;
+      font-size: var(--kira-text-h1-size, 6rem);
+      line-height: var(--kira-text-h1-line-height, 200);
+      font-weight: var(--kira-text-h1-weight, normal);
+      letter-spacing: var(--kira-text-h1-weight, -1.5);
     `,
     h2: styled.h2`
-      font-size: 3.75rem;
-      font-weight: 200;
-      letter-spacing: -0.5;
+      font-size: var(--kira-text-h2-size, 3.75rem);
+      line-height: var(--kira-text-h2-line-height, 200);
+      font-weight: var(--kira-text-h2-weight, normal);
+      letter-spacing: var(--kira-text-h2-letter-spacing, -0.5);
     `,
     h3: styled.h3`
-      font-size: 3rem;
+      font-size: var(--kira-text-h3-size, 3rem);
+      line-height: var(--kira-text-h3-line-height, normal);
+      font-weight: var(--kira-text-h3-weight, normal);
+      letter-spacing: var(--kira-text-h3-letter-spacing, normal);
     `,
     h4: styled.h4`
-      font-size: 2.266rem;
-      letter-spacing: 0.25;
+      font-size: var(--kira-text-h4-size, 2.266rem);
+      line-height: var(--kira-text-h4-line-height, normal);
+      font-weight: var(--kira-text-h4-weight, normal);
+      letter-spacing: var(--kira-text-h4-letter-spacing, 0.25);
     `,
     h5: styled.h5`
-      font-size: 2rem;
+      font-size: var(--kira-text-h5-size, 2rem);
+      line-height: var(--kira-text-h5-line-height, normal);
+      font-weight: var(--kira-text-h5-weight, normal);
+      letter-spacing: var(--kira-text-h5-letter-spacing, normal);
     `,
     h6: styled.h6`
-      font-size: 1.25rem;
-      letter-spacing: 0.15;
+      font-size: var(--kira-text-h6-size, 1.25rem);
+      line-height: var(--kira-text-h6-line-height, normal);
+      font-weight: var(--kira-text-h6-weight, normal);
+      letter-spacing: var(--kira-text-h6-letter-spacing, 0.15);
     `,
     custom: styled.span<PropsForCustom>`
       font-size: ${({ size }) => size ?? 1}rem;
@@ -80,7 +94,7 @@ export namespace Text {
     return <elements.text className={className}>{children}</elements.text>;
   };
 
-  export const title: React.FC<Props> = function title({ children, className }) {
+  export const title: React.FC<Props> = function __kira__text_title({ children, className }) {
     return (
       <Text.h className={className}>
         <elements.h1>{children}</elements.h1>
@@ -88,7 +102,7 @@ export namespace Text {
     );
   };
 
-  export const title2: React.FC<Props> = function title2({ children, className }) {
+  export const title2: React.FC<Props> = function __kira__text_title2({ children, className }) {
     return (
       <Text.h className={className}>
         <elements.h2>{children}</elements.h2>
@@ -96,7 +110,7 @@ export namespace Text {
     );
   };
 
-  export const title3: React.FC<Props> = function title3({ children, className }) {
+  export const title3: React.FC<Props> = function __kira__text_title3({ children, className }) {
     return (
       <Text.h className={className}>
         <elements.h3>{children}</elements.h3>
@@ -104,7 +118,7 @@ export namespace Text {
     );
   };
 
-  export const title4: React.FC<Props> = function title4({ children, className }) {
+  export const title4: React.FC<Props> = function __kira__text_title4({ children, className }) {
     return (
       <Text.h className={className}>
         <elements.h4>{children}</elements.h4>
@@ -112,7 +126,7 @@ export namespace Text {
     );
   };
 
-  export const title5: React.FC<Props> = function title5({ children, className }) {
+  export const title5: React.FC<Props> = function __kira__text_title5({ children, className }) {
     return (
       <Text.h className={className}>
         <elements.h5>{children}</elements.h5>
@@ -120,7 +134,7 @@ export namespace Text {
     );
   };
 
-  export const title6: React.FC<Props> = function title6({ children, className }) {
+  export const title6: React.FC<Props> = function __kira__text_title6({ children, className }) {
     return (
       <Text.h className={className}>
         <elements.h6>{children}</elements.h6>
@@ -128,7 +142,7 @@ export namespace Text {
     );
   };
 
-  export const headline: React.FC<Props> = function headline({ children, className }) {
+  export const headline: React.FC<Props> = function __kira__text_headline({ children, className }) {
     return (
       <Text.h className={className}>
         <elements.h5>{children}</elements.h5>
@@ -136,7 +150,7 @@ export namespace Text {
     );
   };
 
-  export const body: React.FC<Props> = function p({ children, className }) {
+  export const body: React.FC<Props> = function __kira__text_body({ children, className }) {
     return (
       <Text.h className={className}>
         <elements.p>{children}</elements.p>
@@ -144,7 +158,7 @@ export namespace Text {
     );
   };
 
-  export const callout: React.FC<Props> = function p({ children, className }) {
+  export const callout: React.FC<Props> = function __kira__text_callout({ children, className }) {
     return (
       <Text.h className={className}>
         <elements.p>{children}</elements.p>
@@ -152,7 +166,7 @@ export namespace Text {
     );
   };
 
-  export const caption: React.FC<Props> = function p({ children, className }) {
+  export const caption: React.FC<Props> = function __kira__text_caption({ children, className }) {
     return (
       <Text.h className={className}>
         <elements.p>{children}</elements.p>
@@ -160,7 +174,7 @@ export namespace Text {
     );
   };
 
-  export const footnote: React.FC<Props> = function p({ children, className }) {
+  export const footnote: React.FC<Props> = function __kira__text_footnote({ children, className }) {
     return (
       <Text.h className={className}>
         <elements.p>{children}</elements.p>
@@ -168,7 +182,7 @@ export namespace Text {
     );
   };
 
-  export const custom: React.FC<PropsForCustom> = function custom({ children, className, ...rest }) {
+  export const custom: React.FC<PropsForCustom> = function __kira__text_custom({ children, className, ...rest }) {
     return (
       <Text.h className={className}>
         <elements.custom {...rest}>{children}</elements.custom>
