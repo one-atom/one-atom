@@ -1,17 +1,17 @@
 import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
-import { Frame } from './components/frame';
-import { Spacer } from './components/spacer';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Home } from './doc/routes/home';
+import { ResetCss } from './';
 
 ReactDOM.render(
   <Fragment>
-    <Frame.h height={2000} direction='column'>
-      <Frame.h alignment='center' direction='row'>
-        qwe
-        <Spacer.h width={40} height={40} />
-        qwe
-      </Frame.h>
-    </Frame.h>
+    <ResetCss.h />
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Home.h />} />
+      </Routes>
+    </BrowserRouter>
   </Fragment>,
   document.getElementById('app'),
 );

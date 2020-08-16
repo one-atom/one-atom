@@ -46,11 +46,12 @@ export namespace Text {
       font-weight: var(--kira-text-p-weight, 400);
       letter-spacing: var(--kira-text-p-letter-spacing, normal);
     `,
-    h1: styled.h1`
-      font-size: var(--kira-text-h1-size, 6rem);
-      line-height: var(--kira-text-h1-line-height, 200);
-      font-weight: var(--kira-text-h1-weight, normal);
-      letter-spacing: var(--kira-text-h1-weight, -1.5);
+    h1Plus: styled.h1`
+      color: var(--kira-text-color-heading, #1b2124);
+      font-size: var(--kira-text-h1plus-size, 4rem);
+      line-height: var(--kira-text-h1plus-line-height, 4.5rem);
+      font-weight: var(--kira-text-h1plus-weight, 700);
+      letter-spacing: var(--kira-text-h1plus-weight, -1.5);
     `,
     h2: styled.h2`
       font-size: var(--kira-text-h2-size, 3.75rem);
@@ -94,10 +95,10 @@ export namespace Text {
     return <elements.text className={className}>{children}</elements.text>;
   };
 
-  export const title: React.FC<Props> = function __kira__text_title({ children, className }) {
+  export const h1_plus: React.FC<Props> = function __kira__text_title({ children, className }) {
     return (
       <Text.h className={className}>
-        <elements.h1>{children}</elements.h1>
+        <elements.h1Plus>{children}</elements.h1Plus>
       </Text.h>
     );
   };
