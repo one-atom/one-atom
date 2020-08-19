@@ -1,7 +1,4 @@
-import { recommended } from './recommended';
-import { prettier } from './prettier';
+import { recommended_eslint, recommended_prettier } from './recommended';
+import { react_eslint, react_prettier } from './react';
 
-export default {
-  recommended,
-  prettier,
-};
+export { recommended_eslint, recommended_prettier, react_eslint, react_prettier };
