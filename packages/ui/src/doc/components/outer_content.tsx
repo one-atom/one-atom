@@ -13,6 +13,7 @@ export namespace OuterContent {
       box-sizing: content-box;
     `,
   };
+
   export const h: React.FC = function OuterContent({ children }) {
     return <elements.container>{children}</elements.container>;
   };

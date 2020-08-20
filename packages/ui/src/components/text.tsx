@@ -6,7 +6,7 @@ import { KiraPropType } from '@kira/ui-std';
  * Text
  */
 export namespace Text {
-  export interface Props extends KiraPropType {}
+  export type Props = KiraPropType;
 
   interface PropsForCustom extends Props {
     size?: number;

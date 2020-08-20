@@ -17,13 +17,14 @@ export namespace Header {
       padding: 80px 0;
     `,
   };
-  export const h: React.FC = function Header() {
+
+  export const h: React.FC = function Header({ children }) {
     return (
       <elements.container>
         <OuterContent.h>
           <elements.innerContainer>
             <div></div>
-            <Text.h1_plus>Almost before we knew it, we had left the ground.</Text.h1_plus>
+            <Text.h1_plus>{children}</Text.h1_plus>
           </elements.innerContainer>
         </OuterContent.h>
       </elements.container>

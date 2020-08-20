@@ -8,7 +8,7 @@ import { KiraPropType } from '../prop_type';
  * Portal
  */
 export namespace Portal {
-  export interface Props extends KiraPropType {}
+  export type Props = KiraPropType;
 
   const id = 'kira-portal';
   const className = `${id}-container`;

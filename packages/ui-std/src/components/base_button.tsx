@@ -115,10 +115,12 @@ export namespace BaseButton {
 
     function handle_mouse_down(event: React.MouseEvent<HTMLButtonElement>) {
       if (!downRef) {
+        // noop
       }
 
       if (onMouseDown) onMouseDown(event);
     }
+
     function handle_mouse_up(event: React.MouseEvent<HTMLButtonElement>) {
       if (onMouseUp) onMouseUp(event);
     }

@@ -1,10 +1,9 @@
 import React from 'react';
-import { Header } from '../components/header';
-import { SectionContent } from '../components/section_content';
 import { SectionArticle } from '../components/section_article';
 import { Article } from '../../';
 import { Text } from '../../components/text';
 import styled from 'styled-components';
+import { Page } from '../components/page';
 
 export namespace Home {
   const elements = {
@@ -16,8 +15,7 @@ export namespace Home {
   export const h: React.FC = function Home() {
     return (
       <elements.container>
-        <Header.h></Header.h>
-        <SectionContent.h>
+        <Page.h headerTitle='Almost before we knew it, we had left the ground.'>
           <Article.h>
             <SectionArticle.section>Almost before we knew it, we had left the ground.</SectionArticle.section>
             <SectionArticle.section>Almost before we knew it, we had left the ground.</SectionArticle.section>
@@ -27,7 +25,7 @@ export namespace Home {
             </SectionArticle.section>
             <SectionArticle.section>Almost before we knew it, we had left the ground.</SectionArticle.section>
           </Article.h>
-        </SectionContent.h>
+        </Page.h>
       </elements.container>
     );
   };
