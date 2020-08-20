@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Home } from './doc/routes/home';
 import { ResetCss } from './';
+import { Home } from './doc/routes/home';
+import { Buttons } from './doc/routes/buttons';
 
 ReactDOM.render(
   <Fragment>
@@ -10,6 +11,7 @@ ReactDOM.render(
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home.h />} />
+        <Route path='/buttons' element={<Buttons.h />} />
       </Routes>
     </BrowserRouter>
   </Fragment>,
