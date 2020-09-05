@@ -2,7 +2,7 @@
 
 import 'reflect-metadata';
 
-let persistence_ctors = new Map<string, any>();
+let persistence_ctors = new Map<symbol, any>();
 let garbage_collectable_ctors = new WeakMap<Instantiation.Ctor<unknown>, any>();
 
 export namespace Instantiation {
@@ -13,7 +13,7 @@ export namespace Instantiation {
      * collected. For instances that should live an entire session, it's
      * recommended to.
      */
-    ctor_name: string | null;
+    ctor_name: symbol | null;
     new (...args: any[]): T;
   };
   export type GenericClassDecorator<T> = (target: T) => void;
@@ -57,8 +57,8 @@ export namespace Instantiation {
  * to ensure a reliable test environment.
  */
 export function flush_all(): void {
-  persistence_ctors = new Map<string, any>();
-  garbage_collectable_ctors = new WeakMap<Instantiation.Ctor<unknown>, any>();
+  persistence_ctors = new Map();
+  garbage_collectable_ctors = new WeakMap();
 }
 
 /**

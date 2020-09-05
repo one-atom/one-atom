@@ -8,13 +8,13 @@ describe('Instantiation', () => {
   it('should register and resolve', () => {
     @Service()
     class Cls {
-      public static readonly ctor_name = 'E';
+      public static readonly ctor_name = Symbol('E');
     }
 
     @Service()
     // @ts-ignore
     class ClsFake {
-      public static readonly ctor_name = 'E';
+      public static readonly ctor_name = Symbol('E');
     }
 
     @Service()
@@ -37,7 +37,7 @@ describe('Instantiation', () => {
   it('should not use same instances after a flush', () => {
     @Service()
     class Cls {
-      public static readonly ctor_name = 'E';
+      public static readonly ctor_name = Symbol('E');
       public data = {
         nbr: 1,
       };
