@@ -26,6 +26,10 @@ export namespace Instantiation {
    * Returns an instance, during the process all of its dependencies will also be created
    */
   export function resolve<T>(ctor: Ctor<T>): T {
+    if (ctor === undefined) {
+      throw new Error(`Retrieved undefined, this is caused of circular JS imports`);
+    }
+
     const name = ctor.ctor_name;
     const instance = name !== null ? persistence_ctors.get(name) : garbage_collectable_ctors.get(ctor);
 
