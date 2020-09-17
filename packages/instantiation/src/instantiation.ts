@@ -2,8 +2,7 @@
 
 import 'reflect-metadata';
 
-let persistence_ctors = new Map<symbol, any>();
-let garbage_collectable_ctors = new WeakMap<Instantiation.Ctor<unknown>, any>();
+let registered_singletons = new Map<symbol, any>();
 
 export namespace Instantiation {
   export type Ctor<T> = {
@@ -13,7 +12,8 @@ export namespace Instantiation {
      * collected. For instances that should live an entire session, it's
      * recommended to.
      */
-    ctor_name: symbol | null;
+    ctor_name: symbol;
+    ctor_lifetime?: Lifetimes;
     new (...args: any[]): T;
   };
   export type GenericClassDecorator<T> = (target: T) => void;
@@ -21,38 +21,51 @@ export namespace Instantiation {
     /* Not implemented */
     independent?: boolean;
   }
+  export enum Lifetimes {
+    Singleton,
+    Transient,
+  }
 
   /**
-   * Returns an instance, during the process all of its dependencies will also be created
+   * Returns an instance, during the process all of its dependencies will also be created.
    */
-  export function resolve<T>(ctor: Ctor<T>): T {
+  export function resolve<T>(ctor: Ctor<T>, replace = false): T {
     if (ctor === undefined) {
       throw new Error(`Retrieved undefined, this is caused of circular JS imports`);
     }
 
+    let resolved: T;
     const name = ctor.ctor_name;
-    const instance = name !== null ? persistence_ctors.get(name) : garbage_collectable_ctors.get(ctor);
+    const lifetime = ctor.ctor_lifetime ?? Lifetimes.Singleton;
 
-    if (instance) return instance;
+    // If replace is present it's a mocked service
+    if (!replace) {
+      if (lifetime === Lifetimes.Singleton) {
+        const instance = registered_singletons.get(name);
+        if (instance) return instance;
+      }
 
-    const tokens: any[] = Reflect.getMetadata('design:paramtypes', ctor) ?? [];
-    const injections = tokens.map((token) => resolve<any>(token));
-    const resolved = new ctor(...injections);
+      const tokens: any[] = Reflect.getMetadata('design:paramtypes', ctor) ?? [];
+      const injections = tokens.map((token) => resolve<any>(token));
+      resolved = new ctor(...injections);
 
-    if (name !== null) {
-      persistence_ctors.set(name, resolved);
+      if (lifetime === Lifetimes.Singleton) {
+        registered_singletons.set(name, resolved);
+      }
     } else {
-      garbage_collectable_ctors.set(ctor, resolved);
+      resolved = new ctor();
+      registered_singletons.set(name, resolved);
     }
 
     return resolved;
   }
 
-  /** @internal */
-  export function register(service: Ctor<any>, spec?: Specification): void {
-    if (spec) return;
-
-    Instantiation.resolve(service);
+  /**
+   * Register a class to be used as a service. If the replace parameter is
+   * passed it'll override any previously registered service (works for any lifetime).
+   */
+  export function register(service: Ctor<any>, replace = false): void {
+    Instantiation.resolve(service, replace);
   }
 }
 
@@ -61,8 +74,7 @@ export namespace Instantiation {
  * to ensure a reliable test environment.
  */
 export function flush_all(): void {
-  persistence_ctors = new Map();
-  garbage_collectable_ctors = new WeakMap();
+  registered_singletons = new Map();
 }
 
 /**
@@ -70,11 +82,10 @@ export function flush_all(): void {
  *
  * The marked class must have a public static property `ctor_name`. It ensure
  * that scrambled and minified code will resolve into the correct instance.
- * Setting it to `null` will result that the marked class may only be resolved
- * using the object reference.
  *
- * To ensure that the instance won't be garbage collected, set `ctor_name` to a unique value.
+ * By default a service has a Lifetime set to Singleton. This can be changed by
+ * declaring a public static property `ctor_lifetime` set to e.g. Transient.
  */
-export function Service(spec?: Instantiation.Specification): Instantiation.GenericClassDecorator<Instantiation.Ctor<any>> {
-  return <T>(ctor: Instantiation.Ctor<T>) => Instantiation.register(ctor, spec);
+export function Service(): Instantiation.GenericClassDecorator<Instantiation.Ctor<any>> {
+  return <T>(ctor: Instantiation.Ctor<T>) => Instantiation.register(ctor);
 }
