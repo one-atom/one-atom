@@ -15,6 +15,7 @@ export namespace Flex {
     grow?: number | string;
     shrink?: number;
     basis?: number | string;
+    applySize?: boolean;
   } & KiraPropType;
 
   // Exits to not add attributes to the dom element
@@ -27,11 +28,13 @@ export namespace Flex {
     styleGrow?: Props['grow'];
     styleShrink?: Props['shrink'];
     styleBasis?: Props['basis'];
+    applySize?: Props['applySize'];
   };
 
   const elements = {
     flex: styled.div<SanitizedStyleProps>`
       display: flex;
+      ${({ applySize }) => applySize && `width: 100%;\nheight: 100%;`}
       ${({ styleAlignItems }) => styleAlignItems && `align-items: ${styleAlignItems};`}
       ${({ styleJustifyContent }) => styleJustifyContent && `justify-content: ${styleJustifyContent};`}
       ${({ styleAlignSelf }) => styleAlignSelf && `align-selfs: ${styleAlignSelf};`}
@@ -43,15 +46,16 @@ export namespace Flex {
   };
 
   export const h: React.FC<Props> = function __kira__flex({
-    direction = 'column',
-    shrink = 0,
-    alignItems = 'flex-start',
-    justifyContent = 'flex-start',
-    wrap = false,
     grow,
     basis,
     className,
     children,
+    shrink = 0,
+    wrap = false,
+    applySize = true,
+    direction = 'column',
+    alignItems = 'flex-start',
+    justifyContent = 'flex-start',
   }) {
     return (
       <elements.flex
@@ -63,6 +67,7 @@ export namespace Flex {
         styleGrow={grow}
         styleShrink={shrink}
         styleBasis={basis}
+        applySize={applySize}
       >
         {children}
       </elements.flex>
