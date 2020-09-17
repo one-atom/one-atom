@@ -49,7 +49,7 @@ export namespace Portal {
 
     if (typeof mountTo === 'string') {
       const kiraPortal = document.getElementById(mountTo);
-      if (!kiraPortal) throw new Error(`Could not find an element ${}`);
+      if (!kiraPortal) throw new Error(`Could not find an element ${mountTo}`);
       mount = kiraPortal;
     } else if (mountTo instanceof HTMLElement) {
       mount = mountTo;
