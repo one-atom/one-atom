@@ -8,7 +8,9 @@ import { KiraPropType } from '../prop_type';
  * Portal
  */
 export namespace Portal {
-  export type Props = KiraPropType;
+  export type Props = {
+    mountTo?: string | HTMLElement;
+  } & KiraPropType;
 
   const id = 'kira-portal';
   const className = `${id}-container`;
@@ -24,7 +26,7 @@ export namespace Portal {
   const style_sheet = new StyleSheetController();
 
   style_sheet.add_to_register(
-    '#kira-portal',
+    `#${id}`,
     `
       position: fixed;
       top: 0;
@@ -42,13 +44,23 @@ export namespace Portal {
     `,
   );
 
-  export const h: React.FC<Props> = ({ children }) => {
-    const mount = document.getElementById(id);
+  export const h: React.FC<Props> = ({ children, mountTo }) => {
+    let mount: HTMLElement;
+
+    if (typeof mountTo === 'string') {
+      const kiraPortal = document.getElementById(mountTo);
+      if (!kiraPortal) throw new Error(`Could not find an element ${}`);
+      mount = kiraPortal;
+    } else if (mountTo instanceof HTMLElement) {
+      mount = mountTo;
+    } else {
+      const kiraPortal = document.getElementById(id);
+      if (!kiraPortal) throw new Error("root element was removed, don't do that");
+      mount = kiraPortal;
+    }
+
     const el = document.createElement('div');
     el.className = className;
-
-    if (!mount) throw new Error("root element was removed, don't do that");
-
     useEffect(() => {
       mount.appendChild(el);
 
