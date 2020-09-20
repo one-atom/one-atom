@@ -40,5 +40,6 @@
     { "path": "packages/instantiation" },
     { "path": "packages/application-state" },
     { "path": "packages/linter" },
+    { "path": "packages/id" },
   ]
 }
