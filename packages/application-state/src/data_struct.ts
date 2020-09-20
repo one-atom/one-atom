@@ -1,7 +1,9 @@
-export type ValidStateData = Record<string, string | number | symbol | boolean | null | Array<unknown> | Record<string, unknown>>;
+type ValidStateDataType = string | number | symbol | boolean | null | Array<unknown> | Record<string, unknown>;
+
+export type ValidStateData = Record<string, ValidStateDataType>;
 
 export class DataStruct<T extends ValidStateData> {
-  private readonly stored_data = new Map<keyof T, unknown>();
+  private readonly stored_data = new Map<keyof T, T[keyof T]>();
   private readonly keys: string[];
 
   constructor(data: T) {
@@ -22,11 +24,11 @@ export class DataStruct<T extends ValidStateData> {
 
       // Keeps the mem ref to the original object and
       if (typeof pre_value === 'object' && pre_value === from_object[key]) {
-        this.stored_data.set(key, from_object[key]);
+        this.stored_data.set(key, from_object[key] as T[keyof T]);
         continue;
       }
 
-      this.stored_data.set(key, from_object[key]);
+      this.stored_data.set(key, from_object[key] as T[keyof T]);
     }
   }
 
@@ -38,5 +40,9 @@ export class DataStruct<T extends ValidStateData> {
     }
 
     return builder as T;
+  }
+
+  public to_iter(): IterableIterator<[keyof T, T[keyof T]]> {
+    return this.stored_data.entries();
   }
 }

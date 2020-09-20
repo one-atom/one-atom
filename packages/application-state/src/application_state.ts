@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
 import { DataStruct, ValidStateData } from './data_struct';
+import { Id } from '@kira/id';
 
 type CurrStateFn<T extends ValidStateData> = (curr_state: Omit<DataStruct<T>, 'insert'>) => Partial<T>;
 
@@ -16,6 +17,7 @@ export enum FlowState {
 export type CurrStateTuple<T> = [Readonly<T>, FlowState];
 
 export interface IState<T extends ValidStateData> {
+  readonly id: string;
   flow_state: FlowState;
   in_flow(action: FlowState): void;
   subscribe(event: () => void): Disposer;
@@ -24,8 +26,16 @@ export interface IState<T extends ValidStateData> {
 }
 
 let ids = 0;
+const GLOBAL_HOOK = '__KIRA_APPLICATION_STATE_GLOBAL_HOOK__';
+
+//@ts-ignore
+if (window) {
+  //@ts-ignore
+  window[GLOBAL_HOOK] = window[GLOBAL_HOOK] || {};
+}
 
 class State<T extends ValidStateData> implements IState<T> {
+  public readonly id = `hook_id_${++ids}`;
   public flow_state = FlowState.UNSET;
   private readonly hooks: Map<string, () => void> = new Map();
 
@@ -86,7 +96,7 @@ class State<T extends ValidStateData> implements IState<T> {
   }
 
   public subscribe(event: () => void): Disposer {
-    const id = `hook_id_${++ids}`;
+    const id = Id.short();
     this.hooks.set(id, event);
 
     return () => {
@@ -100,5 +110,13 @@ class State<T extends ValidStateData> implements IState<T> {
 }
 
 export function new_application_state<T extends ValidStateData>(state: T): State<T> {
-  return new State<T>(state);
+  const application_state = new State<T>(state);
+
+  //@ts-ignore
+  if (window) {
+    //@ts-ignore
+    window[GLOBAL_HOOK][application_state.id] = application_state;
+  }
+
+  return application_state;
 }

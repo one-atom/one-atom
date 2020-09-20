@@ -86,4 +86,21 @@ describe('Data Struct', () => {
     expect(extracted_data.location.country).toEqual('norway');
     expect(extracted_data.location).toBe(extracted_data.location);
   });
+
+  it('should iterate over keys', () => {
+    const data = new DataStruct({
+      a: '1',
+      b: '1',
+      c: '1',
+    });
+
+    let i = 0;
+
+    Array.from(data.to_iter()).forEach(([, value]) => {
+      i++;
+      expect(value).toEqual('1');
+    });
+
+    expect(i).toEqual(3);
+  });
 });

@@ -36,9 +36,14 @@ describe('use application state', () => {
 
   it('should rerender after mutation', () => {
     const state = new_application_state<State>({ is: false });
-    const { getByText } = render(<Flow providedState={state} />);
+    const { getAllByText } = render(
+      <Fragment>
+        <Flow providedState={state} />
+        <Flow providedState={state} />
+      </Fragment>,
+    );
 
-    expect(getByText(FlowTexts.UNSET)).toBeTruthy();
+    expect(getAllByText(FlowTexts.UNSET)).toHaveLength(2);
 
     act(() =>
       state.mutate(() => {
@@ -47,8 +52,8 @@ describe('use application state', () => {
         };
       }),
     );
-    expect(getByText(FlowTexts.ACCESSIBLE)).toBeTruthy();
-    expect(getByText('state is true')).toBeTruthy();
+    expect(getAllByText(FlowTexts.ACCESSIBLE)).toHaveLength(2);
+    expect(getAllByText('state is true')).toHaveLength(2);
 
     act(() =>
       state.mutate(() => {
@@ -57,6 +62,6 @@ describe('use application state', () => {
         };
       }),
     );
-    expect(getByText('state is false')).toBeTruthy();
+    expect(getAllByText('state is false')).toHaveLength(2);
   });
 });
