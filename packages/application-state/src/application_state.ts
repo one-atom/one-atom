@@ -16,15 +16,6 @@ export enum FlowState {
 
 export type CurrStateTuple<T> = [Readonly<T>, FlowState];
 
-export interface IState<T extends ValidStateData> {
-  readonly id: string;
-  flow_state: FlowState;
-  in_flow(action: FlowState): void;
-  subscribe(event: () => void): Disposer;
-  mutate(fn: CurrStateFn<T>): void;
-  read(): CurrStateTuple<T>;
-}
-
 let ids = 0;
 const GLOBAL_HOOK = '__KIRA_APPLICATION_STATE_GLOBAL_HOOK__';
 
@@ -34,7 +25,7 @@ if (window) {
   window[GLOBAL_HOOK] = window[GLOBAL_HOOK] || {};
 }
 
-class State<T extends ValidStateData> implements IState<T> {
+export class State<T extends ValidStateData> {
   public readonly id = `hook_id_${++ids}`;
   public flow_state = FlowState.UNSET;
   private readonly hooks: Map<string, () => void> = new Map();
@@ -76,13 +67,13 @@ class State<T extends ValidStateData> implements IState<T> {
     return state;
   }
 
-  public in_flow(action: FlowState) {
+  public in_flow(action: FlowState): void {
     this.flow_state = action;
 
     this.dispatch();
   }
 
-  public mutate(curr_state: CurrStateFn<T>) {
+  public mutate(curr_state: CurrStateFn<T>): void {
     try {
       const new_state = curr_state(this.data);
 
