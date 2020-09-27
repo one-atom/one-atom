@@ -11,6 +11,8 @@ export * from './helpers/focus_context';
 export * from './helpers/is_focused';
 export * from './helpers/anchor_point_consumer';
 export * from './helpers/unwrap_fragment';
+export * from './helpers/dangerously_inject_HTML';
+export * from './helpers/sanitized_inject_HTML';
 
 // Hooks
 export * from './hooks/use_form';
