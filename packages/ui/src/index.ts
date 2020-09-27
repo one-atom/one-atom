@@ -13,3 +13,4 @@ export * from './components/v_spacing';
 export * from './components/h_spacing';
 export * from './components/frame';
 export * from './components/shimmer';
+export * from './components/flex';
