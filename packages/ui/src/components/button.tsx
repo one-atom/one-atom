@@ -12,29 +12,39 @@ export namespace Button {
   const elements_shared = {
     button: styled(BaseButton.h)`
       position: relative;
-      height: 40px;
-      padding: 0px 16px;
+      height: 30px;
+      font-weight: 600;
+      padding: 0px 12px;
       box-sizing: border-box;
       transition: background 150ms ease;
+      font-size: 0.8125rem;
     `,
   };
 
   const elements = {
     actionButton: styled(elements_shared.button)`
-      border-radius: 20px;
+      border-radius: 15px;
       color: var(--kira-button-action-clr, #ffffff);
-      background: var(--kira-button-action-bg, linear-gradient(180deg, #0099ff, #008be8));
+      background: var(--kira-button-action-bg, #0099ff);
 
-      &:hover {
-        box-shadow: 0px 0.5px 1.5px rgba(54, 122, 246, 0.25);
+      &:hover:not(:disabled) {
+        background: var(--kira-button-action-bg-hover, #0088ff);
+      }
+
+      &:active:not(:disabled) {
+        background: var(--kira-button-action-bg-active, #0077ff);
       }
     `,
     controlButton: styled(elements_shared.button)`
-      color: var(--kira-button-control-clr, var(--kira-text-color, #111));
+      color: var(--kira-button-control-clr, var(--kira-text-color, #f3f3f3));
       border-radius: 5px;
 
-      &:hover {
-        background: var(--kira-button-control-bg, #e5e5e5);
+      &:hover:not(:disabled) {
+        background: var(--kira-button-control-bg, #eeeeee);
+      }
+
+      &:active:not(:disabled) {
+        background: var(--kira-button-action-bg-active, #dddddd);
       }
     `,
   };
@@ -54,6 +64,7 @@ export namespace Button {
       </Size.h>
     );
   };
+
   export const h: React.FC<Props> = function __kira__button({ children, fluid, className, type = 'action', ...rest }) {
     return (
       <Size.h fluid={fluid} className={className ?? ''}>
