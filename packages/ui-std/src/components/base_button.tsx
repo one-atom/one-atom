@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { FC, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { focusContext } from '../helpers/focus_context';
 import { KiraPropType } from '../prop_type';
@@ -8,6 +8,7 @@ import { KiraPropType } from '../prop_type';
  */
 export namespace BaseButton {
   export interface Props extends KiraPropType {
+    label: string;
     tabIndex?: number;
     disabled?: boolean;
     type?: 'submit' | 'reset' | 'button';
@@ -54,12 +55,14 @@ export namespace BaseButton {
     `,
   };
 
-  export const h: React.FC<Props> = function __kira__base_button({ ...props }) {
+  export const h: FC<Props> = function __kira__base_button({ ...props }) {
     // Takes out these values to be used as variables here.
     const {
       children,
       className,
       disabled,
+      // Takes out A11y properties
+      label,
       // Takes out focus events for override.
       onBlur,
       onFocus,
@@ -163,7 +166,8 @@ export namespace BaseButton {
 
     return (
       <elements.base_button
-        aria-pressed={false}
+        aria-pressed={undefined}
+        aria-label={label}
         ref={buttonRef}
         className={className}
         disabled={disabled}

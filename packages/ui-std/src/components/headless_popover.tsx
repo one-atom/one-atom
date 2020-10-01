@@ -30,7 +30,7 @@ export namespace HeadLessPopover {
   export const h: React.FC<InternalProps> = function __kira__headless_popover({ attachTo, children }) {
     return (
       <Portal.h>
-        <Inner attachTo={attachTo} children={children} />
+        <Inner attachTo={attachTo}>{children}</Inner>
       </Portal.h>
     );
   };

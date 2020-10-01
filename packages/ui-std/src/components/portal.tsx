@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { StyleSheetController } from '../helpers/style_sheet_controller';
 import { Logger } from '@kira/logger';
@@ -44,7 +44,7 @@ export namespace Portal {
     `,
   );
 
-  export const h: React.FC<Props> = ({ children, mountTo }) => {
+  export const h: FC<Props> = function __kira__Portal({ children, mountTo }) {
     let mount: HTMLElement;
 
     if (typeof mountTo === 'string') {
@@ -61,6 +61,7 @@ export namespace Portal {
 
     const el = document.createElement('div');
     el.className = className;
+
     useEffect(() => {
       mount.appendChild(el);
 

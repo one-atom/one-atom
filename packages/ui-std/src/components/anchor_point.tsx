@@ -1,7 +1,6 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, FC } from 'react';
 import styled from 'styled-components';
 import { AnchorPointConsumer } from '../helpers/anchor_point_consumer';
-import { EMPTY_ARRAY } from '@kira/std';
 import { KiraPropType } from '../prop_type';
 
 /**
@@ -25,7 +24,7 @@ export namespace AnchorPoint {
     `,
   };
 
-  export const h: React.FC<Props> = function __kira__anchor_point({ name, top, left, children }) {
+  export const h: FC<Props> = function __kira__anchor_point({ name, top, left, children }) {
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -47,7 +46,7 @@ export namespace AnchorPoint {
       return () => {
         AnchorPointConsumer.destroy(name);
       };
-    }, EMPTY_ARRAY);
+    }, [name, top, left]);
 
     return <elements.anchor ref={ref}>{children}</elements.anchor>;
   };

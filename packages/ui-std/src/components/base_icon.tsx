@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { KiraPropType } from '../prop_type';
 
@@ -66,7 +66,7 @@ export namespace BaseIcon {
     `,
   };
 
-  export const h: React.FC<Props> = function __kira__icon({ children, viewBox, rotation, mirror, center }) {
+  export const h: FC<Props> = function __kira__icon({ children, viewBox, rotation, mirror, center }) {
     return (
       <elements.svg
         data-testid='svg'

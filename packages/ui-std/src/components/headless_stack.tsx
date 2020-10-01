@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 import { StyleSheetController } from '../helpers/style_sheet_controller';
 import { KiraPropType } from '../prop_type';
 
@@ -24,7 +24,7 @@ export namespace HeadLessStack {
 
   const style_sheet_controller = new StyleSheetController();
 
-  export const h: React.FC<InternalProps> = function __kira__headless_stack({ axis, fluid, spacing, children }) {
+  export const h: FC<InternalProps> = function __kira__headless_stack({ axis, fluid, spacing, children }) {
     const half_spacing = spacing / 2;
     const base_str = `${spacing}_${fluid ? 'y' : 'n'}_${axis === 'Vertical' ? 'v' : 'h'}`;
     const parent_class_name = `p_${base_str}`;

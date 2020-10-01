@@ -1,4 +1,4 @@
-import React, { useState, InputHTMLAttributes, forwardRef } from 'react';
+import React, { useState, InputHTMLAttributes, forwardRef, FC } from 'react';
 import styled from 'styled-components';
 import { KiraPropType } from '../prop_type';
 
@@ -51,7 +51,7 @@ export namespace BaseInput {
     `,
   };
 
-  export const h: React.FC<Props> = forwardRef(function __kira__base_input(props, ref) {
+  export const h: FC<Props> = forwardRef(function __kira__base_input(props, ref) {
     const {
       // Takes out these values to be used as variables here.
       children,
