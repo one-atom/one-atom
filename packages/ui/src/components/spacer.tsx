@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { KiraPropType } from '@kira/ui-std';
 
@@ -18,7 +18,7 @@ export namespace Spacer {
     `,
   };
 
-  export const h: React.FC<Props> = function __kira__size({ height, width }) {
+  export const h: FC<Props> = function __kira__size({ height, width }) {
     return <elements.body height={height} width={width}></elements.body>;
   };
 }

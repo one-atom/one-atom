@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { KiraPropType } from '@kira/ui-std';
 
@@ -262,7 +262,7 @@ export namespace Frame {
     `,
   };
 
-  export const h: React.FC<Prop> = function __kira__frame({
+  export const h: FC<Prop> = function __kira__frame({
     alignment = Alignment.Center,
     direction = Direction.Column,
     background,

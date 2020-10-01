@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { KiraPropType } from '@kira/ui-std';
 import styled from 'styled-components';
 
@@ -45,7 +45,7 @@ export namespace Flex {
     `,
   };
 
-  export const h: React.FC<Props> = function __kira__flex({
+  export const h: FC<Props> = function __kira__flex({
     grow,
     basis,
     className,

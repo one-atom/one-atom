@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-interface*/
 
-import React, { forwardRef } from 'react';
+import React, { FC, forwardRef } from 'react';
 import styled from 'styled-components';
 import { BaseInput } from '@kira/ui-std';
 import { Size } from './size';
@@ -35,7 +35,7 @@ export namespace Input {
     `,
   };
 
-  export const h: React.FC<Props> = forwardRef(function __kira__input({ fluid, className, ...rest }, ref) {
+  export const h: FC<Props> = forwardRef(function __kira__input({ fluid, className, ...rest }, ref) {
     return (
       <Size.h fluid={fluid} className={className}>
         <elements.label>

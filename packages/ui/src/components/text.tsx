@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { KiraPropType } from '@kira/ui-std';
 
@@ -89,11 +89,11 @@ export namespace Text {
     `,
   };
 
-  export const h: React.FC<Props> = function __kira__text({ children, className }) {
+  export const h: FC<Props> = function __kira__text({ children, className }) {
     return <elements.text className={className}>{children}</elements.text>;
   };
 
-  export const h1_plus: React.FC<Props> = function __kira__text_h1_plus({ children, className }) {
+  export const h1_plus: FC<Props> = function __kira__text_h1_plus({ children, className }) {
     return (
       <Text.h className={className}>
         <elements.h1Plus>{children}</elements.h1Plus>
@@ -101,7 +101,7 @@ export namespace Text {
     );
   };
 
-  export const h1: React.FC<Props> = function __kira__text_h1({ children, className }) {
+  export const h1: FC<Props> = function __kira__text_h1({ children, className }) {
     return (
       <Text.h className={className}>
         <elements.h1>{children}</elements.h1>
@@ -109,7 +109,7 @@ export namespace Text {
     );
   };
 
-  export const h2: React.FC<Props> = function __kira__text_h2({ children, className }) {
+  export const h2: FC<Props> = function __kira__text_h2({ children, className }) {
     return (
       <Text.h className={className}>
         <elements.h2>{children}</elements.h2>
@@ -117,7 +117,7 @@ export namespace Text {
     );
   };
 
-  export const h3: React.FC<Props> = function __kira__text_h3({ children, className }) {
+  export const h3: FC<Props> = function __kira__text_h3({ children, className }) {
     return (
       <Text.h className={className}>
         <elements.h3>{children}</elements.h3>
@@ -125,7 +125,7 @@ export namespace Text {
     );
   };
 
-  export const h4: React.FC<Props> = function __kira__text_h4({ children, className }) {
+  export const h4: FC<Props> = function __kira__text_h4({ children, className }) {
     return (
       <Text.h className={className}>
         <elements.h4>{children}</elements.h4>
@@ -133,7 +133,7 @@ export namespace Text {
     );
   };
 
-  export const body: React.FC<Props> = function __kira__text_h4({ children, className }) {
+  export const body: FC<Props> = function __kira__text_h4({ children, className }) {
     return (
       <Text.h className={className}>
         <elements.p>{children}</elements.p>
@@ -141,7 +141,7 @@ export namespace Text {
     );
   };
 
-  export const custom: React.FC<PropsForCustom> = function __kira__text_custom({ children, className, ...rest }) {
+  export const custom: FC<PropsForCustom> = function __kira__text_custom({ children, className, ...rest }) {
     return (
       <Text.h className={className}>
         <elements.custom {...rest}>{children}</elements.custom>

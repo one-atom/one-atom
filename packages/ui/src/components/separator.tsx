@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { KiraPropType } from '@kira/ui-std';
 
@@ -23,7 +23,7 @@ export namespace Separator {
     `,
   };
 
-  export const h: React.FC<Props> = function __kira__separator({ children, className, padding }) {
+  export const h: FC<Props> = function __kira__separator({ children, className, padding }) {
     return (
       <elements.separator aria-hidden='true' className={className}>
         <elements.inner padding={padding ?? 0}>{children}</elements.inner>

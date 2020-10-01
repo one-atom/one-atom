@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { KiraPropType } from '@kira/ui-std';
 
@@ -46,7 +46,7 @@ export namespace Article {
     `,
   };
 
-  export const h: React.FC<Props> = function __kira__article({ children, className, center, ...rest }) {
+  export const h: FC<Props> = function __kira__article({ children, className, center, ...rest }) {
     return (
       <elements.article center={center} className={className} {...rest}>
         {children}

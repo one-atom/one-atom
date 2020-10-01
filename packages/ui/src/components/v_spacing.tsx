@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { KiraPropType } from '@kira/ui-std';
 
@@ -17,7 +17,7 @@ export namespace VSpacing {
     `,
   };
 
-  export const h: React.FC<Props> = function __kira__v_spacing({ px }) {
+  export const h: FC<Props> = function __kira__v_spacing({ px }) {
     return <elements.spacing px={px} aria-hidden='true' />;
   };
 }

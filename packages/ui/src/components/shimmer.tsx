@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { KiraPropType } from '@kira/ui-std';
 
@@ -61,7 +61,7 @@ export namespace Shimmer {
     `,
   };
 
-  export const h: React.FC<Props> = function __kira__shimmer({ className, width, height, opacity = 1, cornerRadius = 0 }) {
+  export const h: FC<Props> = function __kira__shimmer({ className, width, height, opacity = 1, cornerRadius = 0 }) {
     return (
       <elements.shimmer
         className={className}

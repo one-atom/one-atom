@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { BaseButton, KiraPropType } from '@kira/ui-std';
 import { Size } from './size';
@@ -49,7 +49,7 @@ export namespace Button {
     `,
   };
 
-  export const action: React.FC<Props> = function __kira__button_action({ children, fluid, className, type = 'action', ...rest }) {
+  export const action: FC<Props> = function __kira__button_action({ children, fluid, className, type = 'action', ...rest }) {
     return (
       <Size.h fluid={fluid} className={className ?? ''}>
         <elements.actionButton {...rest}>{children}</elements.actionButton>
@@ -57,7 +57,7 @@ export namespace Button {
     );
   };
 
-  export const alt: React.FC<Props> = function __kira__button_control({ children, fluid, className, type = 'action', ...rest }) {
+  export const alt: FC<Props> = function __kira__button_control({ children, fluid, className, type = 'action', ...rest }) {
     return (
       <Size.h fluid={fluid} className={className ?? ''}>
         <elements.controlButton {...rest}>{children}</elements.controlButton>
@@ -65,7 +65,7 @@ export namespace Button {
     );
   };
 
-  export const h: React.FC<Props> = function __kira__button({ children, fluid, className, type = 'action', ...rest }) {
+  export const h: FC<Props> = function __kira__button({ children, fluid, className, type = 'action', ...rest }) {
     return (
       <Size.h fluid={fluid} className={className ?? ''}>
         <elements_shared.button {...rest}>{children}</elements_shared.button>

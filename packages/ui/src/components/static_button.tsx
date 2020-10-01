@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-interface*/
 
-import React from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { Size } from './size';
 import { KiraPropType } from '@kira/ui-std';
@@ -22,7 +22,7 @@ export namespace StaticButton {
     `,
   };
 
-  export const h: React.FC<Props> = function __kira__button({ children, fluid, className, ...rest }) {
+  export const h: FC<Props> = function __kira__button({ children, fluid, className, ...rest }) {
     return (
       <Size.h fluid={fluid} className={className}>
         <elements.button {...rest}>{children}</elements.button>
