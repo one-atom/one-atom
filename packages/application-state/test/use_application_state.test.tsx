@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react';
 import { render } from '@testing-library/react';
 import { use_application_state } from '../src/use_application_state';
-import { IState, FlowState, new_application_state } from '../src/application_state';
+import { FlowState, new_application_state, State } from '../src/application_state';
 import { act } from 'react-dom/test-utils';
 
-type State = {
+type TestState = {
   is: boolean;
 };
 
@@ -16,7 +16,7 @@ enum FlowTexts {
 }
 
 describe('use application state', () => {
-  const Flow: React.FC<{ providedState: IState<State> }> = ({ providedState }) => {
+  const Flow: React.FC<{ providedState: State<TestState> }> = ({ providedState }) => {
     const [state, flow] = use_application_state(providedState);
 
     return (
@@ -35,7 +35,7 @@ describe('use application state', () => {
   };
 
   it('should rerender after mutation', () => {
-    const state = new_application_state<State>({ is: false });
+    const state = new_application_state<TestState>({ is: false });
     const { getAllByText } = render(
       <Fragment>
         <Flow providedState={state} />
