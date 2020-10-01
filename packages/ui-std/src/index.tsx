@@ -5,6 +5,8 @@ export * from './components/base_input';
 export * from './components/base_icon';
 export * from './components/headless_stack';
 export * from './components/headless_popover';
+export * from './components/a11y_region';
+export * from './components/a11y_role';
 
 // Helpers
 export * from './helpers/focus_context';
