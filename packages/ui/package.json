@@ -16,18 +16,18 @@
   "dependencies": {
     "react-is": "^16.13.1",
     "shortid": "^2.2.15",
-    "styled-components": "^5.1.1"
+    "styled-components": "^5.2.0"
   },
   "devDependencies": {
     "@kira/bundler": "1.0.0-alpha-01",
     "@kira/ui-std": "1.0.0-alpha-01",
-    "@testing-library/react": "^10.4.7",
-    "@types/react": "^16.9.44",
+    "@testing-library/react": "^11.0.4",
+    "@types/react": "^16.9.52",
     "@types/react-dev-utils": "^9.0.4",
     "@types/react-dom": "^16.9.8",
-    "@types/react-test-renderer": "^16.9.2",
+    "@types/react-test-renderer": "^16.9.3",
     "@types/shortid": "^0.0.29",
-    "@types/styled-components": "5.1.2",
+    "@types/styled-components": "5.1.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router": "6.0.0-alpha.4",

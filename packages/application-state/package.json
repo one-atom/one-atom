@@ -18,10 +18,10 @@
     "react-dom": "^16.13.1"
   },
   "devDependencies": {
-    "@testing-library/react": "^10.4.7",
-    "@types/react": "^16.9.44",
+    "@testing-library/react": "^11.0.4",
+    "@types/react": "^16.9.52",
     "@types/react-dom": "^16.9.8",
-    "@types/react-test-renderer": "^16.9.2",
+    "@types/react-test-renderer": "^16.9.3",
     "@kira/std": "1.0.0-alpha-01",
     "@kira/id": "1.0.0-alpha-01",
     "react": "^16.13.1",
