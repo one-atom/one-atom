@@ -7,23 +7,34 @@ import { Size } from './size';
  * Button
  */
 export namespace Button {
-  export interface Props extends BaseButton.Props, Size.Props, KiraPropType {}
+  export interface Props extends BaseButton.Props, Size.Props, KiraPropType {
+    round?: boolean;
+  }
 
   const elements_shared = {
     button: styled(BaseButton.h)`
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       position: relative;
       height: 30px;
+      min-width: 30px;
       font-weight: 600;
       padding: 0px 12px;
       box-sizing: border-box;
       transition: background 150ms ease;
       font-size: 0.8125rem;
+
+      &.round {
+        font-size: 16px;
+        padding: 0;
+      }
     `,
   };
 
   const elements = {
     actionButton: styled(elements_shared.button)`
-      border-radius: 15px;
       color: var(--kira-button-action-clr, #ffffff);
       background: var(--kira-button-action-bg, #0099ff);
 
@@ -36,39 +47,49 @@ export namespace Button {
       }
     `,
     controlButton: styled(elements_shared.button)`
-      color: var(--kira-button-control-clr, var(--kira-text-color, #f3f3f3));
-      border-radius: 5px;
+      color: var(--kira-button-alt-clr, var(--kira-text-color, #ffffff));
+      background: var(--kira-button-alt-bg, #333333);
 
       &:hover:not(:disabled) {
-        background: var(--kira-button-control-bg, #eeeeee);
+        filter: brightness(90%) hue-rotate(2deg);
       }
 
       &:active:not(:disabled) {
-        background: var(--kira-button-action-bg-active, #dddddd);
+        filter: brightness(80%) hue-rotate(2deg);
       }
     `,
   };
 
-  export const action: FC<Props> = function __kira__button_action({ children, fluid, className, type = 'action', ...rest }) {
+  export const action: FC<Props> = function __kira__button_action({ children, fluid, className, round, type = 'action', ...rest }) {
+    const cls_name = `${className ?? ''} ${round ? 'round' : ''}`;
+
     return (
-      <Size.h fluid={fluid} className={className ?? ''}>
-        <elements.actionButton {...rest}>{children}</elements.actionButton>
+      <Size.h fluid={fluid}>
+        <elements.actionButton className={cls_name} {...rest}>
+          {children}
+        </elements.actionButton>
       </Size.h>
     );
   };
 
-  export const alt: FC<Props> = function __kira__button_control({ children, fluid, className, type = 'action', ...rest }) {
+  export const alt: FC<Props> = function __kira__button_control({ children, fluid, className, round, type = 'action', ...rest }) {
+    const cls_name = `${className ?? ''} ${round ? 'round' : ''}`;
+
     return (
-      <Size.h fluid={fluid} className={className ?? ''}>
-        <elements.controlButton {...rest}>{children}</elements.controlButton>
+      <Size.h fluid={fluid}>
+        <elements.controlButton className={cls_name} {...rest}>
+          {children}
+        </elements.controlButton>
       </Size.h>
     );
   };
 
   export const h: FC<Props> = function __kira__button({ children, fluid, className, type = 'action', ...rest }) {
     return (
-      <Size.h fluid={fluid} className={className ?? ''}>
-        <elements_shared.button {...rest}>{children}</elements_shared.button>
+      <Size.h fluid={fluid}>
+        <elements_shared.button className={className ?? ''} {...rest}>
+          {children}
+        </elements_shared.button>
       </Size.h>
     );
   };
