@@ -2,25 +2,30 @@ import 'reflect-metadata';
 import { Graph } from './graph';
 
 class Registration<T> {
-  constructor(public readonly id: symbol, public readonly ctor: Exclude<Instantiation.Ctor<T>, 'ctor_lifetime'>) {
+  constructor(
+    public readonly id: Instantiation.Token,
+    public readonly ctor: Instantiation.Ctor<T>,
+    public readonly settings: {
+      lifeTime: Instantiation.Lifetimes;
+    },
+  ) {
     // Empty
   }
 }
-let cached_registered_services = new Map<symbol, Registration<any>>();
-let cached_singleton_services = new Map<symbol, any>();
+let cached_registered_services = new Map<Instantiation.Token, Registration<any>>();
+let cached_singleton_services = new Map<Instantiation.Token, any>();
 
 export namespace Instantiation {
+  export type GenericClassDecorator<T> = (target: T) => void;
   export type Ctor<T> = {
-    ctor_name: symbol;
-    ctor_lifetime: Lifetimes;
     new (...args: any[]): T;
   };
-  export type GenericClassDecorator<T> = (target: T) => void;
   export enum Lifetimes {
     Singleton,
     Transient,
     Scoped,
   }
+  export type Token<T = any> = Ctor<T> | symbol;
 
   /**
    * Returns an instance, during the process all of its dependencies will also be created.
@@ -30,20 +35,25 @@ export namespace Instantiation {
       throw new Error(`Retrieved undefined, this is caused of circular JS imports`);
     }
 
+    const registered_ctor = cached_registered_services.get(resolving_ctor);
+    if (registered_ctor === undefined) {
+      throw new Error(`ctor is not registered`);
+    }
+
     // WeakMap to hold service references for each service within the branch
     interface Dependencies {
-      parentId: symbol | null;
-      registrationId: symbol;
+      parentId: Token | null;
+      registrationId: Token;
       lifetime: Lifetimes;
     }
-    const dependencies_for_each_dependency = new Map<symbol, Dependencies[]>();
+    const dependencies_for_each_dependency = new Map<Token, Dependencies[]>();
 
     interface StackElement {
-      id: symbol;
-      parentId: symbol | null;
-      registrationId: symbol;
+      id: Token;
+      parentId: Token | null;
+      registrationId: Token;
       lifetime: Lifetimes;
-      dependencies: symbol[];
+      dependencies: Token[];
     }
     const resolving_dependencies_branch = new Graph<StackElement>((element) => element.id);
 
@@ -53,7 +63,7 @@ export namespace Instantiation {
       if (dependency.lifetime === Lifetimes.Transient) {
         // For debugging purposes its description is prefix with "$", a way to
         // difference transients from other dependencies
-        id = Symbol(`$${id.description}`);
+        id = Symbol(`$`);
       }
 
       return {
@@ -68,8 +78,8 @@ export namespace Instantiation {
     const stack: StackElement[] = [
       create_stack_element({
         parentId: null,
-        registrationId: resolving_ctor.ctor_name,
-        lifetime: resolving_ctor.ctor_lifetime ?? Lifetimes.Singleton,
+        registrationId: resolving_ctor,
+        lifetime: registered_ctor.settings.lifeTime,
       }),
     ];
 
@@ -87,7 +97,7 @@ export namespace Instantiation {
 
       const registered_service_factory = cached_registered_services.get(resolving_stack_element.registrationId);
       if (registered_service_factory === undefined) {
-        throw new Error(`${resolving_stack_element.id.description ?? 'anonymous'} is not registered`);
+        throw new Error(`${'anonymous'} is not registered`);
       }
 
       resolving_dependencies_branch.lookup_or_insert_node(resolving_stack_element);
@@ -95,17 +105,18 @@ export namespace Instantiation {
       // This row is basically the whole magic behind the service resolving logic
       const tokens: Ctor<unknown>[] = Reflect.getMetadata('design:paramtypes', registered_service_factory.ctor) ?? [];
       const dependencies: Dependencies[] = tokens.map((dependency) => {
-        if (!dependency.ctor_name) {
-          throw new Error('Token is not a valid service');
+        const registered_dependency = cached_registered_services.get(dependency);
+        if (registered_dependency === undefined) {
+          throw new Error(`ctor is not registered`);
         }
 
         return {
           parentId: resolving_stack_element.id,
-          registrationId: dependency.ctor_name,
-          lifetime: dependency.ctor_lifetime ?? Lifetimes.Singleton,
+          registrationId: dependency,
+          lifetime: registered_dependency.settings.lifeTime,
         };
       });
-      dependencies_for_each_dependency.set(registered_service_factory.ctor.ctor_name, dependencies);
+      dependencies_for_each_dependency.set(registered_service_factory.ctor, dependencies);
 
       for (const dependency of dependencies) {
         resolving_stack_element.dependencies.push(dependency.registrationId);
@@ -119,24 +130,22 @@ export namespace Instantiation {
     // --------- Producer step ---------
 
     // Created once per service call
-    const resolved_scoped_services = new Map<symbol, any>();
+    const resolved_scoped_services = new Map<Token, any>();
     const transient_root = Symbol('transient_root');
-    const resolved_transient_services = new Map<symbol, Array<any>>();
+    const resolved_transient_services = new Map<Token, Array<any>>();
 
-    function retrieve_args(id: symbol): unknown[] {
+    function retrieve_args(id: Token): unknown[] {
+      const args: unknown[] = [];
       const lookup_dependencies = dependencies_for_each_dependency.get(id);
       if (lookup_dependencies === undefined) {
-        throw new Error(`${id.description ?? 'anonymous'} was never added to dependencies_for_each_dependency`);
+        return args;
       }
 
-      const args: unknown[] = [];
       for (const lookup_dependency of lookup_dependencies) {
         if (lookup_dependency.lifetime === Lifetimes.Singleton) {
           const dependency = cached_singleton_services.get(lookup_dependency.registrationId);
           if (dependency === undefined) {
-            throw new Error(
-              `Singleton ${lookup_dependency.registrationId.description ?? 'anonymous'} service has not been resolved yet`,
-            );
+            throw new Error(`Singleton ${'anonymous'} service has not been resolved yet`);
           }
 
           args.push(dependency);
@@ -147,9 +156,7 @@ export namespace Instantiation {
         if (lookup_dependency.lifetime === Lifetimes.Scoped) {
           const already_resolved_dependency = resolved_scoped_services.get(lookup_dependency.registrationId);
           if (already_resolved_dependency === undefined) {
-            throw new Error(
-              `Singleton ${lookup_dependency.registrationId.description ?? 'anonymous'} service has not been resolved yet`,
-            );
+            throw new Error(`Singleton ${'anonymous'} service has not been resolved yet`);
           }
 
           args.push(already_resolved_dependency);
@@ -166,7 +173,7 @@ export namespace Instantiation {
           const transient_instances = resolved_transient_services.get(parentId) ?? [];
           const registered_ctor_based_on_lookup_dependency = cached_registered_services.get(lookup_dependency.registrationId);
           if (registered_ctor_based_on_lookup_dependency === undefined) {
-            throw new Error(`${lookup_dependency.registrationId.description ?? 'anonymous'} is not registered`);
+            throw new Error(`${'anonymous'} is not registered`);
           }
 
           const find_first_matching_ctor_index = transient_instances.findIndex((transient_instance) => {
@@ -208,7 +215,7 @@ export namespace Instantiation {
       for (const { data } of edges) {
         const lookup_registered = cached_registered_services.get(data.registrationId);
         if (lookup_registered === undefined) {
-          throw new Error(`${data.id.description ?? 'anonymous'} is not registered`);
+          throw new Error(`${'anonymous'} is not registered`);
         }
 
         switch (data.lifetime) {
@@ -259,11 +266,11 @@ export namespace Instantiation {
 
     // --------- Retrieve step ---------
 
-    if (resolving_ctor.ctor_lifetime === Lifetimes.Scoped) {
-      return resolved_scoped_services.get(resolving_ctor.ctor_name) as T; // Casting as T since by this point it SHOULD be in resolved_scoped_services
+    if (registered_ctor.settings.lifeTime === Lifetimes.Scoped) {
+      return resolved_scoped_services.get(resolving_ctor) as T; // Casting as T since by this point it SHOULD be in resolved_scoped_services
     }
 
-    if (resolving_ctor.ctor_lifetime === Lifetimes.Transient) {
+    if (registered_ctor.settings.lifeTime === Lifetimes.Transient) {
       const resolved_transient_instances = resolved_transient_services.get(transient_root);
       if (resolved_transient_instances === undefined) {
         throw new Error(`transient root was never created`);
@@ -272,30 +279,33 @@ export namespace Instantiation {
       return resolved_transient_instances[0] as T; // Casting as T since by this point the index 0 SHOULD be the requested resolving_ctor instance
     }
 
-    return cached_singleton_services.get(resolving_ctor.ctor_name) as T; // Casting as T since by this point it SHOULD be in resolved_singleton_services
+    return cached_singleton_services.get(resolving_ctor) as T; // Casting as T since by this point it SHOULD be in resolved_singleton_services
   }
 
+  interface ReplaceWith<T> {
+    useClass?: Ctor<T>;
+    lifeTimes?: Lifetimes;
+  }
   /**
    * Register a class to be used as a service. If the replace parameter is
    * passed it'll override any previously registered service (works for any lifetime).
    */
-  export function register<T>(service: Ctor<T>, replace?: false): void;
-  export function register<T>(service: Omit<Ctor<T>, 'ctor_lifetime'>, replace?: true): void;
-  export function register<T>(service: Ctor<T> | Omit<Ctor<T>, 'ctor_lifetime'>, replace = false): void {
-    if (replace) {
+  export function register<T>(service: Ctor<T>, replace?: ReplaceWith<any>): void {
+    const registered_service = cached_registered_services.get(service);
+
+    if (replace?.useClass) {
       cached_registered_services.set(
-        service.ctor_name,
-        new Registration(service.ctor_name, service as Exclude<Ctor<T>, 'ctor_lifetime'>),
+        service,
+        new Registration(service, replace.useClass, { lifeTime: replace.lifeTimes ?? Lifetimes.Singleton }),
       );
 
       return;
     }
 
-    const registered_service = cached_registered_services.get(service.ctor_name);
     if (registered_service === undefined) {
       cached_registered_services.set(
-        service.ctor_name,
-        new Registration(service.ctor_name, service as Exclude<Ctor<T>, 'ctor_lifetime'>),
+        service,
+        new Registration(service, service, { lifeTime: replace?.lifeTimes ?? Lifetimes.Singleton }),
       );
     }
   }
@@ -304,7 +314,7 @@ export namespace Instantiation {
    * Retrieves the Registration instance for given registered service.
    */
   export function get_registered_service<T>(service: Ctor<T>): Registration<T> | null {
-    const reg = cached_registered_services.get(service.ctor_name);
+    const reg = cached_registered_services.get(service);
 
     return reg ?? null;
   }
@@ -350,6 +360,24 @@ export function flush_registered_services(): void {
  * By default a service has a Lifetime set to Singleton. This can be changed by
  * declaring a public static property `ctor_lifetime` set to e.g. Transient.
  */
-export function Service(): Instantiation.GenericClassDecorator<Instantiation.Ctor<any>> {
-  return <T>(ctor: Instantiation.Ctor<T>) => Instantiation.register(ctor);
+
+export function Singleton(): Instantiation.GenericClassDecorator<Instantiation.Ctor<any>> {
+  return <T>(ctor: Instantiation.Ctor<T>) =>
+    Instantiation.register(ctor, {
+      lifeTimes: Instantiation.Lifetimes.Singleton,
+    });
+}
+
+export function Transient(): Instantiation.GenericClassDecorator<Instantiation.Ctor<any>> {
+  return <T>(ctor: Instantiation.Ctor<T>) =>
+    Instantiation.register(ctor, {
+      lifeTimes: Instantiation.Lifetimes.Transient,
+    });
+}
+
+export function Scoped(): Instantiation.GenericClassDecorator<Instantiation.Ctor<any>> {
+  return <T>(ctor: Instantiation.Ctor<T>) =>
+    Instantiation.register(ctor, {
+      lifeTimes: Instantiation.Lifetimes.Scoped,
+    });
 }

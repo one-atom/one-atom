@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Service, flush_all, use_service, Instantiation } from '../src';
+import { Scoped, flush_all, use_service, Instantiation, Singleton } from '../src';
 import { render } from '@testing-library/react';
 
 describe('use_service', () => {
@@ -8,10 +8,8 @@ describe('use_service', () => {
   });
 
   it('should register and resolve a singleton service', async () => {
-    @Service()
+    @Singleton()
     class Cls {
-      public static readonly ctor_name = Symbol();
-
       public foo = 'foo';
     }
 
@@ -35,11 +33,8 @@ describe('use_service', () => {
   });
 
   it('should register and resolve transient service', async () => {
-    @Service()
+    @Scoped()
     class Cls {
-      public static readonly ctor_name = Symbol();
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Transient;
-
       public foo = 'foo';
     }
 

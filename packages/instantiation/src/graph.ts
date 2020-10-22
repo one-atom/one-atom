@@ -1,6 +1,8 @@
+import { Instantiation } from './instantiation';
+
 class Node<T> {
-  public readonly incoming = new Map<symbol, Node<T>>();
-  public readonly outgoing = new Map<symbol, Node<T>>();
+  public readonly incoming = new Map<Instantiation.Token, Node<T>>();
+  public readonly outgoing = new Map<Instantiation.Token, Node<T>>();
 
   constructor(public readonly data: T) {
     // Empty
@@ -8,9 +10,9 @@ class Node<T> {
 }
 
 export class Graph<T> {
-  private readonly nodes = new Map<symbol, Node<T>>();
+  private readonly nodes = new Map<Instantiation.Token, Node<T>>();
 
-  constructor(private readonly lookup_fn: (dependency: T) => symbol) {
+  constructor(private readonly lookup_fn: (dependency: T) => Instantiation.Token) {
     // Empty
   }
 
@@ -20,6 +22,10 @@ export class Graph<T> {
 
     from_node.outgoing.set(this.lookup_fn(to), to_node);
     to_node.incoming.set(this.lookup_fn(from), from_node);
+  }
+
+  public lookup(key: Instantiation.Token): Node<T> | null {
+    return this.nodes.get(key) ?? null;
   }
 
   public lookup_or_insert_node(data: T): Node<T> {
@@ -34,7 +40,7 @@ export class Graph<T> {
     return node;
   }
 
-  public remove_node(key: symbol): void {
+  public remove_node(key: Instantiation.Token): void {
     this.nodes.delete(key);
 
     for (const node of this.nodes.values()) {

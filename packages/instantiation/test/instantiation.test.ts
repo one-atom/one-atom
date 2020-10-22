@@ -1,4 +1,4 @@
-import { Instantiation, Service, flush_all, flush_singletons } from '../src/instantiation';
+import { Instantiation, flush_all, flush_singletons, Singleton, Scoped, Transient } from '../src/instantiation';
 
 describe('Instantiation', () => {
   afterEach(() => {
@@ -6,66 +6,46 @@ describe('Instantiation', () => {
   });
 
   it('should register services', () => {
-    @Service()
-    class Singleton {
-      public static readonly ctor_name = Symbol('Singleton');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Singleton;
-    }
+    @Singleton()
+    class SingletonService {}
 
-    @Service()
-    class Scoped {
-      public static readonly ctor_name = Symbol('Scoped');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Scoped;
-    }
+    @Scoped()
+    class ScopedService {}
 
-    @Service()
-    class Transient {
-      public static readonly ctor_name = Symbol('Transient');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Transient;
-    }
+    @Transient()
+    class TransientService {}
 
-    const registered_singleton = Instantiation.get_registered_service(Singleton)!;
-    const registered_scoped = Instantiation.get_registered_service(Scoped)!;
-    const registered_transient = Instantiation.get_registered_service(Transient)!;
-    expect(registered_singleton.ctor).toEqual(Singleton);
-    expect(registered_scoped.ctor).toEqual(Scoped);
-    expect(registered_transient.ctor).toEqual(Transient);
+    const registered_singleton = Instantiation.get_registered_service(SingletonService)!;
+    const registered_scoped = Instantiation.get_registered_service(ScopedService)!;
+    const registered_transient = Instantiation.get_registered_service(TransientService)!;
+    expect(registered_singleton.ctor).toEqual(SingletonService);
+    expect(registered_scoped.ctor).toEqual(ScopedService);
+    expect(registered_transient.ctor).toEqual(TransientService);
   });
 
   it('should throw if cyclic dependency is detected', () => {
-    @Service()
+    @Singleton()
     class A {
-      public static readonly ctor_name = Symbol('A');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Singleton;
-
       constructor(public a: A) {}
     }
     expect(() => Instantiation.resolve(A)).toThrow();
 
-    @Service()
+    @Scoped()
     class B {
-      public static readonly ctor_name = Symbol('B');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Scoped;
-
       constructor(public b: B) {}
     }
     expect(() => Instantiation.resolve(B)).toThrow();
 
-    @Service()
+    @Transient()
     class C {
-      public static readonly ctor_name = Symbol('C');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Transient;
-
       constructor(public c: C) {}
     }
     expect(() => Instantiation.resolve(C)).toThrow();
   });
 
   it('should not use same singleton instances after a flush', () => {
-    @Service()
+    @Singleton()
     class A {
-      public static readonly ctor_name = Symbol('A');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Singleton;
       public data = {
         nbr: 1,
       };
@@ -95,47 +75,35 @@ describe('Instantiation', () => {
     const fn = jest.fn();
     const call_amount = 4;
 
-    @Service()
+    @Singleton()
     class D {
-      public static readonly ctor_name = Symbol('D');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Singleton;
-
       constructor() {
         fn();
       }
     }
 
-    @Service()
+    @Singleton()
     class C {
-      public static readonly ctor_name = Symbol('C');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Singleton;
-
       constructor() {
         fn();
       }
     }
 
-    @Service()
+    @Singleton()
     class B {
-      public static readonly ctor_name = Symbol('B');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Singleton;
-
       constructor(public readonly c: C, public readonly d: D) {
         fn();
       }
     }
 
-    @Service()
+    @Singleton()
     class A {
-      public static readonly ctor_name = Symbol('A');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Singleton;
-
       constructor(public readonly c: C, public readonly b: B) {
         fn();
       }
     }
 
-    function regardless_of_resolved_order_this_should_not_throw(a: A, b: B, c: C, d: D) {
+    function regardless_of_resolved_order_this_should_not_throw(a: A, b: B, c: C, d: D): void {
       expect(c).toBe(a.c);
       expect(b).toBe(a.b);
       expect(c).toBe(a.b.c);
@@ -446,47 +414,35 @@ describe('Instantiation', () => {
     const fn = jest.fn();
     const call_amount = 9;
 
-    @Service()
+    @Scoped()
     class D {
-      public static readonly ctor_name = Symbol('D');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Scoped;
-
       constructor() {
         fn();
       }
     }
 
-    @Service()
+    @Scoped()
     class C {
-      public static readonly ctor_name = Symbol('C');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Scoped;
-
       constructor() {
         fn();
       }
     }
 
-    @Service()
+    @Scoped()
     class B {
-      public static readonly ctor_name = Symbol('B');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Scoped;
-
       constructor(public readonly c: C, public readonly d: D) {
         fn();
       }
     }
 
-    @Service()
+    @Scoped()
     class A {
-      public static readonly ctor_name = Symbol('A');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Scoped;
-
       constructor(public readonly c: C, public readonly b: B) {
         fn();
       }
     }
 
-    function regardless_of_resolved_order_this_should_not_throw(a: A, b: B, c: C, d: D) {
+    function regardless_of_resolved_order_this_should_not_throw(a: A, b: B, c: C, d: D): void {
       expect(a.c).toBe(a.b.c);
       expect(b).not.toBe(a.b);
       expect(b.c).not.toBe(a.b.c);
@@ -796,47 +752,35 @@ describe('Instantiation', () => {
     const fn = jest.fn();
     const call_amount = 10;
 
-    @Service()
+    @Transient()
     class D {
-      public static readonly ctor_name = Symbol('D');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Transient;
-
       constructor() {
         fn();
       }
     }
 
-    @Service()
+    @Transient()
     class C {
-      public static readonly ctor_name = Symbol('C');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Transient;
-
       constructor() {
         fn();
       }
     }
 
-    @Service()
+    @Transient()
     class B {
-      public static readonly ctor_name = Symbol('B');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Transient;
-
       constructor(public readonly c: C, public readonly d: D) {
         fn();
       }
     }
 
-    @Service()
+    @Transient()
     class A {
-      public static readonly ctor_name = Symbol('A');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Transient;
-
       constructor(public readonly c: C, public readonly b: B) {
         fn();
       }
     }
 
-    function regardless_of_resolved_order_this_should_not_throw(a: A, b: B, c: C, d: D) {
+    function regardless_of_resolved_order_this_should_not_throw(a: A, b: B, c: C, d: D): void {
       expect(a.c).not.toBe(a.b.c);
       expect(b).not.toBe(a.b);
       expect(b.c).not.toBe(a.b.c);
@@ -1150,51 +1094,45 @@ describe('Instantiation', () => {
     let c_count = 0;
     let d_count = 0;
 
-    @Service()
+    @Transient()
     class D {
-      public static readonly ctor_name = Symbol('D');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Transient;
-
+      public who = 'd';
       constructor() {
         d_count++;
         fn();
       }
     }
 
-    @Service()
+    @Singleton()
     class C {
-      public static readonly ctor_name = Symbol('C');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Singleton;
-
+      public who = 'c';
+      public nbr = 0;
       constructor() {
         c_count++;
         fn();
+        this.nbr = c_count;
       }
     }
 
-    @Service()
+    @Scoped()
     class B {
-      public static readonly ctor_name = Symbol('B');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Scoped;
-
+      public who = 'b';
       constructor(public readonly c: C, public readonly d: D) {
         b_count++;
         fn();
       }
     }
 
-    @Service()
+    @Transient()
     class A {
-      public static readonly ctor_name = Symbol('A');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Transient;
-
+      public who = 'a';
       constructor(public readonly c: C, public readonly b: B) {
         a_count++;
         fn();
       }
     }
 
-    function regardless_of_resolved_order_this_should_not_throw(a: A, b: B, c: C, d: D) {
+    function regardless_of_resolved_order_this_should_not_throw(a: A, b: B, c: C, d: D): void {
       expect(a.c).toBe(a.b.c);
       expect(a.c).toBe(c);
       expect(b.c).toBe(a.b.c);
@@ -1515,82 +1453,64 @@ describe('Instantiation', () => {
   });
 
   it('should replace services', () => {
-    @Service()
+    @Singleton()
     class A {
-      public static readonly ctor_name = Symbol('A');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Singleton;
       public data = 'og';
     }
 
-    @Service()
+    @Scoped()
     class B {
-      public static readonly ctor_name = Symbol('B');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Scoped;
       public data = 'og';
     }
 
-    @Service()
+    @Transient()
     class C {
-      public static readonly ctor_name = Symbol('C');
-      public static readonly ctor_lifetime = Instantiation.Lifetimes.Transient;
       public data = 'og';
     }
 
-    Instantiation.register(
-      class Mock {
-        public static ctor_name = A.ctor_name;
+    Instantiation.register(A, {
+      useClass: class Mock {
         public data = 'a';
       },
-      true,
-    );
+    });
     const a = Instantiation.resolve(A);
     expect(a.data).toEqual('a');
 
-    Instantiation.register(
-      class Mock {
-        static ctor_name = B.ctor_name;
+    Instantiation.register(B, {
+      useClass: class Mock {
         public data = 'b';
       },
-      true,
-    );
+    });
     const b = Instantiation.resolve(B);
     expect(b.data).toEqual('b');
 
-    Instantiation.register(
-      class Mock {
-        static ctor_name = C.ctor_name;
+    Instantiation.register(C, {
+      useClass: class Mock {
         public data = 'c';
       },
-      true,
-    );
+    });
     const c = Instantiation.resolve(C);
     expect(c.data).toEqual('c');
   });
 
   it('should resolve singleton with mocked dependency', () => {
-    @Service()
+    @Singleton()
     class A {
-      public static readonly ctor_name = Symbol('A');
-      public static ctor_lifetime = Instantiation.Lifetimes.Singleton;
-
       public data = 'og';
     }
 
-    @Service()
+    @Singleton()
     class B {
-      public static readonly ctor_name = Symbol('B');
-      public static ctor_lifetime = Instantiation.Lifetimes.Singleton;
       public data = 'og';
 
       constructor(public readonly a: A) {}
     }
 
-    class Mock {
-      public static readonly ctor_name = A.ctor_name;
-      public data = 'replaced';
-    }
-
-    Instantiation.register(Mock, true);
+    Instantiation.register(A, {
+      useClass: class Mock {
+        public data = 'replaced';
+      },
+    });
 
     const b = Instantiation.resolve(B);
     expect(b.data).toBe('og');
@@ -1598,29 +1518,23 @@ describe('Instantiation', () => {
   });
 
   it('should resolve scoped with mocked dependency', () => {
-    @Service()
+    @Scoped()
     class A {
-      public static readonly ctor_name = Symbol('A');
-      public static ctor_lifetime = Instantiation.Lifetimes.Scoped;
-
       public data = 'og';
     }
 
-    @Service()
+    @Scoped()
     class B {
-      public static readonly ctor_name = Symbol('B');
-      public static ctor_lifetime = Instantiation.Lifetimes.Scoped;
       public data = 'og';
 
       constructor(public readonly a: A) {}
     }
 
-    class Mock {
-      public static readonly ctor_name = A.ctor_name;
-      public data = 'replaced';
-    }
-
-    Instantiation.register(Mock, true);
+    Instantiation.register(A, {
+      useClass: class Mock {
+        public data = 'replaced';
+      },
+    });
 
     const b = Instantiation.resolve(B);
     expect(b.data).toBe('og');
@@ -1628,29 +1542,23 @@ describe('Instantiation', () => {
   });
 
   it('should resolve transient with mocked dependency', () => {
-    @Service()
+    @Transient()
     class A {
-      public static ctor_name = Symbol('Dependency');
-      public static ctor_lifetime = Instantiation.Lifetimes.Transient;
       public data = 'og';
     }
 
-    @Service()
+    @Transient()
     class B {
-      public static ctor_name = Symbol('Dependent');
-      public static ctor_lifetime = Instantiation.Lifetimes.Transient;
       public data = 'og';
 
       constructor(public a: A) {}
     }
 
-    class Mock {
-      public static ctor_name = A.ctor_name;
-      public static ctor_lifetime = Instantiation.Lifetimes.Transient;
-      public data = 'replaced';
-    }
-
-    Instantiation.register(Mock, true);
+    Instantiation.register(A, {
+      useClass: class Mock {
+        public data = 'replaced';
+      },
+    });
 
     const b = Instantiation.resolve(B);
     expect(b.data).toBe('og');
