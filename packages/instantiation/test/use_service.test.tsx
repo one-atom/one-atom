@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react';
-import { Scoped, flush_all, use_service, Instantiation, Singleton } from '../src';
+import { flushAll, useService, Singleton, Scoped } from '../src';
 import { render } from '@testing-library/react';
 
-describe('use_service', () => {
+describe('useService', () => {
   afterEach(() => {
-    flush_all();
+    flushAll();
   });
 
   it('should register and resolve a singleton service', async () => {
@@ -14,8 +14,8 @@ describe('use_service', () => {
     }
 
     const Comp: React.FC = () => {
-      const cls1 = use_service(Cls);
-      const cls2 = use_service(Cls);
+      const cls1 = useService(Cls);
+      const cls2 = useService(Cls);
       cls1.foo = 'baz';
       cls2.foo = 'bar'; // mutates cls1 since it's the same object
 
@@ -39,8 +39,8 @@ describe('use_service', () => {
     }
 
     const Comp: React.FC = () => {
-      const cls1 = use_service(Cls);
-      const cls2 = use_service(Cls);
+      const cls1 = useService(Cls);
+      const cls2 = useService(Cls);
       cls1.foo = 'baz';
       cls2.foo = 'bar'; // does not mute cls1 since they're two different instanced objects
 

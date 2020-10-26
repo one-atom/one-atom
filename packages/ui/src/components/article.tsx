@@ -46,7 +46,7 @@ export namespace Article {
     `,
   };
 
-  export const h: FC<Props> = function __kira__article({ children, className, center, ...rest }) {
+  export const h: FC<Props> = function Kira_Article({ children, className, center, ...rest }) {
     return (
       <elements.article center={center} className={className} {...rest}>
         {children}

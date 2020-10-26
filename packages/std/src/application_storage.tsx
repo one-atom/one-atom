@@ -22,7 +22,7 @@ export class ApplicationStorage<T extends Record<string, unknown>> {
     this.store.setItem(this.retrieve_prefix(key), JSON.stringify(data));
   }
 
-  public remove_item(key: keyof T): void {
+  public removeItem(key: keyof T): void {
     this.store.removeItem(this.retrieve_prefix(key));
   }
 

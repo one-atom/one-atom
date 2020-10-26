@@ -1,22 +1,22 @@
 import { useState, useEffect } from 'react';
 
-export function use_key_press(targetKey: string): boolean {
+export function useKeyPress(targetKey: string): boolean {
   // State for keeping track of whether key is pressed
   const [keyPressed, setKeyPressed] = useState(false);
 
   // If pressed key is our target key then set to true
-  function handle_key_down({ key }: KeyboardEvent) {
+  function handle_key_down({ key }: KeyboardEvent): void {
     if (key === targetKey) {
       setKeyPressed(true);
     }
   }
 
   // If released key is our target key then set to false
-  const handle_key_up = ({ key }: KeyboardEvent) => {
+  function handle_key_up({ key }: KeyboardEvent): void {
     if (key === targetKey) {
       setKeyPressed(false);
     }
-  };
+  }
 
   // Add event listeners
   useEffect(() => {
@@ -28,7 +28,7 @@ export function use_key_press(targetKey: string): boolean {
       removeEventListener('keydown', handle_key_down);
       removeEventListener('keyup', handle_key_up);
     };
-  }, []); // Empty array ensures that effect is only run on mount and unmount
+  }); // Empty array ensures that effect is only run on mount and unmount
 
   return keyPressed;
 }

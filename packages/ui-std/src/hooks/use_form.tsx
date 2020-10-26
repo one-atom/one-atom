@@ -47,18 +47,18 @@ type FormEquals<X, Y> = (<T>() => T extends X ? 1 : 2) extends <T>() => T extend
 interface FormGroup<T> {
   refs: { [key: string]: FormElementLike<any> };
   controllers: T;
-  is_valid(): void;
+  isValid(): void;
   state(): { [key in keyof T]: string };
   reset(): void;
 }
 
 const formStates = new WeakMap<FormSpec<any, any>, FormGroup<any>>();
 
-export function create_form_group<T extends FormSpec<any, any>>(controllers: T): FormGroup<T> {
+export function createFormGroup<T extends FormSpec<any, any>>(controllers: T): FormGroup<T> {
   return {
     controllers,
     refs: {},
-    is_valid() {
+    isValid() {
       // noop
     },
     state(): { [key in keyof T]: string } {
@@ -76,7 +76,7 @@ export function create_form_group<T extends FormSpec<any, any>>(controllers: T):
   };
 }
 
-export function form_control<T extends FormPrimitiveValue>(defaultValue: T, ...validators: FormValidator[]): FormControl<T> {
+export function formControl<T extends FormPrimitiveValue>(defaultValue: T, ...validators: FormValidator[]): FormControl<T> {
   return {
     initialValue: defaultValue,
     value: defaultValue,
@@ -88,7 +88,8 @@ export function form_control<T extends FormPrimitiveValue>(defaultValue: T, ...v
 
 /** Form hook */
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function use_form<T extends FormSpec<any, any>>(control: T) {
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export function useForm<T extends FormSpec<any, any>>(control: T) {
   const [formState] = useState<T>(control);
 
   let formGroup: FormGroup<T>;
@@ -97,7 +98,7 @@ export function use_form<T extends FormSpec<any, any>>(control: T) {
     if (state === undefined) throw new Error(`missing state`);
     formGroup = state;
   } else {
-    formGroup = create_form_group(formState);
+    formGroup = createFormGroup(formState);
 
     formStates.set(formState, formGroup);
   }
@@ -113,7 +114,7 @@ export function use_form<T extends FormSpec<any, any>>(control: T) {
   /** Binds an input to this hook. */
   function set<K extends HTMLInputElement>(
     ref: FormElementLike<FormEquals<K['name'], keyof T> extends true ? K['name'] : string> | null,
-  ) {
+  ): void {
     if (ref) {
       if (typeof formState[ref.name] === 'undefined') {
         throw new Error(`"${ref.name}" is not a valid form group`);

@@ -10,7 +10,7 @@ export class StyleSheetController {
     document.head.appendChild(this.style_element);
   }
 
-  public add_to_register(selector: string, style: string): StyleSheetController {
+  public addToRegister(selector: string, style: string): StyleSheetController {
     const css_style_sheet = this.style_element.sheet as CSSStyleSheet;
 
     if (this.styles.has(selector)) return this;

@@ -60,7 +60,7 @@ export namespace Button {
     `,
   };
 
-  export const action: FC<Props> = function __kira__button_action({ children, fluid, className, round, type = 'action', ...rest }) {
+  export const action: FC<Props> = function Kira_Button_action({ children, fluid, className, round, type = 'action', ...rest }) {
     const cls_name = `${className ?? ''} ${round ? 'round' : ''}`;
 
     return (
@@ -72,7 +72,7 @@ export namespace Button {
     );
   };
 
-  export const alt: FC<Props> = function __kira__button_control({ children, fluid, className, round, type = 'action', ...rest }) {
+  export const alt: FC<Props> = function Kira_Button_control({ children, fluid, className, round, type = 'action', ...rest }) {
     const cls_name = `${className ?? ''} ${round ? 'round' : ''}`;
 
     return (
@@ -84,7 +84,7 @@ export namespace Button {
     );
   };
 
-  export const h: FC<Props> = function __kira__button({ children, fluid, className, type = 'action', ...rest }) {
+  export const h: FC<Props> = function Kira_Button({ children, fluid, className, type = 'action', ...rest }) {
     return (
       <Size.h fluid={fluid}>
         <elements_shared.button className={className ?? ''} {...rest}>

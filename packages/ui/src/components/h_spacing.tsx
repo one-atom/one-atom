@@ -17,7 +17,7 @@ export namespace HSpacing {
     `,
   };
 
-  export const h: FC<Props> = function __kira__h_spacing({ px }) {
+  export const h: FC<Props> = function Kira_horizontal_spacing({ px }) {
     return <elements.spacing px={px} aria-hidden='true' />;
   };
 }

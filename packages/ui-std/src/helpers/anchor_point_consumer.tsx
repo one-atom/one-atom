@@ -21,7 +21,7 @@ export namespace AnchorPointConsumer {
   class Instance {
     public readonly name: string;
     public readonly element_reference: HTMLElement;
-    public vec_2: Vec2;
+    public vec2: Vec2;
     private readonly event_emitter = new Emitter();
     private top: string;
     private left: string;
@@ -35,7 +35,7 @@ export namespace AnchorPointConsumer {
       window.addEventListener('resize', this.handleWindowEvent.bind(this));
       window.addEventListener('scroll', this.handleWindowEvent.bind(this));
 
-      this.vec_2 = this.calculate_position(this.top, this.left);
+      this.vec2 = this.calculatePosition(this.top, this.left);
     }
 
     public onChange(fn: EventHandler<Vec2>): () => void {
@@ -46,17 +46,17 @@ export namespace AnchorPointConsumer {
       };
     }
 
-    public destroy() {
+    public destroy(): void {
       window.removeEventListener('resize', this.handleWindowEvent.bind(this));
       window.removeEventListener('scroll', this.handleWindowEvent.bind(this));
     }
 
-    private handleWindowEvent() {
-      this.vec_2 = this.calculate_position(this.top, this.left);
-      this.event_emitter.emit(Events.Update, this.vec_2);
+    private handleWindowEvent(): void {
+      this.vec2 = this.calculatePosition(this.top, this.left);
+      this.event_emitter.emit(Events.Update, this.vec2);
     }
 
-    private calculate_position(top: string, left: string): Vec2 {
+    private calculatePosition(top: string, left: string): Vec2 {
       const rect = this.element_reference.getBoundingClientRect();
 
       function return_percentage_of_anchor_point_str(str: string): number {

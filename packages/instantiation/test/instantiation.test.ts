@@ -1,8 +1,8 @@
-import { Instantiation, flush_all, flush_singletons, Singleton, Scoped, Transient } from '../src/instantiation';
+import { Instantiation, flushAll, flushSingletons, Singleton, Scoped, Transient } from '../src/instantiation';
 
 describe('Instantiation', () => {
   afterEach(() => {
-    flush_all();
+    flushAll();
   });
 
   it('should register services', () => {
@@ -63,7 +63,7 @@ describe('Instantiation', () => {
     }
 
     {
-      flush_all();
+      flushAll();
       expect(() => Instantiation.resolve(A)).toThrow();
       Instantiation.register(A);
       const a = Instantiation.resolve(A);
@@ -134,7 +134,7 @@ describe('Instantiation', () => {
     }
 
     // Order A -> B -> D -> C
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const a = Instantiation.resolve(A);
@@ -146,7 +146,7 @@ describe('Instantiation', () => {
     }
 
     // Order A -> C -> D -> B
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const a = Instantiation.resolve(A);
@@ -158,7 +158,7 @@ describe('Instantiation', () => {
     }
 
     // Order A -> C -> B -> D
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const a = Instantiation.resolve(A);
@@ -170,7 +170,7 @@ describe('Instantiation', () => {
     }
 
     // Order A -> D -> B -> C
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const a = Instantiation.resolve(A);
@@ -182,7 +182,7 @@ describe('Instantiation', () => {
     }
 
     // Order A -> D -> C -> B
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const a = Instantiation.resolve(A);
@@ -194,7 +194,7 @@ describe('Instantiation', () => {
     }
 
     // Order B -> A -> C -> D
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const b = Instantiation.resolve(B);
@@ -206,7 +206,7 @@ describe('Instantiation', () => {
     }
 
     // Order B -> A -> D -> C
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const b = Instantiation.resolve(B);
@@ -218,7 +218,7 @@ describe('Instantiation', () => {
     }
 
     // Order B -> C -> A -> D
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const b = Instantiation.resolve(B);
@@ -230,7 +230,7 @@ describe('Instantiation', () => {
     }
 
     // Order B -> C -> D -> A
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const b = Instantiation.resolve(B);
@@ -242,7 +242,7 @@ describe('Instantiation', () => {
     }
 
     // Order B -> D -> A -> C
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const b = Instantiation.resolve(B);
@@ -254,7 +254,7 @@ describe('Instantiation', () => {
     }
 
     // Order B -> D -> C -> A
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const b = Instantiation.resolve(B);
@@ -266,7 +266,7 @@ describe('Instantiation', () => {
     }
 
     // Order C -> A -> B -> D
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const c = Instantiation.resolve(C);
@@ -278,7 +278,7 @@ describe('Instantiation', () => {
     }
 
     // Order C -> A -> D -> B
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const c = Instantiation.resolve(C);
@@ -290,7 +290,7 @@ describe('Instantiation', () => {
     }
 
     // Order C -> B -> A -> D
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const c = Instantiation.resolve(C);
@@ -302,7 +302,7 @@ describe('Instantiation', () => {
     }
 
     // Order C -> B -> D -> A
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const c = Instantiation.resolve(C);
@@ -314,7 +314,7 @@ describe('Instantiation', () => {
     }
 
     // Order C -> D -> B -> A
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const c = Instantiation.resolve(C);
@@ -326,7 +326,7 @@ describe('Instantiation', () => {
     }
 
     // Order C -> D -> A -> B
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const c = Instantiation.resolve(C);
@@ -338,7 +338,7 @@ describe('Instantiation', () => {
     }
 
     // Order D -> A -> B -> C
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const d = Instantiation.resolve(D);
@@ -350,7 +350,7 @@ describe('Instantiation', () => {
     }
 
     // Order D -> A -> C -> B
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const d = Instantiation.resolve(D);
@@ -362,7 +362,7 @@ describe('Instantiation', () => {
     }
 
     // Order D -> B -> C -> A
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const d = Instantiation.resolve(D);
@@ -374,7 +374,7 @@ describe('Instantiation', () => {
     }
 
     // Order D -> B -> A -> C
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const d = Instantiation.resolve(D);
@@ -386,7 +386,7 @@ describe('Instantiation', () => {
     }
 
     // Order D -> C -> A -> B
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const d = Instantiation.resolve(D);
@@ -398,7 +398,7 @@ describe('Instantiation', () => {
     }
 
     // Order D -> C -> B -> A
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const d = Instantiation.resolve(D);
@@ -472,7 +472,7 @@ describe('Instantiation', () => {
     }
 
     // Order A -> B -> D -> C
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const a = Instantiation.resolve(A);
@@ -484,7 +484,7 @@ describe('Instantiation', () => {
     }
 
     // Order A -> C -> D -> B
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const a = Instantiation.resolve(A);
@@ -496,7 +496,7 @@ describe('Instantiation', () => {
     }
 
     // Order A -> C -> B -> D
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const a = Instantiation.resolve(A);
@@ -508,7 +508,7 @@ describe('Instantiation', () => {
     }
 
     // Order A -> D -> B -> C
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const a = Instantiation.resolve(A);
@@ -520,7 +520,7 @@ describe('Instantiation', () => {
     }
 
     // Order A -> D -> C -> B
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const a = Instantiation.resolve(A);
@@ -532,7 +532,7 @@ describe('Instantiation', () => {
     }
 
     // Order B -> A -> C -> D
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const b = Instantiation.resolve(B);
@@ -544,7 +544,7 @@ describe('Instantiation', () => {
     }
 
     // Order B -> A -> D -> C
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const b = Instantiation.resolve(B);
@@ -556,7 +556,7 @@ describe('Instantiation', () => {
     }
 
     // Order B -> C -> A -> D
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const b = Instantiation.resolve(B);
@@ -568,7 +568,7 @@ describe('Instantiation', () => {
     }
 
     // Order B -> C -> D -> A
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const b = Instantiation.resolve(B);
@@ -580,7 +580,7 @@ describe('Instantiation', () => {
     }
 
     // Order B -> D -> A -> C
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const b = Instantiation.resolve(B);
@@ -592,7 +592,7 @@ describe('Instantiation', () => {
     }
 
     // Order B -> D -> C -> A
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const b = Instantiation.resolve(B);
@@ -604,7 +604,7 @@ describe('Instantiation', () => {
     }
 
     // Order C -> A -> B -> D
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const c = Instantiation.resolve(C);
@@ -616,7 +616,7 @@ describe('Instantiation', () => {
     }
 
     // Order C -> A -> D -> B
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const c = Instantiation.resolve(C);
@@ -628,7 +628,7 @@ describe('Instantiation', () => {
     }
 
     // Order C -> B -> A -> D
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const c = Instantiation.resolve(C);
@@ -640,7 +640,7 @@ describe('Instantiation', () => {
     }
 
     // Order C -> B -> D -> A
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const c = Instantiation.resolve(C);
@@ -652,7 +652,7 @@ describe('Instantiation', () => {
     }
 
     // Order C -> D -> B -> A
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const c = Instantiation.resolve(C);
@@ -664,7 +664,7 @@ describe('Instantiation', () => {
     }
 
     // Order C -> D -> A -> B
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const c = Instantiation.resolve(C);
@@ -676,7 +676,7 @@ describe('Instantiation', () => {
     }
 
     // Order D -> A -> B -> C
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const d = Instantiation.resolve(D);
@@ -688,7 +688,7 @@ describe('Instantiation', () => {
     }
 
     // Order D -> A -> C -> B
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const d = Instantiation.resolve(D);
@@ -700,7 +700,7 @@ describe('Instantiation', () => {
     }
 
     // Order D -> B -> C -> A
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const d = Instantiation.resolve(D);
@@ -712,7 +712,7 @@ describe('Instantiation', () => {
     }
 
     // Order D -> B -> A -> C
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const d = Instantiation.resolve(D);
@@ -724,7 +724,7 @@ describe('Instantiation', () => {
     }
 
     // Order D -> C -> A -> B
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const d = Instantiation.resolve(D);
@@ -736,7 +736,7 @@ describe('Instantiation', () => {
     }
 
     // Order D -> C -> B -> A
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const d = Instantiation.resolve(D);
@@ -810,7 +810,7 @@ describe('Instantiation', () => {
     }
 
     // Order A -> B -> D -> C
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const a = Instantiation.resolve(A);
@@ -822,7 +822,7 @@ describe('Instantiation', () => {
     }
 
     // Order A -> C -> D -> B
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const a = Instantiation.resolve(A);
@@ -834,7 +834,7 @@ describe('Instantiation', () => {
     }
 
     // Order A -> C -> B -> D
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const a = Instantiation.resolve(A);
@@ -846,7 +846,7 @@ describe('Instantiation', () => {
     }
 
     // Order A -> D -> B -> C
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const a = Instantiation.resolve(A);
@@ -858,7 +858,7 @@ describe('Instantiation', () => {
     }
 
     // Order A -> D -> C -> B
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const a = Instantiation.resolve(A);
@@ -870,7 +870,7 @@ describe('Instantiation', () => {
     }
 
     // Order B -> A -> C -> D
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const b = Instantiation.resolve(B);
@@ -882,7 +882,7 @@ describe('Instantiation', () => {
     }
 
     // Order B -> A -> D -> C
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const b = Instantiation.resolve(B);
@@ -894,7 +894,7 @@ describe('Instantiation', () => {
     }
 
     // Order B -> C -> A -> D
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const b = Instantiation.resolve(B);
@@ -906,7 +906,7 @@ describe('Instantiation', () => {
     }
 
     // Order B -> C -> D -> A
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const b = Instantiation.resolve(B);
@@ -918,7 +918,7 @@ describe('Instantiation', () => {
     }
 
     // Order B -> D -> A -> C
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const b = Instantiation.resolve(B);
@@ -930,7 +930,7 @@ describe('Instantiation', () => {
     }
 
     // Order B -> D -> C -> A
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const b = Instantiation.resolve(B);
@@ -942,7 +942,7 @@ describe('Instantiation', () => {
     }
 
     // Order C -> A -> B -> D
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const c = Instantiation.resolve(C);
@@ -954,7 +954,7 @@ describe('Instantiation', () => {
     }
 
     // Order C -> A -> D -> B
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const c = Instantiation.resolve(C);
@@ -966,7 +966,7 @@ describe('Instantiation', () => {
     }
 
     // Order C -> B -> A -> D
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const c = Instantiation.resolve(C);
@@ -978,7 +978,7 @@ describe('Instantiation', () => {
     }
 
     // Order C -> B -> D -> A
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const c = Instantiation.resolve(C);
@@ -990,7 +990,7 @@ describe('Instantiation', () => {
     }
 
     // Order C -> D -> B -> A
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const c = Instantiation.resolve(C);
@@ -1002,7 +1002,7 @@ describe('Instantiation', () => {
     }
 
     // Order C -> D -> A -> B
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const c = Instantiation.resolve(C);
@@ -1014,7 +1014,7 @@ describe('Instantiation', () => {
     }
 
     // Order D -> A -> B -> C
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const d = Instantiation.resolve(D);
@@ -1026,7 +1026,7 @@ describe('Instantiation', () => {
     }
 
     // Order D -> A -> C -> B
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const d = Instantiation.resolve(D);
@@ -1038,7 +1038,7 @@ describe('Instantiation', () => {
     }
 
     // Order D -> B -> C -> A
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const d = Instantiation.resolve(D);
@@ -1050,7 +1050,7 @@ describe('Instantiation', () => {
     }
 
     // Order D -> B -> A -> C
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const d = Instantiation.resolve(D);
@@ -1062,7 +1062,7 @@ describe('Instantiation', () => {
     }
 
     // Order D -> C -> A -> B
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const d = Instantiation.resolve(D);
@@ -1074,7 +1074,7 @@ describe('Instantiation', () => {
     }
 
     // Order D -> C -> B -> A
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const d = Instantiation.resolve(D);
@@ -1176,7 +1176,7 @@ describe('Instantiation', () => {
     }
 
     // Order A -> B -> D -> C
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const a = Instantiation.resolve(A);
@@ -1188,7 +1188,7 @@ describe('Instantiation', () => {
     }
 
     // Order A -> C -> D -> B
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const a = Instantiation.resolve(A);
@@ -1200,7 +1200,7 @@ describe('Instantiation', () => {
     }
 
     // Order A -> C -> B -> D
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const a = Instantiation.resolve(A);
@@ -1212,7 +1212,7 @@ describe('Instantiation', () => {
     }
 
     // Order A -> D -> B -> C
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const a = Instantiation.resolve(A);
@@ -1224,7 +1224,7 @@ describe('Instantiation', () => {
     }
 
     // Order A -> D -> C -> B
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const a = Instantiation.resolve(A);
@@ -1236,7 +1236,7 @@ describe('Instantiation', () => {
     }
 
     // Order B -> A -> C -> D
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const b = Instantiation.resolve(B);
@@ -1248,7 +1248,7 @@ describe('Instantiation', () => {
     }
 
     // Order B -> A -> D -> C
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const b = Instantiation.resolve(B);
@@ -1260,7 +1260,7 @@ describe('Instantiation', () => {
     }
 
     // Order B -> C -> A -> D
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const b = Instantiation.resolve(B);
@@ -1272,7 +1272,7 @@ describe('Instantiation', () => {
     }
 
     // Order B -> C -> D -> A
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const b = Instantiation.resolve(B);
@@ -1284,7 +1284,7 @@ describe('Instantiation', () => {
     }
 
     // Order B -> D -> A -> C
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const b = Instantiation.resolve(B);
@@ -1296,7 +1296,7 @@ describe('Instantiation', () => {
     }
 
     // Order B -> D -> C -> A
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const b = Instantiation.resolve(B);
@@ -1308,7 +1308,7 @@ describe('Instantiation', () => {
     }
 
     // Order C -> A -> B -> D
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const c = Instantiation.resolve(C);
@@ -1320,7 +1320,7 @@ describe('Instantiation', () => {
     }
 
     // Order C -> A -> D -> B
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const c = Instantiation.resolve(C);
@@ -1332,7 +1332,7 @@ describe('Instantiation', () => {
     }
 
     // Order C -> B -> A -> D
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const c = Instantiation.resolve(C);
@@ -1344,7 +1344,7 @@ describe('Instantiation', () => {
     }
 
     // Order C -> B -> D -> A
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const c = Instantiation.resolve(C);
@@ -1356,7 +1356,7 @@ describe('Instantiation', () => {
     }
 
     // Order C -> D -> B -> A
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const c = Instantiation.resolve(C);
@@ -1368,7 +1368,7 @@ describe('Instantiation', () => {
     }
 
     // Order C -> D -> A -> B
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const c = Instantiation.resolve(C);
@@ -1380,7 +1380,7 @@ describe('Instantiation', () => {
     }
 
     // Order D -> A -> B -> C
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const d = Instantiation.resolve(D);
@@ -1392,7 +1392,7 @@ describe('Instantiation', () => {
     }
 
     // Order D -> A -> C -> B
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const d = Instantiation.resolve(D);
@@ -1404,7 +1404,7 @@ describe('Instantiation', () => {
     }
 
     // Order D -> B -> C -> A
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const d = Instantiation.resolve(D);
@@ -1416,7 +1416,7 @@ describe('Instantiation', () => {
     }
 
     // Order D -> B -> A -> C
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const d = Instantiation.resolve(D);
@@ -1428,7 +1428,7 @@ describe('Instantiation', () => {
     }
 
     // Order D -> C -> A -> B
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const d = Instantiation.resolve(D);
@@ -1440,7 +1440,7 @@ describe('Instantiation', () => {
     }
 
     // Order D -> C -> B -> A
-    flush_singletons();
+    flushSingletons();
     fn.mockReset();
     {
       const d = Instantiation.resolve(D);

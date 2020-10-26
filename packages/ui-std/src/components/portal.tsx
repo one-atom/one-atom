@@ -25,7 +25,7 @@ export namespace Portal {
 
   const style_sheet = new StyleSheetController();
 
-  style_sheet.add_to_register(
+  style_sheet.addToRegister(
     `#${id}`,
     `
       position: fixed;
@@ -37,14 +37,14 @@ export namespace Portal {
     `,
   );
 
-  style_sheet.add_to_register(
+  style_sheet.addToRegister(
     className,
     `
       display: contents;
     `,
   );
 
-  export const h: FC<Props> = function __kira__Portal({ children, mountTo }) {
+  export const h: FC<Props> = function Kira_Portal({ children, mountTo }) {
     let mount: HTMLElement;
 
     if (typeof mountTo === 'string') {

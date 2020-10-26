@@ -55,7 +55,7 @@ export namespace BaseButton {
     `,
   };
 
-  export const h: FC<Props> = function __kira__base_button({ ...props }) {
+  export const h: FC<Props> = function Kira_Base_button({ ...props }) {
     // Takes out these values to be used as variables here.
     const {
       children,
@@ -95,7 +95,7 @@ export namespace BaseButton {
     const downRef = useRef(false);
 
     // Focus events
-    function handle_blur(event: React.FocusEvent<HTMLButtonElement>) {
+    function handle_blur(event: React.FocusEvent<HTMLButtonElement>): void {
       setIsFocus(false);
 
       focusContext.current = null;
@@ -103,7 +103,7 @@ export namespace BaseButton {
       if (onBlur) onBlur(event);
     }
 
-    function handle_focus(event: React.FocusEvent<HTMLButtonElement>) {
+    function handle_focus(event: React.FocusEvent<HTMLButtonElement>): void {
       setIsFocus(true);
 
       focusContext.current = buttonRef.current;
@@ -112,11 +112,11 @@ export namespace BaseButton {
     }
 
     // Mouse events
-    function handle_click(event: React.MouseEvent<HTMLButtonElement>) {
+    function handle_click(event: React.MouseEvent<HTMLButtonElement>): void {
       if (onClick) onClick(event);
     }
 
-    function handle_mouse_down(event: React.MouseEvent<HTMLButtonElement>) {
+    function handle_mouse_down(event: React.MouseEvent<HTMLButtonElement>): void {
       if (!downRef) {
         // noop
       }
@@ -124,43 +124,43 @@ export namespace BaseButton {
       if (onMouseDown) onMouseDown(event);
     }
 
-    function handle_mouse_up(event: React.MouseEvent<HTMLButtonElement>) {
+    function handle_mouse_up(event: React.MouseEvent<HTMLButtonElement>): void {
       if (onMouseUp) onMouseUp(event);
     }
 
-    function handle_mouse_enter(event: React.MouseEvent<HTMLButtonElement>) {
+    function handle_mouse_enter(event: React.MouseEvent<HTMLButtonElement>): void {
       if (onMouseEnter) onMouseEnter(event);
     }
 
-    function handle_mouse_leave(event: React.MouseEvent<HTMLButtonElement>) {
+    function handle_mouse_leave(event: React.MouseEvent<HTMLButtonElement>): void {
       if (onMouseLeave) onMouseLeave(event);
     }
 
-    function handle_mouse_move(event: React.MouseEvent<HTMLButtonElement>) {
+    function handle_mouse_move(event: React.MouseEvent<HTMLButtonElement>): void {
       if (onMouseMove) onMouseMove(event);
     }
 
     // Keyboard events
-    function handle_key_down(event: React.KeyboardEvent<HTMLButtonElement>) {
+    function handle_key_down(event: React.KeyboardEvent<HTMLButtonElement>): void {
       if (isFocused && event.key === 'Escape' && focusContext.current) {
         focusContext.current.blur();
       }
     }
 
-    function handle_key_up(event: React.KeyboardEvent<HTMLButtonElement>) {
+    function handle_key_up(event: React.KeyboardEvent<HTMLButtonElement>): void {
       if (onKeyUp) onKeyUp(event);
     }
 
     // Touch events
-    function handle_touch_start(event: React.TouchEvent<HTMLButtonElement>) {
+    function handle_touch_start(event: React.TouchEvent<HTMLButtonElement>): void {
       if (onTouchStart) onTouchStart(event);
     }
 
-    function handle_touch_end(event: React.TouchEvent<HTMLButtonElement>) {
+    function handle_touch_end(event: React.TouchEvent<HTMLButtonElement>): void {
       if (onTouchEnd) onTouchEnd(event);
     }
 
-    function handle_touch_move(event: React.TouchEvent<HTMLButtonElement>) {
+    function handle_touch_move(event: React.TouchEvent<HTMLButtonElement>): void {
       if (onTouchMove) onTouchMove(event);
     }
 

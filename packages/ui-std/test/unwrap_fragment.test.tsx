@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react';
 import { render } from '@testing-library/react';
-import { unwrap_fragment } from '../src';
+import { unwrapFragment } from '../src';
 
-describe('unwrap_fragment', () => {
+describe('unwrapFragment', () => {
   const T: React.FC = ({ children }) => {
-    const flatten = unwrap_fragment(children);
+    const flatten = unwrapFragment(children);
 
     return <Fragment>{flatten}</Fragment>;
   };

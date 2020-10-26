@@ -3,8 +3,8 @@
 
 import { useEffect } from 'react';
 
-export function use_outside_click(ref: React.RefObject<HTMLElement>, handler: any): void {
-  const handle_click = (event: TouchEvent | MouseEvent) => {
+export function useOutsideClick(ref: React.RefObject<HTMLElement>, handler: any): void {
+  const handle_click = (event: TouchEvent | MouseEvent): void => {
     if (ref && (!ref.current || ref.current.contains(event.target as Node))) {
       return;
     }

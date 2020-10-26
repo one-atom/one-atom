@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
-
-import { EMPTY_ARRAY } from '@kira/std';
 import { useEffect, useState } from 'react';
 import { AnchorPointConsumer } from '../helpers/anchor_point_consumer';
 
@@ -9,7 +7,7 @@ type EventOutput = {
   y: number;
 } | null;
 
-export function use_anchor_point_value(name: string): EventOutput {
+export function useAnchorPointValue(name: string): EventOutput {
   const [position, set_position] = useState<EventOutput>(null);
 
   useEffect(() => {
@@ -18,7 +16,7 @@ export function use_anchor_point_value(name: string): EventOutput {
     const anchor_point_instance = AnchorPointConsumer.list.get(name);
 
     if (anchor_point_instance) {
-      set_position(anchor_point_instance.vec_2.getAsObj());
+      set_position(anchor_point_instance.vec2.getAsObj());
 
       disposer = anchor_point_instance.onChange((vec_2) => {
         set_position(vec_2.getAsObj());
@@ -32,7 +30,7 @@ export function use_anchor_point_value(name: string): EventOutput {
         const anchor_point_instance = AnchorPointConsumer.list.get(name);
         if (anchor_point_instance === undefined) throw new Error(`Could not find an event with the name ${name}`);
 
-        set_position(anchor_point_instance.vec_2.getAsObj());
+        set_position(anchor_point_instance.vec2.getAsObj());
 
         disposer = anchor_point_instance.onChange((vec_2) => {
           set_position(vec_2.getAsObj());
@@ -45,7 +43,7 @@ export function use_anchor_point_value(name: string): EventOutput {
     return () => {
       if (disposer) disposer();
     };
-  }, EMPTY_ARRAY);
+  }, [name]);
 
   return position;
 }

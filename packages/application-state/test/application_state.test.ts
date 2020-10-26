@@ -1,6 +1,6 @@
-import { new_application_state, FlowState } from '../src/application_state';
+import { newApplicationState, FlowState } from '../src/application_state';
 
-function get_typical_state() {
+function get_typical_state(): { name: string; age: number } {
   return {
     name: 'max',
     age: 25,
@@ -9,22 +9,22 @@ function get_typical_state() {
 
 describe('Application State', () => {
   it('should follow the flow rules', () => {
-    const state = new_application_state(get_typical_state());
+    const state = newApplicationState(get_typical_state());
 
     // state is not explicitly accessible and should not have a value
-    expect(state.peek_state()).toMatchInlineSnapshot('undefined');
+    expect(state.peekState()).toMatchInlineSnapshot('undefined');
 
     // state is unset and should not have a value
-    state.in_flow(FlowState.UNSET);
-    expect(state.peek_state()).toMatchInlineSnapshot('undefined');
+    state.inFlow(FlowState.UNSET);
+    expect(state.peekState()).toMatchInlineSnapshot('undefined');
 
     // state is pending and should not have a value
-    state.in_flow(FlowState.PENDING);
-    expect(state.peek_state()).toMatchInlineSnapshot('undefined');
+    state.inFlow(FlowState.PENDING);
+    expect(state.peekState()).toMatchInlineSnapshot('undefined');
 
     // state is accessible and has value
-    state.in_flow(FlowState.ACCESSIBLE);
-    expect(state.peek_state()).toMatchInlineSnapshot(`
+    state.inFlow(FlowState.ACCESSIBLE);
+    expect(state.peekState()).toMatchInlineSnapshot(`
       Object {
         "age": 25,
         "name": "max",
@@ -33,14 +33,14 @@ describe('Application State', () => {
   });
 
   it('should mutate state', () => {
-    const state = new_application_state(get_typical_state());
+    const state = newApplicationState(get_typical_state());
 
     state.mutate(() => {
       return {
         name: 'kyle',
       };
     });
-    expect(state.peek_state()).toMatchInlineSnapshot(`
+    expect(state.peekState()).toMatchInlineSnapshot(`
       Object {
         "age": 25,
         "name": "kyle",
@@ -52,7 +52,7 @@ describe('Application State', () => {
         age: 28,
       };
     });
-    expect(state.peek_state()).toMatchInlineSnapshot(`
+    expect(state.peekState()).toMatchInlineSnapshot(`
       Object {
         "age": 28,
         "name": "kyle",
@@ -65,7 +65,7 @@ describe('Application State', () => {
         age: 22,
       };
     });
-    expect(state.peek_state()).toMatchInlineSnapshot(`
+    expect(state.peekState()).toMatchInlineSnapshot(`
       Object {
         "age": 22,
         "name": "ezra",
@@ -74,7 +74,7 @@ describe('Application State', () => {
   });
 
   it('should call subscription', () => {
-    const state = new_application_state(get_typical_state());
+    const state = newApplicationState(get_typical_state());
     const fn = jest.fn();
     const disposer = state.subscribe(fn);
 

@@ -2,7 +2,7 @@ import fs, { PathLike } from 'fs';
 import json5 from 'json5';
 
 export class Locator {
-  public static dir_exists(path: PathLike): boolean {
+  public static dirExists(path: PathLike): boolean {
     if (fs.existsSync(path)) return true;
 
     return false;
@@ -11,7 +11,7 @@ export class Locator {
   /**
    * @description Returns a promise that, if valid, contains parsed JSON5 object.
    */
-  public static read_json<T extends Record<string, unknown>>(path: PathLike): Promise<T | null> {
+  public static readJson<T extends Record<string, unknown>>(path: PathLike): Promise<T | null> {
     return new Promise((resolve, reject) => {
       fs.readFile(path, 'UTF8', (error, buffer) => {
         if (error) return reject(null);
@@ -30,7 +30,7 @@ export class Locator {
   /**
    * @description Returns, if valid, a parsed JSON5 object.
    */
-  public static read_json_sync<T extends Record<string, unknown>>(path: PathLike): T | null {
+  public static readJsonSync<T extends Record<string, unknown>>(path: PathLike): T | null {
     try {
       const content = fs.readFileSync(path, 'utf8');
 

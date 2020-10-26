@@ -53,7 +53,7 @@ export namespace TypeScriptConfig {
   export function get_compiler_options(location: string): ParsedCompilerOptions {
     cached_compiler_option = null;
 
-    const ts_config = Locator.read_json_sync<TsConfigLike>(`${location}/tsconfig.json`);
+    const ts_config = Locator.readJsonSync<TsConfigLike>(`${location}/tsconfig.json`);
     if (ts_config === null) {
       throw new Error(`could not locate a tsconfig at ${location}`);
     }

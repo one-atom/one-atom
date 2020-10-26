@@ -45,7 +45,7 @@ export namespace Flex {
     `,
   };
 
-  export const h: FC<Props> = function __kira__flex({
+  export const h: FC<Props> = function Kira_Flex({
     grow,
     basis,
     className,

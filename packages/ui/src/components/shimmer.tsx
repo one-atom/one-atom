@@ -41,7 +41,6 @@ export namespace Shimmer {
         border-radius: ${({ cornerRadius }) => cornerRadius}px;
         width: 100%;
         height: 100%;
-        background: #f6f7f8;
         background-image: linear-gradient(
           -80deg,
           var(--kira_shimmer_bg_from, #333333) 8%,
@@ -61,7 +60,7 @@ export namespace Shimmer {
     `,
   };
 
-  export const h: FC<Props> = function __kira__shimmer({ className, width, height, opacity = 1, cornerRadius = 0 }) {
+  export const h: FC<Props> = function Kira_Shimmer({ className, width, height, opacity = 1, cornerRadius = 0 }) {
     return (
       <elements.shimmer
         className={className}

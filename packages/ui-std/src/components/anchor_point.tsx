@@ -24,7 +24,7 @@ export namespace AnchorPoint {
     `,
   };
 
-  export const h: FC<Props> = function __kira__anchor_point({ name, top, left, children }) {
+  export const h: FC<Props> = function Kira_AnchorPoint({ name, top, left, children }) {
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {

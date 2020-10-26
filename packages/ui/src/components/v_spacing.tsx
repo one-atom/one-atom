@@ -17,7 +17,7 @@ export namespace VSpacing {
     `,
   };
 
-  export const h: FC<Props> = function __kira__v_spacing({ px }) {
+  export const h: FC<Props> = function Kira_Vertical_spacing({ px }) {
     return <elements.spacing px={px} aria-hidden='true' />;
   };
 }

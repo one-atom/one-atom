@@ -30,7 +30,7 @@ describe('ApplicationStorage', () => {
 
     expect(ls.get('a')).toEqual('123');
 
-    ls.remove_item('a');
+    ls.removeItem('a');
 
     expect(ls.get('a')).toBeNull();
   });

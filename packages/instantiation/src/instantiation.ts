@@ -122,7 +122,7 @@ export namespace Instantiation {
         resolving_stack_element.dependencies.push(dependency.registrationId);
 
         const edge: StackElement = create_stack_element(dependency);
-        resolving_dependencies_branch.insert_edge(resolving_stack_element, edge);
+        resolving_dependencies_branch.insertEdge(resolving_stack_element, edge);
         stack.push(edge);
       }
     }
@@ -205,7 +205,7 @@ export namespace Instantiation {
       const edges = resolving_dependencies_branch.edges();
 
       if (edges.length === 0) {
-        if (!resolving_dependencies_branch.is_empty()) {
+        if (!resolving_dependencies_branch.isEmpty()) {
           throw new Error('Graph contains nodes which never got removed');
         }
 
@@ -260,7 +260,7 @@ export namespace Instantiation {
             throw new Error(`The service lacks a lifetime`);
         }
 
-        resolving_dependencies_branch.remove_node(data.id);
+        resolving_dependencies_branch.removeNode(data.id);
       }
     }
 
@@ -326,7 +326,7 @@ export namespace Instantiation {
  *
  * Flushes the ctor registry and all singleton instances.
  */
-export function flush_all(): void {
+export function flushAll(): void {
   cached_registered_services = new Map();
   cached_singleton_services = new Map();
 }
@@ -337,7 +337,7 @@ export function flush_all(): void {
  *
  * Flushes all singleton instances.
  */
-export function flush_singletons(): void {
+export function flushSingletons(): void {
   cached_singleton_services = new Map();
 }
 
@@ -347,7 +347,7 @@ export function flush_singletons(): void {
  *
  * Flushes the ctor registry.
  */
-export function flush_registered_services(): void {
+export function flushRegisteredServices(): void {
   cached_registered_services = new Map();
 }
 
@@ -360,7 +360,6 @@ export function flush_registered_services(): void {
  * By default a service has a Lifetime set to Singleton. This can be changed by
  * declaring a public static property `ctor_lifetime` set to e.g. Transient.
  */
-
 export function Singleton(): Instantiation.GenericClassDecorator<Instantiation.Ctor<any>> {
   return <T>(ctor: Instantiation.Ctor<T>) =>
     Instantiation.register(ctor, {

@@ -11,7 +11,7 @@ export namespace KiraConfig {
 
   export function get_custom_env(location: string): KiraConfigLike | null {
     try {
-      const located_json = Locator.read_json_sync<KiraConfigLike>(location);
+      const located_json = Locator.readJsonSync<KiraConfigLike>(location);
       const builder: KiraConfigLike = {};
 
       for (const key in located_json) {

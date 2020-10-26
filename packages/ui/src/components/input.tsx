@@ -35,7 +35,7 @@ export namespace Input {
     `,
   };
 
-  export const h: FC<Props> = forwardRef(function __kira__input({ fluid, className, ...rest }, ref) {
+  export const h: FC<Props> = forwardRef(function Kira__Input({ fluid, className, ...rest }, ref) {
     return (
       <Size.h fluid={fluid} className={className}>
         <elements.label>

@@ -262,7 +262,7 @@ export namespace Frame {
     `,
   };
 
-  export const h: FC<Prop> = function __kira__frame({
+  export const h: FC<Prop> = function Kira_Frame({
     alignment = Alignment.Center,
     direction = Direction.Column,
     background,

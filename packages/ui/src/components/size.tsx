@@ -22,7 +22,7 @@ export namespace Size {
     `,
   };
 
-  export const h: FC<Props> = function __kira__size({ children, className, fluid = false }) {
+  export const h: FC<Props> = function Kira_Size({ children, className, fluid = false }) {
     if (fluid) {
       return <elements.fluid className={className}>{children}</elements.fluid>;
     }

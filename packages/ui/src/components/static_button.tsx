@@ -22,7 +22,7 @@ export namespace StaticButton {
     `,
   };
 
-  export const h: FC<Props> = function __kira__button({ children, fluid, className, ...rest }) {
+  export const h: FC<Props> = function Kira_Button({ children, fluid, className, ...rest }) {
     return (
       <Size.h fluid={fluid} className={className}>
         <elements.button {...rest}>{children}</elements.button>

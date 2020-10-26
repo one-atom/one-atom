@@ -61,13 +61,13 @@ export class State<T extends ValidStateData> {
     }
   }
 
-  public peek_state(): Readonly<T> {
+  public peekState(): Readonly<T> {
     const [state] = this.read();
 
     return state;
   }
 
-  public in_flow(action: FlowState): void {
+  public inFlow(action: FlowState): void {
     this.flow_state = action;
 
     this.dispatch();
@@ -95,12 +95,12 @@ export class State<T extends ValidStateData> {
     };
   }
 
-  private dispatch() {
+  private dispatch(): void {
     this.hooks.forEach((hook) => hook());
   }
 }
 
-export function new_application_state<T extends ValidStateData>(state: T): State<T> {
+export function newApplicationState<T extends ValidStateData>(state: T): State<T> {
   const application_state = new State<T>(state);
 
   //@ts-ignore

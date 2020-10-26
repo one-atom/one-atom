@@ -55,7 +55,7 @@ export namespace Logger {
     printFns = fns;
   }
 
-  function printMessage(str: string, level?: Level) {
+  function printMessage(str: string, level?: Level): void {
     if (level === Level.ERROR) {
       printFns.error(str);
 

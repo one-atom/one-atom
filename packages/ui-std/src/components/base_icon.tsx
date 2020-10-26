@@ -66,7 +66,7 @@ export namespace BaseIcon {
     `,
   };
 
-  export const h: FC<Props> = function __kira__icon({ children, viewBox, rotation, mirror, center }) {
+  export const h: FC<Props> = function Kira_Icon({ children, viewBox, rotation, mirror, center }) {
     return (
       <elements.svg
         data-testid='svg'

@@ -51,7 +51,7 @@ export namespace BaseInput {
     `,
   };
 
-  export const h: FC<Props> = forwardRef(function __kira__base_input(props, ref) {
+  export const h: FC<Props> = forwardRef(function Kira_BaseInput(props, ref) {
     const {
       // Takes out these values to be used as variables here.
       children,

@@ -24,7 +24,7 @@ export namespace HeadLessStack {
 
   const style_sheet_controller = new StyleSheetController();
 
-  export const h: FC<InternalProps> = function __kira__headless_stack({ axis, fluid, spacing, children }) {
+  export const h: FC<InternalProps> = function Kira_HeadlessStack({ axis, fluid, spacing, children }) {
     const half_spacing = spacing / 2;
     const base_str = `${spacing}_${fluid ? 'y' : 'n'}_${axis === 'Vertical' ? 'v' : 'h'}`;
     const parent_class_name = `p_${base_str}`;
@@ -32,7 +32,7 @@ export namespace HeadLessStack {
 
     if (axis === 'Vertical') {
       style_sheet_controller
-        .add_to_register(
+        .addToRegister(
           `.${parent_class_name}`,
           `
             display: flex;
@@ -42,7 +42,7 @@ export namespace HeadLessStack {
             margin-bottom: -${half_spacing}px!important;
           `,
         )
-        .add_to_register(
+        .addToRegister(
           `.${child_class_name}`,
           `
             ${fluid ? `height: 100%;` : ''}
@@ -52,7 +52,7 @@ export namespace HeadLessStack {
         );
     } else {
       style_sheet_controller
-        .add_to_register(
+        .addToRegister(
           `.${parent_class_name}`,
           `
           display: flex;
@@ -62,7 +62,7 @@ export namespace HeadLessStack {
           margin-right: -${half_spacing}px!important;
         `,
         )
-        .add_to_register(
+        .addToRegister(
           `.${child_class_name}`,
           `
           ${fluid ? `width: 100%;` : ''}
