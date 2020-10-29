@@ -42,7 +42,7 @@ export class DataStruct<T extends ValidStateData> {
     return builder as T;
   }
 
-  public to_iter(): IterableIterator<[keyof T, T[keyof T]]> {
+  public toIter(): IterableIterator<[keyof T, T[keyof T]]> {
     return this.stored_data.entries();
   }
 }

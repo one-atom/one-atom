@@ -3,7 +3,7 @@ import { State, CurrStateTuple } from './application_state';
 import { useEffect, useState } from 'react';
 import { ValidStateData } from './data_struct';
 
-export function use_application_state<T extends ValidStateData>(state: State<T>): CurrStateTuple<T> {
+export function useApplicationState<T extends ValidStateData>(state: State<T>): CurrStateTuple<T> {
   const [, force_update] = useState([]);
 
   useEffect(() => {

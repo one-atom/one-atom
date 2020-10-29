@@ -96,7 +96,7 @@ describe('Data Struct', () => {
 
     let i = 0;
 
-    Array.from(data.to_iter()).forEach(([, value]) => {
+    Array.from(data.toIter()).forEach(([, value]) => {
       i++;
       expect(value).toEqual('1');
     });
