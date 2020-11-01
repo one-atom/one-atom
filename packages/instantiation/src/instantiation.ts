@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Graph } from './graph';
+import { Graph } from './_graph';
 
 class Registration<T> {
   constructor(

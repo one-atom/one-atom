@@ -1,4 +1,4 @@
-import { DataStruct } from '../src/data_struct';
+import { DataStruct } from '../src/_data_struct';
 
 function get_typical_state() {
   return {
