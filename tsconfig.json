@@ -23,7 +23,7 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "@kira/*": ["packages/*/src"]
+      "@kira/*": ["modules/*/src"]
     },
     "composite": true,
     "declaration": true,
@@ -31,15 +31,15 @@
     "sourceMap": true
   },
   "references": [
-    { "path": "packages/helper-filesystem" },
-    { "path": "packages/logger" },
-    { "path": "packages/bundler" },
-    { "path": "packages/std" },
-    { "path": "packages/ui-std" },
-    { "path": "packages/ui" },
-    { "path": "packages/instantiation" },
-    { "path": "packages/application-state" },
-    { "path": "packages/linter" },
-    { "path": "packages/id" },
+    { "path": "modules/helper-filesystem" },
+    { "path": "modules/logger" },
+    { "path": "modules/bundler" },
+    { "path": "modules/std" },
+    { "path": "modules/ui-std" },
+    { "path": "modules/ui" },
+    { "path": "modules/instantiation" },
+    { "path": "modules/application-state" },
+    { "path": "modules/linter" },
+    { "path": "modules/id" },
   ]
 }
