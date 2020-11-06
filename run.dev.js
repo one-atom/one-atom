@@ -4,7 +4,7 @@
 //@ts-check
 'use strict';
 const inquirer = require('inquirer');
-const { Run } = require('./packages/bundler/lib');
+const { Run } = require('./modules/bundler/lib');
 
 const package_choices = [
   {
@@ -28,7 +28,7 @@ inquirer
     },
   ])
   .then((answers) => {
-    const run_path = `${process.cwd()}/packages/${answers.pkg}`;
+    const run_path = `${process.cwd()}/modules/${answers.pkg}`;
 
     Run.development({
       hmr: true,

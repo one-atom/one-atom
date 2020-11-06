@@ -13,7 +13,7 @@ module.exports = {
     },
   },
   moduleNameMapper: {
-    '@kira/(.*)$': '<rootDir>/packages/$1',
+    '@kira/(.*)$': '<rootDir>/modules/$1',
   },
   transformIgnorePatterns: ['node_modules/(?!@ngrx|(?!deck.gl)|ng-dynamic)'],
 };
