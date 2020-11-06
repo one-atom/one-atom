@@ -30,6 +30,9 @@ export const recommended_eslint = {
     // Allows blocked-scoped functions (as in namespaces)
     'no-inner-declarations': 0,
 
+    // TypeScript's compiler already checks for duplicate function implementations
+    'no-dupe-class-members': 0,
+
     // Allows namespace imports to not report incorrect unused error (TypeScript
     // language server will warn instead)
     'no-unused-vars': 'off',
@@ -40,8 +43,29 @@ export const recommended_eslint = {
       'error',
       // Ensures returns have a blank line before them
       { blankLine: 'always', prev: '*', next: 'return' },
-      // Ensures blocks have a blank line after declaration
-      { blankLine: 'always', prev: 'block-like', next: '*' },
+    ],
+
+    // TypeScript should warn about globals
+    'no-undef': 0,
+
+    // No need to explicity type callbacks
+    '@typescript-eslint/explicit-function-return-type': [
+      'error',
+      {
+        allowExpressions: true,
+      },
+    ],
+
+    // Allow function hoisting
+    'no-use-before-define': 'off',
+    '@typescript-eslint/no-use-before-define': 0,
+
+    // Allows empty interfaces
+    '@typescript-eslint/no-empty-interface': [
+      'error',
+      {
+        allowSingleExtends: true,
+      },
     ],
   },
 };
