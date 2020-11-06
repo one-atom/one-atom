@@ -8,5 +8,6 @@
     "lib": ["DOM", "esnext"],
     "module": "esnext",
     "importHelpers": true,
+    "composite": true,
   }
 }

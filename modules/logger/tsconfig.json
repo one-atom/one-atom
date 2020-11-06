@@ -6,5 +6,6 @@
     "outDir": "lib",
     "rootDir": "./src",
     "module": "commonjs",
+    "composite": true,
   }
 }

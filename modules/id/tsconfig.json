@@ -8,5 +8,6 @@
     "lib": ["esnext"],
     "module": "esnext",
     "importHelpers": true,
+    "composite": true,
   }
 }

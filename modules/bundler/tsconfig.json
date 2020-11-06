@@ -5,6 +5,7 @@
     "outDir": "lib",
     "rootDir": "./src",
     "module": "commonjs",
+    "composite": true,
   },
   "references": [
     { "path": "../helper-filesystem" },

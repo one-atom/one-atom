@@ -27,6 +27,7 @@
     "forceConsistentCasingInFileNames": true,
     "suppressImplicitAnyIndexErrors": true,
     "types": ["react", "jest"],
+    "composite": true,
   },
   "references": [
     { "path": "../bundler" },
