@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { BaseButton, KiraPropType } from '@kira/ui-std';
+import { BaseButton, KiraPropType } from '../../../ui-std/src/index';
 import { Size } from './size';
 
 /**

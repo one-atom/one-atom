@@ -1,4 +1,4 @@
-import { Emitter, EventHandler } from '@kira/std';
+import { Emitter, EventHandler } from '../../../std/src/index';
 import { Vec2 } from '../vec_2';
 
 export namespace AnchorPointConsumer {

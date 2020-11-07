@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { KiraPropType } from '@kira/ui-std';
+import { KiraPropType } from '../../../ui-std/src/index';
 import styled from 'styled-components';
 import { A11yRole } from './a11y_role';
 

@@ -19,8 +19,6 @@
     "styled-components": "^5.2.0"
   },
   "devDependencies": {
-    "@kira/bundler": "1.0.0-alpha-01",
-    "@kira/ui-std": "1.0.0-alpha-01",
     "@testing-library/react": "^11.0.4",
     "@types/react": "^16.9.52",
     "@types/react-dev-utils": "^9.0.4",

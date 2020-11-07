@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
-import { HeadLessStack, unwrapFragment } from '@kira/ui-std';
-import { KiraPropType } from '@kira/ui-std';
+import { HeadLessStack, unwrapFragment, KiraPropType } from '../../../ui-std/src/index';
 
 /**
  * HStack

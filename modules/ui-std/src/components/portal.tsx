@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { StyleSheetController } from '../helpers/style_sheet_controller';
-import { Logger } from '@kira/logger';
+import { Logger } from '../../../logger/src/index';
 import { KiraPropType } from '../prop_type';
 
 /**

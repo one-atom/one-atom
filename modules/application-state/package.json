@@ -22,8 +22,6 @@
     "@types/react": "^16.9.52",
     "@types/react-dom": "^16.9.8",
     "@types/react-test-renderer": "^16.9.3",
-    "@kira/std": "1.0.0-alpha-01",
-    "@kira/id": "1.0.0-alpha-01",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   }

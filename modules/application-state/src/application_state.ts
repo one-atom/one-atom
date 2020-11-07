@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
 import { DataStruct, ValidStateData } from './_data_struct';
-import { Id } from '@kira/id';
+import { Id } from '../../id/src/index';
 
 type CurrStateFn<T extends ValidStateData> = (curr_state: Omit<DataStruct<T>, 'insert'>) => Partial<T>;
 

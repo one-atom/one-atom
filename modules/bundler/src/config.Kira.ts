@@ -1,5 +1,5 @@
-import { Locator } from '@kira/helper-filesystem';
-import { Logger } from '@kira/logger';
+import { Locator } from '../../helper-filesystem/src/index';
+import { Logger } from '../../logger/src/index';
 
 export namespace KiraConfig {
   type ValuePrimitive = string | number | boolean | RegExp | null | undefined;

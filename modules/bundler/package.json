@@ -39,8 +39,6 @@
     "webpack-dev-server": "^3.11.0"
   },
   "devDependencies": {
-    "@kira/helper-filesystem": "1.0.0-alpha-01",
-    "@kira/logger": "1.0.0-alpha-01",
     "@types/express": "^4.17.8",
     "@types/react": "^16.9.52",
     "@types/react-dom": "^16.9.8",

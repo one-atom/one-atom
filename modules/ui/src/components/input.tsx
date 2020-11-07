@@ -2,9 +2,8 @@
 
 import React, { FC, forwardRef } from 'react';
 import styled from 'styled-components';
-import { BaseInput } from '@kira/ui-std';
+import { BaseInput, KiraPropType } from '../../../ui-std/src/index';
 import { Size } from './size';
-import { KiraPropType } from '@kira/ui-std';
 
 /**
  * Input

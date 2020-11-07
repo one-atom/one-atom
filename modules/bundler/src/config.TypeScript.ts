@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
 
 import ts from 'typescript';
-import { Locator } from '@kira/helper-filesystem';
-import { Logger } from '@kira/logger';
+import { Locator } from '../../helper-filesystem/src/index';
+import { Logger } from '../../logger/src/index';
 
 export namespace TypeScriptConfig {
   type ParsedCompilerOptions = {

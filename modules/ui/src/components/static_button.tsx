@@ -3,7 +3,7 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import { Size } from './size';
-import { KiraPropType } from '@kira/ui-std';
+import { KiraPropType } from '../../../ui-std/src/index';
 
 /**
  * StaticButton

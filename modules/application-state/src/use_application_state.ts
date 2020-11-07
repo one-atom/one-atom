@@ -1,4 +1,4 @@
-import { EMPTY_ARRAY } from '@kira/std';
+import { EMPTY_ARRAY } from '../../std/src/index';
 import { State, CurrStateTuple } from './application_state';
 import { useEffect, useState } from 'react';
 import { ValidStateData } from './_data_struct';
