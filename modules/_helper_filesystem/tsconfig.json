@@ -1,9 +1,8 @@
 {
-  "include": ["src"],
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "lib",
-    "rootDir": "./src",
+    "outDir": "../../target/_helper_filesystem",
+    "rootDir": "./",
     "module": "commonjs",
     "composite": true,
   }

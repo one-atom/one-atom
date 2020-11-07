@@ -1,4 +1,4 @@
-import { Locator } from '../../_helper_filesystem/src/mod';
+import { Locator } from '../../_helper_filesystem/mod';
 import { Logger } from '../../logger/src/index';
 
 export namespace KiraConfig {
