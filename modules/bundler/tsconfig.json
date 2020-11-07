@@ -8,7 +8,7 @@
     "composite": true,
   },
   "references": [
-    { "path": "../helper-filesystem" },
+    { "path": "../_helper_filesystem" },
     { "path": "../logger" },
   ]
 }

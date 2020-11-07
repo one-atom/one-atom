@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
 
 import ts from 'typescript';
-import { Locator } from '../../helper-filesystem/src/index';
+import { Locator } from '../../_helper_filesystem/src/mod';
 import { Logger } from '../../logger/src/index';
 
 export namespace TypeScriptConfig {

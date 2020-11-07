@@ -18,7 +18,7 @@
     },
   },
   "references": [
-    { "path": "modules/helper-filesystem" },
+    { "path": "modules/_helper_filesystem" },
     { "path": "modules/logger" },
     { "path": "modules/bundler" },
     { "path": "modules/std" },
