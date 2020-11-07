@@ -1,10 +1,12 @@
 {
   "files": [],
+  "include": [],
   "exclude": ["node_modules", "dist", "lib"],
   "compilerOptions": {
-    "rootDir": ".",
+    "rootDir": "./modules",
     "baseUrl": ".",
     "strict": true,
+    "declaration": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "noImplicitReturns": true,
@@ -13,20 +15,8 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    "paths": {
-      "@kira/*": ["modules/*/src"]
-    },
   },
   "references": [
     { "path": "modules/_helper_filesystem" },
-    { "path": "modules/logger" },
-    { "path": "modules/bundler" },
-    { "path": "modules/std" },
-    { "path": "modules/ui-std" },
-    { "path": "modules/ui" },
-    { "path": "modules/instantiation" },
-    { "path": "modules/application-state" },
-    { "path": "modules/linter" },
-    { "path": "modules/id" },
   ]
 }

@@ -1,9 +1,12 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../target/_helper_filesystem",
-    "rootDir": "./",
+    "outDir": "../../target",
     "module": "commonjs",
     "composite": true,
-  }
+  },
+  "files": [
+    "mod.ts",
+    "locator.ts"
+  ]
 }

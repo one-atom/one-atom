@@ -4,7 +4,7 @@
   "scripts": {
     "boot": "lerna bootstrap",
     "dev": "node run.dev",
-    "build": "tsc --build",
+    "build": "tsc --build modules/_helper_filesystem",
     "pretest": "yarn build",
     "test": "jest",
     "clean": "rimraf modules/*/{tsconfig.tsbuildinfo,lib,dist}"

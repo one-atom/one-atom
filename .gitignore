@@ -1,9 +1,8 @@
-node_modules
-.cache-loader
+node_modules/
+.node_modules/
+built/*
+**/dist/*
+**/.DS_Store
+coverage/
 yarn-error.log
-.DS_Store
-.DS_Store?
-lib
-tsconfig.tsbuildinfo
-dist
-coverage
+
