@@ -1,3 +1,3 @@
-# Kira 
+# One Atom 
 
-Kira is a React framework that aims to provide productive environments for large scale applications 
+One Atom is a collection of modules to provide productive environments for large scale applications.
