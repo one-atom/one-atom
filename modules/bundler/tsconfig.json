@@ -1,12 +1,19 @@
 {
-  "include": ["src"],
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "lib",
-    "rootDir": "./src",
+    "outDir": "../../target",
     "module": "commonjs",
     "composite": true,
   },
+  "files": [
+    "index.ts",
+    "config.Babel.ts",
+    "config.Kira.ts",
+    "config.TypeScript.ts",
+    "index.ts",
+    "Paths.ts",
+    "run.ts",
+  ],
   "references": [
     { "path": "../_helper_filesystem" },
     { "path": "../logger" },
