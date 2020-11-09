@@ -40,4 +40,5 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
+  "deno.enable": true,
 }
