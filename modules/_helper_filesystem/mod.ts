@@ -1,1 +1,1 @@
-export { Locator } from './locator';
+export * from './locator';
