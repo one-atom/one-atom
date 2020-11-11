@@ -3,7 +3,7 @@
   "license": "MIT",
   "scripts": {
     "boot": "lerna bootstrap",
-    "build": "tsc --build modules/_helper_filesystem",
+    "build": "tsc --build",
     "pretest": "yarn build",
     "test": "jest",
     "clean": "rimraf modules/*/{tsconfig.tsbuildinfo,lib,dist}"

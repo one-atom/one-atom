@@ -19,5 +19,7 @@
   "references": [
     { "path": "modules/_helper_filesystem" },
     { "path": "modules/instantiation" },
+    { "path": "modules/bundler" },
+    { "path": "modules/logger" },
   ]
 }
