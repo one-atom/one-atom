@@ -69,8 +69,8 @@ export namespace BaseIcon {
   export const h: FC<Props> = function Kira_Icon({ children, viewBox, rotation, mirror, center }) {
     return (
       <elements.svg
-        data-testid='svg'
-        xmlns='http://www.w3.org/2000/svg'
+        data-testid="svg"
+        xmlns="http://www.w3.org/2000/svg"
         viewBox={viewBox ?? '0 0 512 512'}
         rotation={rotation ?? 0}
         mirror={mirror ?? null}

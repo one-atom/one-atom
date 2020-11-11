@@ -17,7 +17,7 @@ export namespace A11yRegion {
 
   export const h: FC<Props> = function A11yRegion({ children, label, ...rest }) {
     return (
-      <elements.container aria-label={label} role='region' {...rest}>
+      <elements.container aria-label={label} role="region" {...rest}>
         {children}
       </elements.container>
     );

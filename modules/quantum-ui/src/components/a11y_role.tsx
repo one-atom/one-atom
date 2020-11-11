@@ -45,7 +45,7 @@ export namespace A11yRole {
       | 'tabpanel'      // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/ARIA:_tabpanel_role
       | 'textbox'       // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/textbox_role
       | 'timer'         // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/ARIA_timer_role
-      ;
+      ;;
   };
 
   const elements = {
