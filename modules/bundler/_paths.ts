@@ -1,5 +1,5 @@
 import path from 'path';
-import { TypeScriptConfig } from './config.TypeScript';
+import { TypeScriptConfig } from './_config_typeScript';
 
 export namespace Paths {
   export type Dictionary = {
@@ -16,7 +16,7 @@ export namespace Paths {
   export function get(root: string): Readonly<Dictionary> {
     const { outDir, rootDir } = TypeScriptConfig.get_compiler_options(root);
 
-    function resolveRelative(root: string, location: string) {
+    function resolveRelative(root: string, location: string): string {
       return path.resolve(root, location);
     }
 

@@ -1,11 +1,12 @@
 {
-  "include": ["src"],
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "lib": [],
-    "outDir": "lib",
-    "rootDir": "./src",
+    "outDir": "../../target",
     "module": "commonjs",
     "composite": true,
-  }
+  },
+  "files": [
+    "_logger.ts",
+    "mod.ts",
+  ],
 }

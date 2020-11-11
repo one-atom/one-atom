@@ -1,4 +1,4 @@
-import { Instantiation } from './instantiation';
+import { Instantiation } from './_instantiation';
 
 class Node<T> {
   public readonly incoming = new Map<Instantiation.Token, Node<T>>();

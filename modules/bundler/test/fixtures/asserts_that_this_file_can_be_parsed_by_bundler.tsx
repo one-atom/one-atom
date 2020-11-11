@@ -5,7 +5,7 @@ import * as c from './export_namespace_from';
 
 const root = document.getElementById('app');
 
-function assert_into_dom(something: unknown) {
+function assert_into_dom(something: unknown): void {
   const txt = `${something} is working`;
   const node = document.createElement('p');
   node.innerHTML = txt;

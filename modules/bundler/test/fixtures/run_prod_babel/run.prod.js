@@ -1,7 +1,7 @@
 // @ts-check
 /* eslint-disable */
 
-const { Run } = require('../../../lib');
+const { Run } = require('../../../../../target/bundler/mod');
 
 Run.production({
   parseWithBabel: true,

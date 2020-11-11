@@ -1,4 +1,4 @@
-import { Paths } from '../../src/Paths';
+import { Paths } from '../../_paths';
 import mock from 'mock-fs';
 import path from 'path';
 

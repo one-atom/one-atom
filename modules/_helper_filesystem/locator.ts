@@ -1,7 +1,7 @@
 import fs, { PathLike } from 'fs';
 import json5 from 'json5';
 
-namespace Locator {
+export namespace Locator {
   export function dirExists(path: PathLike): boolean {
     if (fs.existsSync(path)) return true;
 

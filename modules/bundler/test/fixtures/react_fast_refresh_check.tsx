@@ -9,7 +9,7 @@ const Wrapper = styled.div`
 export const TestComponent: React.FC = () => {
   const [state, setState] = useState(0);
 
-  function handle_click() {
+  function handle_click(): void {
     setState(state + 1);
   }
 

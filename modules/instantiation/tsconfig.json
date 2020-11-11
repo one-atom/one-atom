@@ -1,13 +1,17 @@
 {
-  "include": ["src"],
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "lib",
-    "rootDir": "./src",
+    "outDir": "../../target",
     "target": "ES2018",
     "lib": ["esnext"],
     "module": "esnext",
     "importHelpers": true,
     "composite": true,
-  }
+  },
+  "files": [
+    "_graph.ts",
+    "_instantiation.ts",
+    "_useService.ts",
+    "mod.ts",
+  ]
 }

@@ -1,4 +1,4 @@
-import { Instantiation, flushAll, flushSingletons, Singleton, Scoped, Transient } from '../src/instantiation';
+import { Instantiation, flushAll, flushSingletons, Singleton, Scoped, Transient } from '../_instantiation';
 
 describe('Instantiation', () => {
   afterEach(() => {

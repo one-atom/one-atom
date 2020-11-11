@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { flushAll, useService, Singleton, Scoped } from '../src';
+import { flushAll, useService, Singleton, Scoped } from '../mod';
 import { render } from '@testing-library/react';
 
 describe('useService', () => {

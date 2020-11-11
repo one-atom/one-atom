@@ -1,4 +1,4 @@
-import { Graph } from '../src/graph';
+import { Graph } from '../_graph';
 
 describe('graph', () => {
   interface Data {

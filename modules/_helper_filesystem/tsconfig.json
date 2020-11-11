@@ -7,6 +7,6 @@
   },
   "files": [
     "mod.ts",
-    "locator.ts"
+    "locator.ts",
   ]
 }

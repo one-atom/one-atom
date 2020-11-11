@@ -3,9 +3,9 @@ import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
-import { Paths } from './Paths';
-import { KiraConfig } from './config.Kira';
-import { BabelConfig } from './config.Babel';
+import { Paths } from './_paths';
+import { KiraConfig } from './_config_kira';
+import { BabelConfig } from './_config_babel';
 
 export namespace WebpackConfig {
   interface DevelopmentConfiguration {

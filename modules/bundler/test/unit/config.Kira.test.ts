@@ -1,4 +1,4 @@
-import { KiraConfig } from '../../src/config.Kira';
+import { KiraConfig } from '../../_config_kira';
 import mock from 'mock-fs';
 
 beforeEach(() => {

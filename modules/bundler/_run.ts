@@ -1,8 +1,8 @@
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware';
-import { Paths } from './Paths';
-import { WebpackConfig } from './config.Webpack';
+import { Paths } from './_paths';
+import { WebpackConfig } from './_config_webpack';
 
 export namespace Run {
   interface DevSpecification {
