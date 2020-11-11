@@ -2,16 +2,16 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../target",
-    "target": "ES2018",
+    "target": "ES2019",
     "lib": ["esnext"],
     "module": "esnext",
-    "importHelpers": true,
     "composite": true,
+    "types": ["reflect-metadata"]
   },
   "files": [
     "_graph.ts",
     "_instantiation.ts",
-    "_useService.ts",
+    "_use_service.ts",
     "mod.ts",
   ]
 }

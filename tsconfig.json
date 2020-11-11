@@ -18,5 +18,6 @@
   },
   "references": [
     { "path": "modules/_helper_filesystem" },
+    { "path": "modules/instantiation" },
   ]
 }
