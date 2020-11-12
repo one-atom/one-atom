@@ -123,290 +123,434 @@ describe('Instantiation', () => {
       expect(d).toBeInstanceOf(D);
     }
 
-    // Order A -> B -> C -> D
-    {
+    try {
       const a = Instantiation.resolve(A);
       const b = Instantiation.resolve(B);
       const c = Instantiation.resolve(C);
       const d = Instantiation.resolve(D);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order A -> B -> C -> D
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order A -> B -> D -> C
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const a = Instantiation.resolve(A);
       const b = Instantiation.resolve(B);
       const d = Instantiation.resolve(D);
       const c = Instantiation.resolve(C);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order A -> B -> D -> C
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order A -> C -> D -> B
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const a = Instantiation.resolve(A);
       const c = Instantiation.resolve(C);
       const d = Instantiation.resolve(D);
       const b = Instantiation.resolve(B);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order A -> C -> D -> B
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order A -> C -> B -> D
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const a = Instantiation.resolve(A);
       const c = Instantiation.resolve(C);
       const b = Instantiation.resolve(B);
       const d = Instantiation.resolve(D);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order A -> C -> B -> D
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order A -> D -> B -> C
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const a = Instantiation.resolve(A);
       const d = Instantiation.resolve(D);
       const b = Instantiation.resolve(B);
       const c = Instantiation.resolve(C);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order A -> D -> B -> C
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order A -> D -> C -> B
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const a = Instantiation.resolve(A);
       const d = Instantiation.resolve(D);
       const c = Instantiation.resolve(C);
       const b = Instantiation.resolve(B);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order A -> D -> C -> B
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order B -> A -> C -> D
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const b = Instantiation.resolve(B);
       const a = Instantiation.resolve(A);
       const c = Instantiation.resolve(C);
       const d = Instantiation.resolve(D);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order B -> A -> C -> D
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order B -> A -> D -> C
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const b = Instantiation.resolve(B);
       const a = Instantiation.resolve(A);
       const d = Instantiation.resolve(D);
       const c = Instantiation.resolve(C);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order B -> A -> D -> C
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order B -> C -> A -> D
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const b = Instantiation.resolve(B);
       const c = Instantiation.resolve(C);
       const a = Instantiation.resolve(A);
       const d = Instantiation.resolve(D);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order B -> C -> A -> D
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order B -> C -> D -> A
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const b = Instantiation.resolve(B);
       const c = Instantiation.resolve(C);
       const d = Instantiation.resolve(D);
       const a = Instantiation.resolve(A);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order B -> C -> D -> A
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order B -> D -> A -> C
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const b = Instantiation.resolve(B);
       const d = Instantiation.resolve(D);
       const a = Instantiation.resolve(A);
       const c = Instantiation.resolve(C);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order B -> D -> A -> C
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order B -> D -> C -> A
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const b = Instantiation.resolve(B);
       const d = Instantiation.resolve(D);
       const c = Instantiation.resolve(C);
       const a = Instantiation.resolve(A);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order B -> D -> C -> A
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order C -> A -> B -> D
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const c = Instantiation.resolve(C);
       const a = Instantiation.resolve(A);
       const b = Instantiation.resolve(B);
       const d = Instantiation.resolve(D);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order C -> A -> B -> D
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order C -> A -> D -> B
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const c = Instantiation.resolve(C);
       const a = Instantiation.resolve(A);
       const d = Instantiation.resolve(D);
       const b = Instantiation.resolve(B);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order C -> A -> D -> B
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order C -> B -> A -> D
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const c = Instantiation.resolve(C);
       const b = Instantiation.resolve(B);
       const a = Instantiation.resolve(A);
       const d = Instantiation.resolve(D);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order C -> B -> A -> D
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order C -> B -> D -> A
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const c = Instantiation.resolve(C);
       const b = Instantiation.resolve(B);
       const d = Instantiation.resolve(D);
       const a = Instantiation.resolve(A);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order C -> B -> D -> A
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order C -> D -> B -> A
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const c = Instantiation.resolve(C);
       const d = Instantiation.resolve(D);
       const b = Instantiation.resolve(B);
       const a = Instantiation.resolve(A);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order C -> D -> B -> A
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order C -> D -> A -> B
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const c = Instantiation.resolve(C);
       const d = Instantiation.resolve(D);
       const a = Instantiation.resolve(A);
       const b = Instantiation.resolve(B);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order C -> D -> A -> B
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order D -> A -> B -> C
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const d = Instantiation.resolve(D);
       const a = Instantiation.resolve(A);
       const b = Instantiation.resolve(B);
       const c = Instantiation.resolve(C);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order D -> A -> B -> C
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order D -> A -> C -> B
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const d = Instantiation.resolve(D);
       const a = Instantiation.resolve(A);
       const c = Instantiation.resolve(C);
       const b = Instantiation.resolve(B);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order D -> A -> C -> B
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order D -> B -> C -> A
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const d = Instantiation.resolve(D);
       const b = Instantiation.resolve(B);
       const c = Instantiation.resolve(C);
       const a = Instantiation.resolve(A);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order D -> B -> C -> A
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order D -> B -> A -> C
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const d = Instantiation.resolve(D);
       const b = Instantiation.resolve(B);
       const a = Instantiation.resolve(A);
       const c = Instantiation.resolve(C);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order D -> B -> A -> C
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order D -> C -> A -> B
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const d = Instantiation.resolve(D);
       const c = Instantiation.resolve(C);
       const a = Instantiation.resolve(A);
       const b = Instantiation.resolve(B);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order D -> C -> A -> B
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order D -> C -> B -> A
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const d = Instantiation.resolve(D);
       const c = Instantiation.resolve(C);
       const b = Instantiation.resolve(B);
       const a = Instantiation.resolve(A);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order D -> C -> B -> A
+
+        failed at:
+        ${error.message}
+      `);
     }
   });
 
@@ -461,290 +605,434 @@ describe('Instantiation', () => {
       expect(d).toBeInstanceOf(D);
     }
 
-    // Order A -> B -> C -> D
-    {
+    try {
       const a = Instantiation.resolve(A);
       const b = Instantiation.resolve(B);
       const c = Instantiation.resolve(C);
       const d = Instantiation.resolve(D);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order A -> B -> C -> D
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order A -> B -> D -> C
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const a = Instantiation.resolve(A);
       const b = Instantiation.resolve(B);
       const d = Instantiation.resolve(D);
       const c = Instantiation.resolve(C);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order A -> B -> D -> C
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order A -> C -> D -> B
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const a = Instantiation.resolve(A);
       const c = Instantiation.resolve(C);
       const d = Instantiation.resolve(D);
       const b = Instantiation.resolve(B);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order A -> C -> D -> B
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order A -> C -> B -> D
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const a = Instantiation.resolve(A);
       const c = Instantiation.resolve(C);
       const b = Instantiation.resolve(B);
       const d = Instantiation.resolve(D);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order A -> C -> B -> D
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order A -> D -> B -> C
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const a = Instantiation.resolve(A);
       const d = Instantiation.resolve(D);
       const b = Instantiation.resolve(B);
       const c = Instantiation.resolve(C);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order A -> D -> B -> C
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order A -> D -> C -> B
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const a = Instantiation.resolve(A);
       const d = Instantiation.resolve(D);
       const c = Instantiation.resolve(C);
       const b = Instantiation.resolve(B);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order A -> D -> C -> B
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order B -> A -> C -> D
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const b = Instantiation.resolve(B);
       const a = Instantiation.resolve(A);
       const c = Instantiation.resolve(C);
       const d = Instantiation.resolve(D);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order B -> A -> C -> D
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order B -> A -> D -> C
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const b = Instantiation.resolve(B);
       const a = Instantiation.resolve(A);
       const d = Instantiation.resolve(D);
       const c = Instantiation.resolve(C);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order B -> A -> D -> C
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order B -> C -> A -> D
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const b = Instantiation.resolve(B);
       const c = Instantiation.resolve(C);
       const a = Instantiation.resolve(A);
       const d = Instantiation.resolve(D);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order B -> C -> A -> D
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order B -> C -> D -> A
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const b = Instantiation.resolve(B);
       const c = Instantiation.resolve(C);
       const d = Instantiation.resolve(D);
       const a = Instantiation.resolve(A);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order B -> C -> D -> A
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order B -> D -> A -> C
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const b = Instantiation.resolve(B);
       const d = Instantiation.resolve(D);
       const a = Instantiation.resolve(A);
       const c = Instantiation.resolve(C);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order B -> D -> A -> C
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order B -> D -> C -> A
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const b = Instantiation.resolve(B);
       const d = Instantiation.resolve(D);
       const c = Instantiation.resolve(C);
       const a = Instantiation.resolve(A);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order B -> D -> C -> A
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order C -> A -> B -> D
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const c = Instantiation.resolve(C);
       const a = Instantiation.resolve(A);
       const b = Instantiation.resolve(B);
       const d = Instantiation.resolve(D);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order C -> A -> B -> D
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order C -> A -> D -> B
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const c = Instantiation.resolve(C);
       const a = Instantiation.resolve(A);
       const d = Instantiation.resolve(D);
       const b = Instantiation.resolve(B);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order C -> A -> D -> B
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order C -> B -> A -> D
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const c = Instantiation.resolve(C);
       const b = Instantiation.resolve(B);
       const a = Instantiation.resolve(A);
       const d = Instantiation.resolve(D);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order C -> B -> A -> D
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order C -> B -> D -> A
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const c = Instantiation.resolve(C);
       const b = Instantiation.resolve(B);
       const d = Instantiation.resolve(D);
       const a = Instantiation.resolve(A);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order C -> B -> D -> A
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order C -> D -> B -> A
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const c = Instantiation.resolve(C);
       const d = Instantiation.resolve(D);
       const b = Instantiation.resolve(B);
       const a = Instantiation.resolve(A);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order C -> D -> B -> A
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order C -> D -> A -> B
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const c = Instantiation.resolve(C);
       const d = Instantiation.resolve(D);
       const a = Instantiation.resolve(A);
       const b = Instantiation.resolve(B);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order C -> D -> A -> B
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order D -> A -> B -> C
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const d = Instantiation.resolve(D);
       const a = Instantiation.resolve(A);
       const b = Instantiation.resolve(B);
       const c = Instantiation.resolve(C);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order D -> A -> B -> C
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order D -> A -> C -> B
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const d = Instantiation.resolve(D);
       const a = Instantiation.resolve(A);
       const c = Instantiation.resolve(C);
       const b = Instantiation.resolve(B);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order D -> A -> C -> B
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order D -> B -> C -> A
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const d = Instantiation.resolve(D);
       const b = Instantiation.resolve(B);
       const c = Instantiation.resolve(C);
       const a = Instantiation.resolve(A);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order D -> B -> C -> A
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order D -> B -> A -> C
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const d = Instantiation.resolve(D);
       const b = Instantiation.resolve(B);
       const a = Instantiation.resolve(A);
       const c = Instantiation.resolve(C);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order D -> B -> A -> C
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order D -> C -> A -> B
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const d = Instantiation.resolve(D);
       const c = Instantiation.resolve(C);
       const a = Instantiation.resolve(A);
       const b = Instantiation.resolve(B);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order D -> C -> A -> B
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order D -> C -> B -> A
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const d = Instantiation.resolve(D);
       const c = Instantiation.resolve(C);
       const b = Instantiation.resolve(B);
       const a = Instantiation.resolve(A);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order D -> C -> B -> A
+
+        failed at:
+        ${error.message}
+      `);
     }
   });
 
@@ -799,290 +1087,434 @@ describe('Instantiation', () => {
       expect(d).toBeInstanceOf(D);
     }
 
-    // Order A -> B -> C -> D
-    {
+    try {
       const a = Instantiation.resolve(A);
       const b = Instantiation.resolve(B);
       const c = Instantiation.resolve(C);
       const d = Instantiation.resolve(D);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order Order A -> B -> C -> D
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order A -> B -> D -> C
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const a = Instantiation.resolve(A);
       const b = Instantiation.resolve(B);
       const d = Instantiation.resolve(D);
       const c = Instantiation.resolve(C);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order A -> B -> D -> C
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order A -> C -> D -> B
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const a = Instantiation.resolve(A);
       const c = Instantiation.resolve(C);
       const d = Instantiation.resolve(D);
       const b = Instantiation.resolve(B);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order A -> C -> D -> B
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order A -> C -> B -> D
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const a = Instantiation.resolve(A);
       const c = Instantiation.resolve(C);
       const b = Instantiation.resolve(B);
       const d = Instantiation.resolve(D);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order A -> C -> B -> D
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order A -> D -> B -> C
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const a = Instantiation.resolve(A);
       const d = Instantiation.resolve(D);
       const b = Instantiation.resolve(B);
       const c = Instantiation.resolve(C);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order A -> D -> B -> C
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order A -> D -> C -> B
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const a = Instantiation.resolve(A);
       const d = Instantiation.resolve(D);
       const c = Instantiation.resolve(C);
       const b = Instantiation.resolve(B);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order A -> D -> C -> B
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order B -> A -> C -> D
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const b = Instantiation.resolve(B);
       const a = Instantiation.resolve(A);
       const c = Instantiation.resolve(C);
       const d = Instantiation.resolve(D);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order B -> A -> C -> D
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order B -> A -> D -> C
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const b = Instantiation.resolve(B);
       const a = Instantiation.resolve(A);
       const d = Instantiation.resolve(D);
       const c = Instantiation.resolve(C);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order B -> A -> D -> C
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order B -> C -> A -> D
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const b = Instantiation.resolve(B);
       const c = Instantiation.resolve(C);
       const a = Instantiation.resolve(A);
       const d = Instantiation.resolve(D);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order B -> C -> A -> D
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order B -> C -> D -> A
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const b = Instantiation.resolve(B);
       const c = Instantiation.resolve(C);
       const d = Instantiation.resolve(D);
       const a = Instantiation.resolve(A);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order B -> C -> D -> A
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order B -> D -> A -> C
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const b = Instantiation.resolve(B);
       const d = Instantiation.resolve(D);
       const a = Instantiation.resolve(A);
       const c = Instantiation.resolve(C);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order B -> D -> A -> C
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order B -> D -> C -> A
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const b = Instantiation.resolve(B);
       const d = Instantiation.resolve(D);
       const c = Instantiation.resolve(C);
       const a = Instantiation.resolve(A);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order B -> D -> C -> A
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order C -> A -> B -> D
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const c = Instantiation.resolve(C);
       const a = Instantiation.resolve(A);
       const b = Instantiation.resolve(B);
       const d = Instantiation.resolve(D);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order C -> A -> B -> D
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order C -> A -> D -> B
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const c = Instantiation.resolve(C);
       const a = Instantiation.resolve(A);
       const d = Instantiation.resolve(D);
       const b = Instantiation.resolve(B);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order C -> A -> D -> B
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order C -> B -> A -> D
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const c = Instantiation.resolve(C);
       const b = Instantiation.resolve(B);
       const a = Instantiation.resolve(A);
       const d = Instantiation.resolve(D);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order C -> B -> A -> D
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order C -> B -> D -> A
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const c = Instantiation.resolve(C);
       const b = Instantiation.resolve(B);
       const d = Instantiation.resolve(D);
       const a = Instantiation.resolve(A);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order C -> B -> D -> A
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order C -> D -> B -> A
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const c = Instantiation.resolve(C);
       const d = Instantiation.resolve(D);
       const b = Instantiation.resolve(B);
       const a = Instantiation.resolve(A);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order C -> D -> B -> A
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order C -> D -> A -> B
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const c = Instantiation.resolve(C);
       const d = Instantiation.resolve(D);
       const a = Instantiation.resolve(A);
       const b = Instantiation.resolve(B);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order C -> D -> A -> B
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order D -> A -> B -> C
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const d = Instantiation.resolve(D);
       const a = Instantiation.resolve(A);
       const b = Instantiation.resolve(B);
       const c = Instantiation.resolve(C);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order D -> A -> B -> C
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order D -> A -> C -> B
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const d = Instantiation.resolve(D);
       const a = Instantiation.resolve(A);
       const c = Instantiation.resolve(C);
       const b = Instantiation.resolve(B);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order D -> A -> C -> B
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order D -> B -> C -> A
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const d = Instantiation.resolve(D);
       const b = Instantiation.resolve(B);
       const c = Instantiation.resolve(C);
       const a = Instantiation.resolve(A);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order D -> B -> C -> A
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order D -> B -> A -> C
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const d = Instantiation.resolve(D);
       const b = Instantiation.resolve(B);
       const a = Instantiation.resolve(A);
       const c = Instantiation.resolve(C);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order D -> B -> A -> C
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order D -> C -> A -> B
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const d = Instantiation.resolve(D);
       const c = Instantiation.resolve(C);
       const a = Instantiation.resolve(A);
       const b = Instantiation.resolve(B);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order D -> C -> A -> B
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order D -> C -> B -> A
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const d = Instantiation.resolve(D);
       const c = Instantiation.resolve(C);
       const b = Instantiation.resolve(B);
       const a = Instantiation.resolve(A);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order D -> C -> B -> A
+
+        failed at:
+        ${error.message}
+      `);
     }
   });
 
@@ -1165,290 +1597,434 @@ describe('Instantiation', () => {
       d_count = 0;
     }
 
-    // Order A -> B -> C -> D
-    {
+    try {
       const a = Instantiation.resolve(A);
       const b = Instantiation.resolve(B);
       const c = Instantiation.resolve(C);
       const d = Instantiation.resolve(D);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order Order A -> B -> C -> D
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order A -> B -> D -> C
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const a = Instantiation.resolve(A);
       const b = Instantiation.resolve(B);
       const d = Instantiation.resolve(D);
       const c = Instantiation.resolve(C);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order A -> B -> D -> C
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order A -> C -> D -> B
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const a = Instantiation.resolve(A);
       const c = Instantiation.resolve(C);
       const d = Instantiation.resolve(D);
       const b = Instantiation.resolve(B);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order A -> C -> D -> B
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order A -> C -> B -> D
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const a = Instantiation.resolve(A);
       const c = Instantiation.resolve(C);
       const b = Instantiation.resolve(B);
       const d = Instantiation.resolve(D);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order A -> C -> B -> D
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order A -> D -> B -> C
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const a = Instantiation.resolve(A);
       const d = Instantiation.resolve(D);
       const b = Instantiation.resolve(B);
       const c = Instantiation.resolve(C);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order A -> D -> B -> C
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order A -> D -> C -> B
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const a = Instantiation.resolve(A);
       const d = Instantiation.resolve(D);
       const c = Instantiation.resolve(C);
       const b = Instantiation.resolve(B);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order A -> D -> C -> B
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order B -> A -> C -> D
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const b = Instantiation.resolve(B);
       const a = Instantiation.resolve(A);
       const c = Instantiation.resolve(C);
       const d = Instantiation.resolve(D);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order B -> A -> C -> D
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order B -> A -> D -> C
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const b = Instantiation.resolve(B);
       const a = Instantiation.resolve(A);
       const d = Instantiation.resolve(D);
       const c = Instantiation.resolve(C);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order B -> A -> D -> C
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order B -> C -> A -> D
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const b = Instantiation.resolve(B);
       const c = Instantiation.resolve(C);
       const a = Instantiation.resolve(A);
       const d = Instantiation.resolve(D);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order B -> C -> A -> D
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order B -> C -> D -> A
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const b = Instantiation.resolve(B);
       const c = Instantiation.resolve(C);
       const d = Instantiation.resolve(D);
       const a = Instantiation.resolve(A);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order B -> C -> D -> A
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order B -> D -> A -> C
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const b = Instantiation.resolve(B);
       const d = Instantiation.resolve(D);
       const a = Instantiation.resolve(A);
       const c = Instantiation.resolve(C);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order B -> D -> A -> C
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order B -> D -> C -> A
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const b = Instantiation.resolve(B);
       const d = Instantiation.resolve(D);
       const c = Instantiation.resolve(C);
       const a = Instantiation.resolve(A);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order B -> D -> C -> A
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order C -> A -> B -> D
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const c = Instantiation.resolve(C);
       const a = Instantiation.resolve(A);
       const b = Instantiation.resolve(B);
       const d = Instantiation.resolve(D);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order C -> A -> B -> D
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order C -> A -> D -> B
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const c = Instantiation.resolve(C);
       const a = Instantiation.resolve(A);
       const d = Instantiation.resolve(D);
       const b = Instantiation.resolve(B);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order C -> A -> D -> B
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order C -> B -> A -> D
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const c = Instantiation.resolve(C);
       const b = Instantiation.resolve(B);
       const a = Instantiation.resolve(A);
       const d = Instantiation.resolve(D);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order C -> B -> A -> D
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order C -> B -> D -> A
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const c = Instantiation.resolve(C);
       const b = Instantiation.resolve(B);
       const d = Instantiation.resolve(D);
       const a = Instantiation.resolve(A);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order C -> B -> D -> A
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order C -> D -> B -> A
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const c = Instantiation.resolve(C);
       const d = Instantiation.resolve(D);
       const b = Instantiation.resolve(B);
       const a = Instantiation.resolve(A);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order C -> D -> B -> A
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order C -> D -> A -> B
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const c = Instantiation.resolve(C);
       const d = Instantiation.resolve(D);
       const a = Instantiation.resolve(A);
       const b = Instantiation.resolve(B);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order C -> D -> A -> B
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order D -> A -> B -> C
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const d = Instantiation.resolve(D);
       const a = Instantiation.resolve(A);
       const b = Instantiation.resolve(B);
       const c = Instantiation.resolve(C);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order D -> A -> B -> C
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order D -> A -> C -> B
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const d = Instantiation.resolve(D);
       const a = Instantiation.resolve(A);
       const c = Instantiation.resolve(C);
       const b = Instantiation.resolve(B);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order D -> A -> C -> B
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order D -> B -> C -> A
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const d = Instantiation.resolve(D);
       const b = Instantiation.resolve(B);
       const c = Instantiation.resolve(C);
       const a = Instantiation.resolve(A);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order D -> B -> C -> A
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order D -> B -> A -> C
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const d = Instantiation.resolve(D);
       const b = Instantiation.resolve(B);
       const a = Instantiation.resolve(A);
       const c = Instantiation.resolve(C);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order D -> B -> A -> C
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order D -> C -> A -> B
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const d = Instantiation.resolve(D);
       const c = Instantiation.resolve(C);
       const a = Instantiation.resolve(A);
       const b = Instantiation.resolve(B);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order D -> C -> A -> B
+
+        failed at:
+        ${error.message}
+      `);
     }
 
-    // Order D -> C -> B -> A
     flushSingletons();
     fn.mockReset();
-    {
+    try {
       const d = Instantiation.resolve(D);
       const c = Instantiation.resolve(C);
       const b = Instantiation.resolve(B);
       const a = Instantiation.resolve(A);
       regardless_of_resolved_order_this_should_not_throw(a, b, c, d);
       expect(fn).toHaveBeenCalledTimes(call_amount);
+    } catch (error) {
+      throw new Error(`
+        Order D -> C -> B -> A
+
+        failed at:
+        ${error.message}
+      `);
     }
   });
 
