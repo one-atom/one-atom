@@ -2,7 +2,7 @@
   "include": ["src"],
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "lib",
+    "outDir": "../../npm_target/dist",
     "rootDir": "./src",
     "target": "ES2018",
     "lib": ["DOM", "esnext"],
