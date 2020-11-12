@@ -3,8 +3,9 @@
   "include": [],
   "exclude": ["node_modules", "dist", "lib"],
   "compilerOptions": {
-    "rootDir": "./modules",
     "baseUrl": ".",
+    "target": "ES2019",
+    "rootDir": "./modules",
     "strict": true,
     "declaration": true,
     "skipLibCheck": true,
