@@ -8,5 +8,5 @@
     "jsx": "react",
     "strict": false,
   },
-  "include": ["src/**/*.ts", "test/**/*.ts"],
+  "include": ["test/**/*.ts"],
 }

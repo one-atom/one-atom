@@ -9,11 +9,8 @@ module.exports = {
   testMatch: ['**/__tests__/**/*.test.*', '**/test/**/*.test.*'],
   globals: {
     'ts-jest': {
-      tsConfig: 'tsconfig.test.json',
+      tsconfig: 'tsconfig.test.json',
     },
-  },
-  moduleNameMapper: {
-    '@kira/(.*)$': '<rootDir>/modules/$1',
   },
   transformIgnorePatterns: ['node_modules/(?!@ngrx|(?!deck.gl)|ng-dynamic)'],
 };
