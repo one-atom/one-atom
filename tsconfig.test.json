@@ -6,6 +6,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "jsx": "react",
+    "strict": false,
   },
   "include": ["src/**/*.ts", "test/**/*.ts"],
 }

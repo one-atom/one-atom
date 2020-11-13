@@ -6,6 +6,7 @@
     "baseUrl": ".",
     "target": "ES2019",
     "rootDir": "./modules",
+    "lib": ["esnext"],
     "strict": true,
     "declaration": true,
     "skipLibCheck": true,
@@ -19,8 +20,12 @@
   },
   "references": [
     { "path": "modules/_helper_filesystem" },
-    { "path": "modules/instantiation" },
+    { "path": "modules/application_state" },
     { "path": "modules/bundler" },
+    { "path": "modules/id" },
+    { "path": "modules/instantiation" },
     { "path": "modules/logger" },
+    { "path": "modules/miscellaneous_modules" },
+    { "path": "modules/ui_kit" },
   ]
 }

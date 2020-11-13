@@ -1,0 +1,36 @@
+{
+  "schema": [
+    {
+      "id": "$1",
+      "apiRoot": "https://www.api.com",
+      "crul": ["delete", "post", "put"],
+      "fields": [
+        {
+          "id": "input",
+          "type": "string",
+          "description": ["x_x_x", "alt_text"],
+          "a11y": "a11y_text"
+        }
+      ]
+    },
+    {
+      "id": "$2",
+      "apiRoot": "https://www.api.com",
+      "crul": ["delete", "post", "put"]
+    }
+  ],
+  "structure": {
+    "sections": [
+      {
+        "title": "my title",
+        "body": "$1",
+        "inline": ""
+      },
+      {
+        "title": "my title",
+        "body": "$2",
+        "load": ""
+      }
+    ]
+  }
+}

@@ -12,6 +12,17 @@ class Registration<T> {
     // Empty
   }
 }
+
+class Context {
+  public readonly services = new Map<Instantiation.Token, any>();
+
+  constructor() {
+    // Empty
+  }
+}
+
+const globalContext = new Context();
+
 let cached_registered_services = new Map<Instantiation.Token, Registration<any>>();
 let cached_singleton_services = new Map<Instantiation.Token, any>();
 

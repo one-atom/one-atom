@@ -6,7 +6,13 @@
     "composite": true,
   },
   "files": [
-    "_id.ts",
+    "_data_struct.ts",
+    "application_state.ts",
+    "use_application_state.ts",
     "mod.ts",
-  ]
+  ],
+  "references": [
+    { "path": "../miscellaneous_modules" },
+    { "path": "../id" },
+  ],
 }
