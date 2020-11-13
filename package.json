@@ -23,6 +23,7 @@
     "babel-loader": "^8.1.0",
     "babel-plugin-styled-components": "^1.11.1",
     "babel-plugin-transform-typescript-metadata": "^0.3.1",
+    "dompurify": "^2.2.2",
     "fork-ts-checker-webpack-plugin": "^6.0.0",
     "html-webpack-plugin": "^4.5.0",
     "react-dev-utils": "^11.0.0",
