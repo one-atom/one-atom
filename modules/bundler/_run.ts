@@ -18,6 +18,7 @@ export namespace Run {
     customEnv?: string;
     loadConfigPathToFile?: string;
     parseWithBabel?: boolean;
+    useBundleAnalyzer?: boolean;
   }
 
   export function development({ root, customEnv, loadConfigPathToFile, parseWithBabel, hmr }: DevSpecification): void {
@@ -68,7 +69,13 @@ export namespace Run {
     });
   }
 
-  export function production({ root, customEnv, loadConfigPathToFile, parseWithBabel }: ProdSpecification): Promise<void> {
+  export function production({
+    root,
+    customEnv,
+    loadConfigPathToFile,
+    parseWithBabel,
+    useBundleAnalyzer,
+  }: ProdSpecification): Promise<void> {
     process.env.NODE_ENV = 'production';
 
     const paths = Paths.get(root);
@@ -77,6 +84,7 @@ export namespace Run {
       paths,
       loadConfigPathToFile,
       customEnv,
+      useBundleAnalyzer,
       parseWithBabel: parseWithBabel ?? false,
     });
     const compiler = webpack(webpackConfiguration);

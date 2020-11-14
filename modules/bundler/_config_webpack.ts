@@ -2,6 +2,7 @@ import webpack from 'webpack';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import { Paths } from './_paths';
 import { KiraConfig } from './_config_kira';
@@ -23,6 +24,7 @@ export namespace WebpackConfig {
     output: string;
     loadConfigPathToFile?: string;
     customEnv?: string;
+    useBundleAnalyzer?: boolean;
   }
 
   function createKiraConfigLike(customEnv?: string, loadConfigPathToFile?: string): KiraConfig.KiraConfigLike {
@@ -159,6 +161,7 @@ export namespace WebpackConfig {
     loadConfigPathToFile,
     customEnv,
     output,
+    useBundleAnalyzer,
   }: ProductionConfiguration): webpack.Configuration {
     const base: Partial<webpack.Configuration> = {
       context: paths.root,
@@ -235,6 +238,10 @@ export namespace WebpackConfig {
           ],
         },
         plugins: [
+          useBundleAnalyzer &&
+            new BundleAnalyzerPlugin({
+              analyzerMode: 'static',
+            }),
           new webpack.DefinePlugin(createKiraConfigLike(customEnv, loadConfigPathToFile)),
           new webpack.EnvironmentPlugin({
             NODE_ENV: 'production',
@@ -262,7 +269,7 @@ export namespace WebpackConfig {
             removeRedundantAttributes: true,
             removeStyleLinkTypeAttributes: true,
           }),
-        ],
+        ].filter(Boolean) as webpack.Plugin[],
       };
     } else {
       return {
@@ -280,6 +287,10 @@ export namespace WebpackConfig {
           ],
         },
         plugins: [
+          useBundleAnalyzer &&
+            new BundleAnalyzerPlugin({
+              analyzerMode: 'static',
+            }),
           new webpack.DefinePlugin(createKiraConfigLike(customEnv, loadConfigPathToFile)),
           new webpack.EnvironmentPlugin({
             NODE_ENV: 'production',
@@ -300,7 +311,7 @@ export namespace WebpackConfig {
             removeRedundantAttributes: true,
             removeStyleLinkTypeAttributes: true,
           }),
-        ],
+        ].filter(Boolean) as webpack.Plugin[],
       };
     }
   }
