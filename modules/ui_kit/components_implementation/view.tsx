@@ -4,12 +4,12 @@ import { KiraPropType } from '../prop_type';
 
 export namespace View {
   export interface Prop extends KiraPropType {
-    alignment?: Alignment | AlignmentStr;
+    alignment?: AlignmentStrUnionMatrix | AlignmentStrUnionExtra;
+    direction?: DirectionStrUnion;
     height?: number | MaxMin;
     width?: number | MaxMin;
     grow?: boolean;
     shrink?: boolean;
-    direction?: Direction | DirectionStrUnion;
     background?: string;
     cornerRadius?: number | string;
     padding?: number | string;
@@ -20,12 +20,12 @@ export namespace View {
   }
 
   interface SanitizedStyleProps {
-    styleAlignment: Alignment;
+    styleAlignment: AlignmentStrUnionMatrix | AlignmentStrUnionExtra;
+    styleDirection?: DirectionStrUnion;
     styleHeight?: number | MaxMin;
     styleWidth?: number | MaxMin;
     styleGrow?: boolean;
     styleShrink?: boolean;
-    styleDirection?: Direction | DirectionStrUnion;
     styleBackground?: string;
     styleCornerRadius?: number | string;
     stylePadding?: number | string;
@@ -41,59 +41,11 @@ export namespace View {
   type DirectionStrUnion = 'row' | 'column';
   type ClipStrUnion = 'y' | 'x' | 'xy' | 'hide';
   type BoxSizingUnion = 'outer' | 'inner';
-
-  export enum Direction {
-    Row,
-    Column,
-  }
-
   // prettier-ignore
-  type AlignmentStr = 'topLeading'    | 'top'    | 'topTrailing'    |
-                      'leading'       | 'center' | 'trailing'       |
-                      'bottomLeading' | 'bottom' | 'bottomTrailing';
-
-  // prettier-ignore
-  export enum Alignment {
-    TopLeading,    Top,    TopTrailing,
-    Leading,       Center, Trailing,
-    BottomLeading, Bottom, BottomTrailing,
-  }
-
-  function convert_alignment_str_to_enum(str: AlignmentStr): Alignment {
-    switch (str) {
-      case 'center':
-        return Alignment.Center;
-      case 'top':
-        return Alignment.Top;
-      case 'bottom':
-        return Alignment.Bottom;
-      case 'leading':
-        return Alignment.Leading;
-      case 'trailing':
-        return Alignment.Trailing;
-      case 'topLeading':
-        return Alignment.TopLeading;
-      case 'topTrailing':
-        return Alignment.TopTrailing;
-      case 'bottomLeading':
-        return Alignment.BottomLeading;
-      case 'bottomTrailing':
-        return Alignment.BottomTrailing;
-      default:
-        throw new Error(`Could not convert ${str} to enum`);
-    }
-  }
-
-  function convert_direction_str_to_enum(str: DirectionStrUnion): Direction {
-    switch (str) {
-      case 'column':
-        return Direction.Column;
-      case 'row':
-        return Direction.Row;
-      default:
-        throw new Error(`Could not convert ${str} to enum`);
-    }
-  }
+  type AlignmentStrUnionMatrix = 'topLeading'    | 'top'    | 'topTrailing'    |
+                                 'leading'       | 'center' | 'trailing'       |
+                                 'bottomLeading' | 'bottom' | 'bottomTrailing';
+  type AlignmentStrUnionExtra = 'spaceCenter' | 'spaceStart' | 'spaceEnd';
 
   const elements = {
     body: styled.div<SanitizedStyleProps>`
@@ -162,9 +114,7 @@ export namespace View {
 
       ${({ styleDirection }) => {
         if (styleDirection !== undefined) {
-          const directionParsed = typeof styleDirection === 'string' ? convert_direction_str_to_enum(styleDirection) : styleDirection;
-
-          return `flex-direction: ${directionParsed === Direction.Column ? 'column' : 'Row'};`;
+          return `flex-direction: ${styleDirection};`;
         }
 
         return null;
@@ -191,104 +141,132 @@ export namespace View {
       }}
 
       ${({ styleAlignment, styleDirection }) => {
-        const directionParsed = typeof styleDirection === 'string' ? convert_direction_str_to_enum(styleDirection) : styleDirection;
-
-        if (directionParsed === Direction.Row) {
+        if (styleDirection === 'row') {
           switch (styleAlignment) {
-            case Alignment.Center:
+            case 'center':
               return `
               justify-content: center;
               align-items: center;
             `;
-            case Alignment.Leading:
+            case 'leading':
               return `
               justify-content: flex-start;
               align-items: center;
             `;
-            case Alignment.Trailing:
+            case 'trailing':
               return `
               justify-content: flex-end;
               align-items: center;
             `;
-            case Alignment.Top:
+            case 'top':
               return `
               justify-content: center;
               align-items: flex-start;
             `;
-            case Alignment.Bottom:
+            case 'bottom':
               return `
               justify-content: center;
               align-items: flex-end;
             `;
-            case Alignment.TopLeading:
+            case 'topLeading':
               return `
               justify-content: flex-start;
               align-items: flex-start;
             `;
-            case Alignment.TopTrailing:
+            case 'topTrailing':
               return `
               justify-content: flex-end;
               align-items: flex-start;
             `;
-            case Alignment.BottomLeading:
+            case 'bottomLeading':
               return `
               justify-content: flex-start;
               align-items: flex-end;
             `;
-            case Alignment.BottomTrailing:
+            case 'bottomTrailing':
               return `
               justify-content: flex-end;
               align-items: flex-end;
+            `;
+            case 'spaceCenter':
+              return `
+              justify-content: space-between;
+              align-items: center;
+            `;
+            case 'spaceEnd':
+              return `
+              justify-content: space-between;
+              align-items: flex-end;
+            `;
+            case 'spaceStart':
+              return `
+              justify-content: space-between;
+              align-items: flex-start;
             `;
             default:
               throw new Error('unsupported alignment');
           }
         } else {
           switch (styleAlignment) {
-            case Alignment.Center:
+            case 'center':
               return `
               justify-content: center;
               align-items: center;
             `;
-            case Alignment.Leading:
+            case 'leading':
               return `
               justify-content: center;
               align-items: flex-start;
             `;
-            case Alignment.Trailing:
+            case 'trailing':
               return `
               justify-content: center;
               align-items: flex-end;
             `;
-            case Alignment.Top:
+            case 'top':
               return `
               justify-content: flex-start;
               align-items: center;
             `;
-            case Alignment.Bottom:
+            case 'bottom':
               return `
               justify-content: flex-end;
               align-items: center;
             `;
-            case Alignment.TopLeading:
+            case 'topLeading':
               return `
               justify-content: flex-start;
               align-items: flex-start;
             `;
-            case Alignment.TopTrailing:
+            case 'topTrailing':
               return `
               justify-content: flex-start;
               align-items: flex-end;
             `;
-            case Alignment.BottomLeading:
+            case 'bottomLeading':
               return `
               justify-content: flex-end;
               align-items: flex-start;
             `;
-            case Alignment.BottomTrailing:
+            case 'bottomTrailing':
               return `
               justify-content: flex-end;
               align-items: flex-end;
+            `;
+            case 'spaceCenter':
+              return `
+              justify-content: space-between;
+              align-items: center;
+            `;
+            case 'spaceEnd':
+              return `
+              justify-content: space-between;
+              align-items: flex-end;
+            `;
+            case 'spaceStart':
+              return `
+              justify-content: space-between;
+              align-items: flex-start;
             `;
             default:
               throw new Error('unsupported alignment');
@@ -299,8 +277,8 @@ export namespace View {
   };
 
   export const h: FC<Prop> = function Kira_Frame({
-    alignment = Alignment.Center,
-    direction = Direction.Column,
+    alignment = 'center',
+    direction = 'column',
     shrink = true,
     box = 'inner',
     background,
@@ -315,11 +293,9 @@ export namespace View {
     className,
     children,
   }) {
-    const parsed_alignment = typeof alignment === 'string' ? convert_alignment_str_to_enum(alignment) : alignment;
-
     return (
       <elements.body
-        styleAlignment={parsed_alignment}
+        styleAlignment={alignment}
         styleDirection={direction}
         styleShrink={shrink}
         styleBox={box}
