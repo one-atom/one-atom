@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import { KiraPropType } from '../prop_type';
 
-export namespace Frame {
+export namespace View {
   export interface Prop extends KiraPropType {
     alignment?: Alignment | AlignmentStr;
     height?: number | MaxMin;

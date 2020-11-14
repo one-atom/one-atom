@@ -10,7 +10,7 @@ export * from './v_stack';
 export * from './h_stack';
 export * from './v_spacing';
 export * from './h_spacing';
-export * from './frame';
+export * from './view';
 export * from './shimmer';
 export * from './flex';
 export * from './anchor_point';
