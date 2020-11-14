@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Instantiation } from './_instantiation';
+import { Instantiation } from './instantiation';
 
 /**
  * Returns an instance, during the process all of its dependencies will also be created.

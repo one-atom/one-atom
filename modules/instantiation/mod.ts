@@ -1,2 +1,2 @@
-export * from './_instantiation';
-export * from './_use_service';
+export * from './instantiation';
+export * from './use_service';

@@ -10,8 +10,8 @@
   },
   "files": [
     "_graph.ts",
-    "_instantiation.ts",
-    "_use_service.ts",
+    "instantiation.ts",
+    "use_service.ts",
     "mod.ts",
   ]
 }
