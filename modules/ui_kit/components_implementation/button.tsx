@@ -21,11 +21,12 @@ export namespace Button {
       position: relative;
       height: 30px;
       min-width: 30px;
-      font-weight: 600;
+      font-weight: 700;
       padding: 0px 12px;
       box-sizing: border-box;
       transition: background 150ms ease;
-      font-size: 0.8125rem;
+      font-size: 0.875rem; // 14px
+      line-height: 1.05875; // 16.94px
 
       &.round {
         font-size: 16px;

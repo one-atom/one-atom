@@ -8,11 +8,15 @@ export namespace View {
     height?: number | MaxMin;
     width?: number | MaxMin;
     grow?: boolean;
-    direction?: Direction | DirectionStr;
+    shrink?: boolean;
+    direction?: Direction | DirectionStrUnion;
     background?: string;
     cornerRadius?: number | string;
     padding?: number | string;
+    margin?: number | string;
     shadow?: string;
+    box?: BoxSizingUnion;
+    clip?: ClipStrUnion;
   }
 
   interface SanitizedStyleProps {
@@ -20,18 +24,23 @@ export namespace View {
     styleHeight?: number | MaxMin;
     styleWidth?: number | MaxMin;
     styleGrow?: boolean;
-    styleDirection?: Direction | DirectionStr;
+    styleShrink?: boolean;
+    styleDirection?: Direction | DirectionStrUnion;
     styleBackground?: string;
     styleCornerRadius?: number | string;
-
     stylePadding?: number | string;
+    styleMargin?: number | string;
     styleShadow?: string;
+    styleBox?: BoxSizingUnion;
+    styleClip?: ClipStrUnion;
   }
+
   type NumberOrNull = number | null;
   // type ClockTuple = [NumberOrNull?, NumberOrNull?, NumberOrNull?, NumberOrNull?];
   type MaxMin = [NumberOrNull, number?];
-
-  type DirectionStr = 'row' | 'column';
+  type DirectionStrUnion = 'row' | 'column';
+  type ClipStrUnion = 'y' | 'x' | 'xy' | 'hide';
+  type BoxSizingUnion = 'outer' | 'inner';
 
   export enum Direction {
     Row,
@@ -75,7 +84,7 @@ export namespace View {
     }
   }
 
-  function convert_direction_str_to_enum(str: DirectionStr): Direction {
+  function convert_direction_str_to_enum(str: DirectionStrUnion): Direction {
     switch (str) {
       case 'column':
         return Direction.Column;
@@ -89,13 +98,16 @@ export namespace View {
   const elements = {
     body: styled.div<SanitizedStyleProps>`
       display: flex;
-      box-sizing: border-box;
+      box-sizing: ${({ styleBox }) => (styleBox === 'inner' ? 'border-box' : 'content-box')};
       flex: ${({ styleGrow }) => (styleGrow ? '1' : null)};
+      flex-shrink: ${({ styleShrink }) => (styleShrink ? '1' : '0')};
       padding: ${({ stylePadding }) =>
-        stylePadding !== undefined ? (stylePadding === typeof 'string' ? stylePadding : `${stylePadding}px`) : '0'};
+        stylePadding !== undefined ? (typeof stylePadding === 'string' ? stylePadding : `${stylePadding}px`) : '0'};
+      margin: ${({ styleMargin }) =>
+        styleMargin !== undefined ? (typeof styleMargin === 'string' ? styleMargin : `${styleMargin}px`) : '0'};
       background: ${({ styleBackground }) => styleBackground ?? null};
       border-radius: ${({ styleCornerRadius }) =>
-        styleCornerRadius ? (styleCornerRadius === typeof 'string' ? styleCornerRadius : `${styleCornerRadius}px`) : null};
+        styleCornerRadius ? (typeof styleCornerRadius === 'string' ? styleCornerRadius : `${styleCornerRadius}px`) : null};
       box-shadow: ${({ styleShadow }) => styleShadow ?? null};
 
       ${({ styleWidth }) => {
@@ -109,6 +121,8 @@ export namespace View {
 
           if (max !== null) {
             builder += `\nmax-width: ${max}px;`;
+          } else {
+            builder = '';
           }
 
           if (min !== undefined) {
@@ -132,6 +146,8 @@ export namespace View {
 
           if (max !== null) {
             builder += `\nmax-height: ${max}px;`;
+          } else {
+            builder = '';
           }
 
           if (min !== undefined) {
@@ -152,6 +168,26 @@ export namespace View {
         }
 
         return null;
+      }}
+
+      ${({ styleClip }) => {
+        if (styleClip === undefined) {
+          return null;
+        }
+
+        if (styleClip === 'x') {
+          return 'overflow-x: auto\noverflow-y: hidden;';
+        }
+
+        if (styleClip === 'y') {
+          return 'overflow-y: auto;\noverflow-x: hidden;';
+        }
+
+        if (styleClip === 'xy') {
+          return 'overflow: auto;';
+        }
+
+        return 'overflow: hidden;';
       }}
 
       ${({ styleAlignment, styleDirection }) => {
@@ -265,6 +301,8 @@ export namespace View {
   export const h: FC<Prop> = function Kira_Frame({
     alignment = Alignment.Center,
     direction = Direction.Column,
+    shrink = true,
+    box = 'inner',
     background,
     cornerRadius,
     grow,
@@ -272,6 +310,8 @@ export namespace View {
     padding,
     shadow,
     width,
+    margin,
+    clip,
     className,
     children,
   }) {
@@ -281,6 +321,8 @@ export namespace View {
       <elements.body
         styleAlignment={parsed_alignment}
         styleDirection={direction}
+        styleShrink={shrink}
+        styleBox={box}
         styleBackground={background}
         styleCornerRadius={cornerRadius}
         styleGrow={grow}
@@ -288,6 +330,8 @@ export namespace View {
         stylePadding={padding}
         styleShadow={shadow}
         styleWidth={width}
+        styleMargin={margin}
+        styleClip={clip}
         className={className}
       >
         {children}
