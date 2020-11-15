@@ -27,7 +27,7 @@ afterEach(mock.restore);
 
 describe('TypeScript Config', () => {
   it('should be able to parse a located tsconfig.json', () => {
-    const config = TypeScriptConfig.get_compiler_options('standard');
+    const config = TypeScriptConfig.getCompilerOptions('standard');
 
     expect(config.rootDir).toBe('standardSrc');
     expect(config.outDir).toBe('standardDist');
