@@ -5,7 +5,7 @@ import TerserPlugin from 'terser-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import { Paths } from './_paths';
-import { KiraConfig } from './_config_kira';
+import { InjectProcessConfig } from './_config_injectProcess';
 import { BabelConfig } from './_config_babel';
 
 export namespace WebpackConfig {
@@ -27,22 +27,26 @@ export namespace WebpackConfig {
     useBundleAnalyzer?: boolean;
   }
 
-  function createKiraConfigLike(customEnv?: string, loadConfigPathToFile?: string): KiraConfig.KiraConfigLike {
-    const defined_env: KiraConfig.KiraConfigLike = {};
+  function createInjectProcessEnvLike(customEnv?: string, loadConfigPathToFile?: string): InjectProcessConfig.InjectProcessConfigLike {
+    const definedEnv: InjectProcessConfig.InjectProcessConfigLike = {};
 
     if (customEnv) {
-      defined_env[`process.env.${KiraConfig.CUSTOM_ENV}`] = JSON.stringify(customEnv);
+      definedEnv[`process.env.${InjectProcessConfig.CUSTOM_ENV}`] = JSON.stringify(customEnv);
     }
 
     if (loadConfigPathToFile) {
-      const kira_config = KiraConfig.get_custom_env(loadConfigPathToFile);
+      const kira_config = InjectProcessConfig.get_custom_env(loadConfigPathToFile);
 
       if (kira_config !== null) {
-        defined_env[`process.env.${KiraConfig.CUSTOM_GLOBAL_ENV}`] = kira_config;
+        definedEnv[`process.env.${InjectProcessConfig.CUSTOM_GLOBAL_ENV}`] = kira_config;
       }
     }
 
-    return defined_env;
+    return definedEnv;
+  }
+
+  function extensionsArr(): Array<'.ts' | '.tsx' | '.js' | '.jsx'> {
+    return ['.ts', '.tsx', '.js'];
   }
 
   export function development({
@@ -62,7 +66,7 @@ export namespace WebpackConfig {
       },
       devtool: 'cheap-module-source-map',
       resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.jsx'],
+        extensions: extensionsArr(),
       },
       node: {
         module: 'empty',
@@ -79,17 +83,54 @@ export namespace WebpackConfig {
       },
     };
 
+    function hmrPlugins(): webpack.Plugin[] {
+      if (!hmr) return [];
+
+      return [
+        new webpack.HotModuleReplacementPlugin(),
+        new ReactRefreshWebpackPlugin({
+          overlay: true,
+        }),
+      ];
+    }
+
+    const plugins: webpack.Plugin[] = [
+      new webpack.DefinePlugin(createInjectProcessEnvLike(customEnv, loadConfigPathToFile)),
+      new webpack.EnvironmentPlugin({
+        NODE_ENV: 'development',
+        CUSTOM_ENV: 'development',
+      }),
+      new ForkTsCheckerWebpackPlugin(
+        parseWithBabel
+          ? {
+              typescript: {
+                diagnosticOptions: {
+                  semantic: true,
+                  syntactic: true,
+                },
+              },
+            }
+          : undefined,
+      ),
+      new HtmlWebpackPlugin({
+        template: paths.html,
+        inject: true,
+      }),
+      ...hmrPlugins(),
+    ].filter(Boolean) as webpack.Plugin[];
+
     if (parseWithBabel) {
-      const babelrc_options = BabelConfig.create_babelrc();
+      const babelrc_options = BabelConfig.createBabelrc();
       if (hmr) babelrc_options.plugins.push(require.resolve('react-refresh/babel'));
 
       return {
         ...base,
+        plugins,
         entry: [require.resolve('react-error-overlay'), paths.main],
         module: {
           rules: [
             {
-              test: /\.tsx?$/,
+              test: /\.(ts|tsx)$/,
               use: {
                 loader: 'babel-loader',
                 options: babelrc_options,
@@ -98,39 +139,18 @@ export namespace WebpackConfig {
             },
           ],
         },
-        plugins: [
-          new webpack.DefinePlugin(createKiraConfigLike(customEnv, loadConfigPathToFile)),
-          new webpack.EnvironmentPlugin({
-            NODE_ENV: 'development',
-            CUSTOM_ENV: 'development',
-          }),
-          new ForkTsCheckerWebpackPlugin({
-            typescript: {
-              diagnosticOptions: {
-                semantic: true,
-                syntactic: true,
-              },
-            },
-          }),
-          hmr &&
-            new ReactRefreshWebpackPlugin({
-              overlay: true,
-            }),
-          new HtmlWebpackPlugin({
-            template: paths.html,
-            inject: true,
-          }),
-        ].filter(Boolean) as webpack.Plugin[],
       };
     } else {
       return {
         ...base,
+        plugins,
         entry: [paths.main],
         module: {
           rules: [
             {
-              test: /\.tsx?$/,
+              test: /\.(ts|tsx)$/,
               loader: 'ts-loader',
+              exclude: /node_modules/,
               options: {
                 // disable type checker - we will use it in fork plugin
                 transpileOnly: true,
@@ -138,19 +158,6 @@ export namespace WebpackConfig {
             },
           ],
         },
-        plugins: [
-          hmr && new webpack.HotModuleReplacementPlugin(),
-          new webpack.DefinePlugin(createKiraConfigLike(customEnv, loadConfigPathToFile)),
-          new webpack.EnvironmentPlugin({
-            NODE_ENV: 'development',
-            CUSTOM_ENV: 'development',
-          }),
-          new ForkTsCheckerWebpackPlugin(),
-          new HtmlWebpackPlugin({
-            template: paths.html,
-            inject: true,
-          }),
-        ].filter(Boolean) as webpack.Plugin[],
       };
     }
   }
@@ -175,7 +182,7 @@ export namespace WebpackConfig {
       },
       devtool: 'source-map',
       resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.jsx'],
+        extensions: extensionsArr(),
       },
       node: {
         module: 'empty',
@@ -222,62 +229,69 @@ export namespace WebpackConfig {
       },
     };
 
+    const plugins: webpack.Plugin[] = [
+      useBundleAnalyzer &&
+        new BundleAnalyzerPlugin({
+          analyzerMode: 'static',
+        }),
+      new webpack.DefinePlugin(createInjectProcessEnvLike(customEnv, loadConfigPathToFile)),
+      new webpack.EnvironmentPlugin({
+        NODE_ENV: 'production',
+        CUSTOM_ENV: 'production',
+      }),
+      new ForkTsCheckerWebpackPlugin(
+        parseWithBabel
+          ? {
+              typescript: {
+                diagnosticOptions: {
+                  semantic: true,
+                  syntactic: true,
+                },
+              },
+            }
+          : undefined,
+      ),
+      new HtmlWebpackPlugin({
+        template: paths.html,
+        inject: true,
+        useShortDoctype: true,
+        keepClosingSlash: true,
+        collapseWhitespace: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true,
+        removeComments: true,
+        removeEmptyAttributes: true,
+        removeRedundantAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+      }),
+    ].filter(Boolean) as webpack.Plugin[];
+
     if (parseWithBabel) {
       return {
         ...base,
+        plugins,
         module: {
           rules: [
             {
-              test: /\.tsx?$/,
+              test: /\.(ts|tsx)$/,
               use: {
                 loader: 'babel-loader',
-                options: BabelConfig.create_babelrc(),
+                options: BabelConfig.createBabelrc(),
               },
               exclude: /node_modules/,
             },
           ],
         },
-        plugins: [
-          useBundleAnalyzer &&
-            new BundleAnalyzerPlugin({
-              analyzerMode: 'static',
-            }),
-          new webpack.DefinePlugin(createKiraConfigLike(customEnv, loadConfigPathToFile)),
-          new webpack.EnvironmentPlugin({
-            NODE_ENV: 'production',
-            CUSTOM_ENV: 'production',
-          }),
-          new ForkTsCheckerWebpackPlugin({
-            typescript: {
-              diagnosticOptions: {
-                semantic: true,
-                syntactic: true,
-              },
-            },
-          }),
-          new HtmlWebpackPlugin({
-            template: paths.html,
-            inject: true,
-            useShortDoctype: true,
-            keepClosingSlash: true,
-            collapseWhitespace: true,
-            minifyJS: true,
-            minifyCSS: true,
-            minifyURLs: true,
-            removeComments: true,
-            removeEmptyAttributes: true,
-            removeRedundantAttributes: true,
-            removeStyleLinkTypeAttributes: true,
-          }),
-        ].filter(Boolean) as webpack.Plugin[],
       };
     } else {
       return {
         ...base,
+        plugins,
         module: {
           rules: [
             {
-              test: /\.tsx?$/,
+              test: /\.(ts|tsx)$/,
               loader: 'ts-loader',
               options: {
                 // disable type checker - we will use it in fork plugin
@@ -286,32 +300,6 @@ export namespace WebpackConfig {
             },
           ],
         },
-        plugins: [
-          useBundleAnalyzer &&
-            new BundleAnalyzerPlugin({
-              analyzerMode: 'static',
-            }),
-          new webpack.DefinePlugin(createKiraConfigLike(customEnv, loadConfigPathToFile)),
-          new webpack.EnvironmentPlugin({
-            NODE_ENV: 'production',
-            CUSTOM_ENV: 'production',
-          }),
-          new ForkTsCheckerWebpackPlugin(),
-          new HtmlWebpackPlugin({
-            template: paths.html,
-            inject: true,
-            useShortDoctype: true,
-            keepClosingSlash: true,
-            collapseWhitespace: true,
-            minifyJS: true,
-            minifyCSS: true,
-            minifyURLs: true,
-            removeComments: true,
-            removeEmptyAttributes: true,
-            removeRedundantAttributes: true,
-            removeStyleLinkTypeAttributes: true,
-          }),
-        ].filter(Boolean) as webpack.Plugin[],
       };
     }
   }

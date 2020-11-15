@@ -41,7 +41,7 @@ export namespace TypeScriptConfig {
     esnext: ts.ScriptTarget.ESNext,
   };
 
-  export let cached_compiler_option: ParsedCompilerOptions | null = null;
+  export let cachedCompilerOption: ParsedCompilerOptions | null = null;
 
   /**
    * Returns a CompilerOption. If file system can not locate or validate a
@@ -50,21 +50,21 @@ export namespace TypeScriptConfig {
    * @param location Directory to search for a tsconfig.json file
    * @public
    */
-  export function get_compiler_options(location: string): ParsedCompilerOptions {
-    cached_compiler_option = null;
+  export function getCompilerOptions(location: string): ParsedCompilerOptions {
+    cachedCompilerOption = null;
 
-    const ts_config = Locator.readJsonSync<TsConfigLike>(`${location}/tsconfig.json`);
-    if (ts_config === null) {
+    const tsconfig = Locator.readJsonSync<TsConfigLike>(`${location}/tsconfig.json`);
+    if (tsconfig === null) {
       throw new Error(`could not locate a tsconfig at ${location}`);
     }
 
-    const parsed_compiler_option = parse_typeScript_compiler_options(ts_config);
-    cached_compiler_option = parsed_compiler_option;
+    const parsedCompilerOption = parseTypeScriptCompilerOptions(tsconfig);
+    cachedCompilerOption = parsedCompilerOption;
 
-    return cached_compiler_option;
+    return cachedCompilerOption;
   }
 
-  function parse_typeScript_compiler_options(ts_config_like?: TsConfigLike): Readonly<ParsedCompilerOptions> {
+  function parseTypeScriptCompilerOptions(ts_config_like?: TsConfigLike): Readonly<ParsedCompilerOptions> {
     const builder: ParsedCompilerOptions = {
       // Defaults
       target: ts.ScriptTarget.ES2019,

@@ -1,18 +1,18 @@
 import { Locator } from '../_helper_filesystem/mod';
 import { Logger } from '../logger/mod';
 
-export namespace KiraConfig {
+export namespace InjectProcessConfig {
   type ValuePrimitive = string | number | boolean | RegExp | null | undefined;
   type ValueObject = ValuePrimitive | { [key: string]: ValueObject };
-  export type KiraConfigLike = { [key: string]: ValueObject };
+  export type InjectProcessConfigLike = { [key: string]: ValueObject };
 
   export const CUSTOM_ENV = 'CUSTOM_ENV';
   export const CUSTOM_GLOBAL_ENV = 'CUSTOM_GLOBAL_ENV';
 
-  export function get_custom_env(location: string): KiraConfigLike | null {
+  export function get_custom_env(location: string): InjectProcessConfigLike | null {
     try {
-      const located_json = Locator.readJsonSync<KiraConfigLike>(location);
-      const builder: KiraConfigLike = {};
+      const located_json = Locator.readJsonSync<InjectProcessConfigLike>(location);
+      const builder: InjectProcessConfigLike = {};
 
       for (const key in located_json) {
         const value = located_json[key];

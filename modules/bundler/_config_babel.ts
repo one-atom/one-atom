@@ -36,14 +36,14 @@ export namespace BabelConfig {
     '@babel/plugin-proposal-export-namespace-from',
   ];
 
-  export function create_babelrc(): BabelRcLike {
+  export function createBabelrc(): BabelRcLike {
     return {
       presets,
       plugins,
     };
   }
 
-  export function create_babelrc_for_test(): BabelRcLike {
+  export function createBabelrcForTest(): BabelRcLike {
     const plugins_modded: Entry[] = plugins.concat(['@babel/plugin-transform-modules-commonjs']);
 
     return {

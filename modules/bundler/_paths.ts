@@ -14,7 +14,7 @@ export namespace Paths {
   };
 
   export function get(root: string): Readonly<Dictionary> {
-    const { outDir, rootDir } = TypeScriptConfig.get_compiler_options(root);
+    const { outDir, rootDir } = TypeScriptConfig.getCompilerOptions(root);
 
     function resolveRelative(root: string, location: string): string {
       return path.resolve(root, location);
