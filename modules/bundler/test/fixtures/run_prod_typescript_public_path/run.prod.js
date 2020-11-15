@@ -1,7 +1,7 @@
 // @ts-check
 /* eslint-disable */
 
-const { Run } = require('../../../../../target/bundler/mod');
+const { Run } = require('../../../../../npm_target/run');
 
 Run.production({
   root: process.cwd(),
