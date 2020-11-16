@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { TestComponent } from './react_fast_refresh_check';
+import AppExportDefault from './app_export_default';
+import { AppExportNamed } from './app_export_named';
 import * as c from './export_namespace_from';
 
 const root = document.getElementById('app');
@@ -62,5 +63,8 @@ const weird_obj: WeirdObj = {
 };
 assert_into_dom(`nullish ${weird_obj.prop_x?.val} chaining`);
 
-// Checks React support
-ReactDOM.render(<TestComponent />, document.getElementById('react-root'));
+// Checks React support (default exported root)
+ReactDOM.render(<AppExportDefault />, document.getElementById('react-root-1'));
+
+// Checks React support (named exported root)
+ReactDOM.render(<AppExportNamed />, document.getElementById('react-root-2'));
