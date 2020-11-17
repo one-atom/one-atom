@@ -4,7 +4,7 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "jsx": "react",
-    "target": "ESNext",
+    "module": "ESNext",
     "importsNotUsedAsValues": "preserve", // this is important for proper files watching
   }
 }
