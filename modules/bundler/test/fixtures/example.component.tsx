@@ -6,7 +6,7 @@ const Wrapper = styled.div`
   color: violet;
 `;
 
-export const TestComponent: React.FC = () => {
+export const ExampleComponent: React.FC = () => {
   const [state, setState] = useState(0);
 
   function handle_click(): void {

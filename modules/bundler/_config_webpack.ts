@@ -4,6 +4,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
+import ReactRefreshTypeScript from 'react-refresh-typescript';
 import { Paths } from './_paths';
 import { InjectProcessConfig } from './_config_injectProcess';
 import { BabelConfig } from './_config_babel';
@@ -154,6 +155,9 @@ export namespace WebpackConfig {
               options: {
                 // disable type checker - we will use it in fork plugin
                 transpileOnly: true,
+                getCustomTransformers: () => ({
+                  before: [ReactRefreshTypeScript()],
+                }),
               },
             },
           ],

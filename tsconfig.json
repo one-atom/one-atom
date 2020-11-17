@@ -4,7 +4,6 @@
   "exclude": ["node_modules", "dist", "lib"],
   "compilerOptions": {
     "baseUrl": ".",
-    "target": "ES2019",
     "rootDir": "./modules",
     "lib": ["esnext"],
     "strict": true,
