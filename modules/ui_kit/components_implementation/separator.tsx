@@ -17,7 +17,7 @@ export namespace Separator {
       justify-content: center;
     `,
     inner: styled.div<{ padding: number }>`
-      height: 2px;
+      height: 1px;
       width: calc(100% - ${({ padding }) => padding}px);
       background: var(--kira_separator_bg, #343438);
     `,

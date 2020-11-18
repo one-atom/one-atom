@@ -14,6 +14,8 @@ export namespace HSpacing {
     spacing: styled.span<{ px: number }>`
       width: ${({ px }) => px}px;
       display: inline-block;
+      flex-shrink: 0;
+      height: 100%;
     `,
   };
 

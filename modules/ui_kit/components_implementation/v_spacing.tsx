@@ -14,6 +14,8 @@ export namespace VSpacing {
     spacing: styled.span<{ px: number }>`
       height: ${({ px }) => px}px;
       display: inline-block;
+      flex-shrink: 0;
+      width: 100%;
     `,
   };
 

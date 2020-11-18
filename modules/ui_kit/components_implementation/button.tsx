@@ -22,10 +22,10 @@ export namespace Button {
       height: 30px;
       min-width: 30px;
       font-weight: 700;
-      padding: 0px 12px;
+      padding: 0px 14px;
       box-sizing: border-box;
       transition: background 150ms ease;
-      font-size: 0.875rem; // 14px
+      font-size: 0.8125rem; // 13px
       line-height: 1.05875; // 16.94px
 
       &.round {

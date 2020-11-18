@@ -24,11 +24,12 @@ export namespace Input {
       padding: 0px 16px;
       box-sizing: border-box;
       border-radius: 10px;
-      color: var(--kira_input_clr, rgb(51, 51, 51));
       background-color: var(--kira_input_bg, rgb(51, 51, 51));
       width: 100%;
+      font-size: 0.8125rem; // 13px
+      line-height: 1.05875; // 16.94px
 
-      &:focus {
+      &:focus:not(:disabled) {
         outline-width: 0px;
         box-shadow: inset 0 0 0 1px var(--kira_input_focus_clr, #0099ff);
       }

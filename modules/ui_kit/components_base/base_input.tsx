@@ -47,7 +47,11 @@ export namespace BaseInput {
       background: none;
       -webkit-tap-highlight-color: transparent;
       outline: none;
-      font-size: 1rem;
+      color: var(--kira_input_subtle, #888);
+
+      &:focus:not(:disabled) {
+        color: var(--kira_input_clr, #ffffff);
+      }
     `,
   };
 
