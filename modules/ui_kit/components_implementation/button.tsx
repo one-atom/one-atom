@@ -26,7 +26,6 @@ export namespace Button {
       box-sizing: border-box;
       transition: background 150ms ease;
       font-size: 0.8125rem; // 13px
-      line-height: 1.05875; // 16.94px
 
       &.round {
         font-size: 16px;
