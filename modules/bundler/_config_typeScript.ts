@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
 
 import ts from 'typescript';
-import { Locator } from '../_helper_filesystem/mod';
 import { Logger } from '../logger/mod';
+import { readJsonSync } from './_read_json_sync';
 
 export namespace TypeScriptConfig {
   type ParsedCompilerOptions = {
@@ -53,7 +53,7 @@ export namespace TypeScriptConfig {
   export function getCompilerOptions(location: string): ParsedCompilerOptions {
     cachedCompilerOption = null;
 
-    const tsconfig = Locator.readJsonSync<TsConfigLike>(`${location}/tsconfig.json`);
+    const tsconfig = readJsonSync<TsConfigLike>(`${location}/tsconfig.json`);
     if (tsconfig === null) {
       throw new Error(`could not locate a tsconfig at ${location}`);
     }

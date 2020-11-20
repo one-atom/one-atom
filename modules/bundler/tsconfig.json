@@ -11,11 +11,11 @@
     "_config_typeScript.ts",
     "_config_webpack.ts",
     "_paths.ts",
+    "_read_json_sync.ts",
     "_run.ts",
     "mod.ts",
   ],
   "references": [
-    { "path": "../_helper_filesystem" },
     { "path": "../logger" },
   ]
 }

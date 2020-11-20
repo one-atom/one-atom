@@ -1,4 +1,4 @@
-import { Locator } from '../_helper_filesystem/mod';
+import { readJsonSync } from './_read_json_sync';
 import { Logger } from '../logger/mod';
 
 export namespace InjectProcessConfig {
@@ -11,7 +11,7 @@ export namespace InjectProcessConfig {
 
   export function get_custom_env(location: string): InjectProcessConfigLike | null {
     try {
-      const located_json = Locator.readJsonSync<InjectProcessConfigLike>(location);
+      const located_json = readJsonSync<InjectProcessConfigLike>(location);
       const builder: InjectProcessConfigLike = {};
 
       for (const key in located_json) {
