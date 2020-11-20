@@ -1,4 +1,4 @@
-import { InjectProcessConfig } from '../../_config_injectProcess';
+import { InjectProcessConfig } from './_config_inject_process';
 import mock from 'mock-fs';
 
 beforeEach(() => {

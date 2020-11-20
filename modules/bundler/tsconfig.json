@@ -7,7 +7,7 @@
   },
   "files": [
     "_config_babel.ts",
-    "_config_injectProcess.ts",
+    "_config_inject_process.ts",
     "_config_typeScript.ts",
     "_config_webpack.ts",
     "_paths.ts",

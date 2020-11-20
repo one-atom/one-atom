@@ -1,4 +1,4 @@
-import { TypeScriptConfig } from '../../_config_typeScript';
+import { TypeScriptConfig } from './_config_typeScript';
 import mock from 'mock-fs';
 import ts from 'typescript';
 

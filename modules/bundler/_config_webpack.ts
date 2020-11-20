@@ -6,7 +6,7 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import ReactRefreshTypeScript from 'react-refresh-typescript';
 import { Paths } from './_paths';
-import { InjectProcessConfig } from './_config_injectProcess';
+import { InjectProcessConfig } from './_config_inject_process';
 import { BabelConfig } from './_config_babel';
 
 export namespace WebpackConfig {
