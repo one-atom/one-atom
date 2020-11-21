@@ -15,9 +15,9 @@ describe('Instantiation', () => {
     @Transient()
     class TransientService {}
 
-    const registered_singleton = Instantiation.get_registered_service(SingletonService)!;
-    const registered_scoped = Instantiation.get_registered_service(ScopedService)!;
-    const registered_transient = Instantiation.get_registered_service(TransientService)!;
+    const registered_singleton = Instantiation.getRegisteredService(SingletonService)!;
+    const registered_scoped = Instantiation.getRegisteredService(ScopedService)!;
+    const registered_transient = Instantiation.getRegisteredService(TransientService)!;
     expect(registered_singleton.ctor).toEqual(SingletonService);
     expect(registered_scoped.ctor).toEqual(ScopedService);
     expect(registered_transient.ctor).toEqual(TransientService);

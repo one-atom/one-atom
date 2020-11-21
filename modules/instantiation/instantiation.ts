@@ -23,8 +23,8 @@ class Context {
 
 const globalContext = new Context();
 
-let cached_registered_services = new Map<Instantiation.Token, Registration<any>>();
-let cached_singleton_services = new Map<Instantiation.Token, any>();
+let cachedRegisteredServices = new Map<Instantiation.Token, Registration<any>>();
+let cachedSingletonServices = new Map<Instantiation.Token, any>();
 
 export namespace Instantiation {
   export type GenericClassDecorator<T> = (target: T) => void;
@@ -41,13 +41,13 @@ export namespace Instantiation {
   /**
    * Returns an instance, during the process all of its dependencies will also be created.
    */
-  export function resolve<T>(resolving_ctor: Ctor<T>): T {
-    if (resolving_ctor === undefined) {
+  export function resolve<T>(resolvingCtor: Ctor<T>): T {
+    if (resolvingCtor === undefined) {
       throw new Error(`Retrieved undefined, this is caused of circular JS imports`);
     }
 
-    const registered_ctor = cached_registered_services.get(resolving_ctor);
-    if (registered_ctor === undefined) {
+    const registeredCtor = cachedRegisteredServices.get(resolvingCtor);
+    if (registeredCtor === undefined) {
       throw new Error(`ctor is not registered`);
     }
 
@@ -57,7 +57,7 @@ export namespace Instantiation {
       registrationId: Token;
       lifetime: Lifetimes;
     }
-    const dependencies_for_each_dependency = new Map<Token, Dependencies[]>();
+    const dependenciesForEachDependency = new Map<Token, Dependencies[]>();
 
     interface StackElement {
       id: Token;
@@ -66,9 +66,9 @@ export namespace Instantiation {
       lifetime: Lifetimes;
       dependencies: Token[];
     }
-    const resolving_dependencies_branch = new Graph<StackElement>((element) => element.id);
+    const resolvingDependenciesBranch = new Graph<StackElement>((element) => element.id);
 
-    function create_stack_element(dependency: Dependencies): StackElement {
+    function createStackElement(dependency: Dependencies): StackElement {
       let id = dependency.registrationId;
 
       if (dependency.lifetime === Lifetimes.Transient) {
@@ -87,53 +87,53 @@ export namespace Instantiation {
     }
 
     const stack: StackElement[] = [
-      create_stack_element({
+      createStackElement({
         parentId: null,
-        registrationId: resolving_ctor,
-        lifetime: registered_ctor.settings.lifeTime,
+        registrationId: resolvingCtor,
+        lifetime: registeredCtor.settings.lifeTime,
       }),
     ];
 
     // --------- Branch step ---------
 
-    let cycle_count = 0;
+    let cycleCount = 0;
     while (stack.length > 0) {
       // The pop here will always return a value
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const resolving_stack_element = stack.pop()!;
+      const resolvingStackElement = stack.pop()!;
 
-      if (cycle_count++ > 10000) {
+      if (cycleCount++ > 10000) {
         throw new Error('Recursion in branch step');
       }
 
-      const registered_service_factory = cached_registered_services.get(resolving_stack_element.registrationId);
-      if (registered_service_factory === undefined) {
+      const registeredServiceFactory = cachedRegisteredServices.get(resolvingStackElement.registrationId);
+      if (registeredServiceFactory === undefined) {
         throw new Error(`${'anonymous'} is not registered`);
       }
 
-      resolving_dependencies_branch.lookup_or_insert_node(resolving_stack_element);
+      resolvingDependenciesBranch.lookupOrInsertNode(resolvingStackElement);
 
       // This row is basically the whole magic behind the service resolving logic
-      const tokens: Ctor<unknown>[] = Reflect.getMetadata('design:paramtypes', registered_service_factory.ctor) ?? [];
+      const tokens: Ctor<unknown>[] = Reflect.getMetadata('design:paramtypes', registeredServiceFactory.ctor) ?? [];
       const dependencies: Dependencies[] = tokens.map((dependency) => {
-        const registered_dependency = cached_registered_services.get(dependency);
-        if (registered_dependency === undefined) {
+        const registeredDependency = cachedRegisteredServices.get(dependency);
+        if (registeredDependency === undefined) {
           throw new Error(`ctor is not registered`);
         }
 
         return {
-          parentId: resolving_stack_element.id,
+          parentId: resolvingStackElement.id,
           registrationId: dependency,
-          lifetime: registered_dependency.settings.lifeTime,
+          lifetime: registeredDependency.settings.lifeTime,
         };
       });
-      dependencies_for_each_dependency.set(registered_service_factory.ctor, dependencies);
+      dependenciesForEachDependency.set(registeredServiceFactory.ctor, dependencies);
 
       for (const dependency of dependencies) {
-        resolving_stack_element.dependencies.push(dependency.registrationId);
+        resolvingStackElement.dependencies.push(dependency.registrationId);
 
-        const edge: StackElement = create_stack_element(dependency);
-        resolving_dependencies_branch.insertEdge(resolving_stack_element, edge);
+        const edge: StackElement = createStackElement(dependency);
+        resolvingDependenciesBranch.insertEdge(resolvingStackElement, edge);
         stack.push(edge);
       }
     }
@@ -141,20 +141,20 @@ export namespace Instantiation {
     // --------- Producer step ---------
 
     // Created once per service call
-    const resolved_scoped_services = new Map<Token, any>();
-    const transient_root = Symbol('transient_root');
-    const resolved_transient_services = new Map<Token, Array<any>>();
+    const resolvedScopedServices = new Map<Token, any>();
+    const transientRoot = Symbol('transient_root');
+    const resolvedTransientServices = new Map<Token, Array<any>>();
 
-    function retrieve_args(id: Token): unknown[] {
+    function retrieveArgs(id: Token): unknown[] {
       const args: unknown[] = [];
-      const lookup_dependencies = dependencies_for_each_dependency.get(id);
-      if (lookup_dependencies === undefined) {
+      const lookupDependencies = dependenciesForEachDependency.get(id);
+      if (lookupDependencies === undefined) {
         return args;
       }
 
-      for (const lookup_dependency of lookup_dependencies) {
-        if (lookup_dependency.lifetime === Lifetimes.Singleton) {
-          const dependency = cached_singleton_services.get(lookup_dependency.registrationId);
+      for (const lookupDependency of lookupDependencies) {
+        if (lookupDependency.lifetime === Lifetimes.Singleton) {
+          const dependency = cachedSingletonServices.get(lookupDependency.registrationId);
           if (dependency === undefined) {
             throw new Error(`Singleton ${'anonymous'} service has not been resolved yet`);
           }
@@ -164,36 +164,36 @@ export namespace Instantiation {
           continue;
         }
 
-        if (lookup_dependency.lifetime === Lifetimes.Scoped) {
-          const already_resolved_dependency = resolved_scoped_services.get(lookup_dependency.registrationId);
-          if (already_resolved_dependency === undefined) {
+        if (lookupDependency.lifetime === Lifetimes.Scoped) {
+          const alreadyResolvedDependency = resolvedScopedServices.get(lookupDependency.registrationId);
+          if (alreadyResolvedDependency === undefined) {
             throw new Error(`Singleton ${'anonymous'} service has not been resolved yet`);
           }
 
-          args.push(already_resolved_dependency);
+          args.push(alreadyResolvedDependency);
 
           continue;
         }
 
-        if (lookup_dependency.lifetime === Lifetimes.Transient) {
-          const parentId = lookup_dependency.parentId;
+        if (lookupDependency.lifetime === Lifetimes.Transient) {
+          const parentId = lookupDependency.parentId;
           if (parentId === null) {
             throw new Error('No parentId was found and it should not go through root at this point');
           }
 
-          const transient_instances = resolved_transient_services.get(parentId) ?? [];
-          const registered_ctor_based_on_lookup_dependency = cached_registered_services.get(lookup_dependency.registrationId);
-          if (registered_ctor_based_on_lookup_dependency === undefined) {
+          const transientInstances = resolvedTransientServices.get(parentId) ?? [];
+          const registeredCtorBasedOnLookupDependency = cachedRegisteredServices.get(lookupDependency.registrationId);
+          if (registeredCtorBasedOnLookupDependency === undefined) {
             throw new Error(`${'anonymous'} is not registered`);
           }
 
-          const find_first_matching_ctor_index = transient_instances.findIndex((transient_instance) => {
-            if (transient_instance instanceof registered_ctor_based_on_lookup_dependency.ctor) return true;
+          const findFirstMatchingCtorIndex = transientInstances.findIndex((transientInstance) => {
+            if (transientInstance instanceof registeredCtorBasedOnLookupDependency.ctor) return true;
 
             return false;
           });
 
-          args.push(transient_instances.splice(find_first_matching_ctor_index, 1)[0]);
+          args.push(transientInstances.splice(findFirstMatchingCtorIndex, 1)[0]);
 
           continue;
         }
@@ -206,17 +206,17 @@ export namespace Instantiation {
 
     // Need to recursively go through the branch, from bottom to it has reached
     // the top
-    cycle_count = 0;
+    cycleCount = 0;
     // eslint-disable-next-line no-constant-condition
     while (true) {
-      if (cycle_count++ > 10000) {
+      if (cycleCount++ > 10000) {
         throw new Error('Recursion in producer step');
       }
 
-      const edges = resolving_dependencies_branch.edges();
+      const edges = resolvingDependenciesBranch.edges();
 
       if (edges.length === 0) {
-        if (!resolving_dependencies_branch.isEmpty()) {
+        if (!resolvingDependenciesBranch.isEmpty()) {
           throw new Error('Graph contains nodes which never got removed');
         }
 
@@ -224,17 +224,17 @@ export namespace Instantiation {
       }
 
       for (const { data } of edges) {
-        const lookup_registered = cached_registered_services.get(data.registrationId);
-        if (lookup_registered === undefined) {
+        const lookupRegistered = cachedRegisteredServices.get(data.registrationId);
+        if (lookupRegistered === undefined) {
           throw new Error(`${'anonymous'} is not registered`);
         }
 
         switch (data.lifetime) {
           case Lifetimes.Singleton: {
             // Check if dependency is already resolved
-            const already_resolved_service = cached_singleton_services.get(data.id);
-            if (already_resolved_service === undefined) {
-              cached_singleton_services.set(data.id, new lookup_registered.ctor(...retrieve_args(data.registrationId)));
+            const alreadyResolvedService = cachedSingletonServices.get(data.id);
+            if (alreadyResolvedService === undefined) {
+              cachedSingletonServices.set(data.id, new lookupRegistered.ctor(...retrieveArgs(data.registrationId)));
             }
 
             break;
@@ -242,26 +242,26 @@ export namespace Instantiation {
 
           case Lifetimes.Scoped: {
             // Check if dependency is already resolved
-            const already_resolved_service = resolved_scoped_services.get(data.id);
-            if (already_resolved_service === undefined) {
-              resolved_scoped_services.set(data.id, new lookup_registered.ctor(...retrieve_args(data.registrationId)));
+            const alreadyResolvedService = resolvedScopedServices.get(data.id);
+            if (alreadyResolvedService === undefined) {
+              resolvedScopedServices.set(data.id, new lookupRegistered.ctor(...retrieveArgs(data.registrationId)));
             }
 
             break;
           }
 
           case Lifetimes.Transient: {
-            const parent_id = data.parentId ?? transient_root;
-            const should_create_storage = !resolved_transient_services.has(parent_id);
-            const resolved_transient_instance = new lookup_registered.ctor(...retrieve_args(data.registrationId));
+            const parentId = data.parentId ?? transientRoot;
+            const shouldCreateStorage = !resolvedTransientServices.has(parentId);
+            const resolvedTransientInstance = new lookupRegistered.ctor(...retrieveArgs(data.registrationId));
 
-            if (should_create_storage) {
-              resolved_transient_services.set(parent_id, [resolved_transient_instance]);
+            if (shouldCreateStorage) {
+              resolvedTransientServices.set(parentId, [resolvedTransientInstance]);
             } else {
               // The check has already been done above so it's fine to cast this
               // as a non null
               // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              resolved_transient_services.get(parent_id)!.push(resolved_transient_instance);
+              resolvedTransientServices.get(parentId)!.push(resolvedTransientInstance);
             }
 
             break;
@@ -271,26 +271,26 @@ export namespace Instantiation {
             throw new Error(`The service lacks a lifetime`);
         }
 
-        resolving_dependencies_branch.removeNode(data.id);
+        resolvingDependenciesBranch.removeNode(data.id);
       }
     }
 
     // --------- Retrieve step ---------
 
-    if (registered_ctor.settings.lifeTime === Lifetimes.Scoped) {
-      return resolved_scoped_services.get(resolving_ctor) as T; // Casting as T since by this point it SHOULD be in resolved_scoped_services
+    if (registeredCtor.settings.lifeTime === Lifetimes.Scoped) {
+      return resolvedScopedServices.get(resolvingCtor) as T; // Casting as T since by this point it SHOULD be in resolved_scoped_services
     }
 
-    if (registered_ctor.settings.lifeTime === Lifetimes.Transient) {
-      const resolved_transient_instances = resolved_transient_services.get(transient_root);
-      if (resolved_transient_instances === undefined) {
+    if (registeredCtor.settings.lifeTime === Lifetimes.Transient) {
+      const resolvedTransientInstances = resolvedTransientServices.get(transientRoot);
+      if (resolvedTransientInstances === undefined) {
         throw new Error(`transient root was never created`);
       }
 
-      return resolved_transient_instances[0] as T; // Casting as T since by this point the index 0 SHOULD be the requested resolving_ctor instance
+      return resolvedTransientInstances[0] as T; // Casting as T since by this point the index 0 SHOULD be the requested resolving_ctor instance
     }
 
-    return cached_singleton_services.get(resolving_ctor) as T; // Casting as T since by this point it SHOULD be in resolved_singleton_services
+    return cachedSingletonServices.get(resolvingCtor) as T; // Casting as T since by this point it SHOULD be in resolved_singleton_services
   }
 
   interface ReplaceWith<T> {
@@ -302,10 +302,10 @@ export namespace Instantiation {
    * passed it'll override any previously registered service (works for any lifetime).
    */
   export function register<T>(service: Ctor<T>, replace?: ReplaceWith<any>): void {
-    const registered_service = cached_registered_services.get(service);
+    const registeredService = cachedRegisteredServices.get(service);
 
     if (replace?.useClass) {
-      cached_registered_services.set(
+      cachedRegisteredServices.set(
         service,
         new Registration(service, replace.useClass, { lifeTime: replace.lifeTimes ?? Lifetimes.Singleton }),
       );
@@ -313,8 +313,8 @@ export namespace Instantiation {
       return;
     }
 
-    if (registered_service === undefined) {
-      cached_registered_services.set(
+    if (registeredService === undefined) {
+      cachedRegisteredServices.set(
         service,
         new Registration(service, service, { lifeTime: replace?.lifeTimes ?? Lifetimes.Singleton }),
       );
@@ -324,8 +324,8 @@ export namespace Instantiation {
   /**
    * Retrieves the Registration instance for given registered service.
    */
-  export function get_registered_service<T>(service: Ctor<T>): Registration<T> | null {
-    const reg = cached_registered_services.get(service);
+  export function getRegisteredService<T>(service: Ctor<T>): Registration<T> | null {
+    const reg = cachedRegisteredServices.get(service);
 
     return reg ?? null;
   }
@@ -338,8 +338,8 @@ export namespace Instantiation {
  * Flushes the ctor registry and all singleton instances.
  */
 export function flushAll(): void {
-  cached_registered_services = new Map();
-  cached_singleton_services = new Map();
+  cachedRegisteredServices = new Map();
+  cachedSingletonServices = new Map();
 }
 
 /**
@@ -349,7 +349,7 @@ export function flushAll(): void {
  * Flushes all singleton instances.
  */
 export function flushSingletons(): void {
-  cached_singleton_services = new Map();
+  cachedSingletonServices = new Map();
 }
 
 /**
@@ -359,7 +359,7 @@ export function flushSingletons(): void {
  * Flushes the ctor registry.
  */
 export function flushRegisteredServices(): void {
-  cached_registered_services = new Map();
+  cachedRegisteredServices = new Map();
 }
 
 /**

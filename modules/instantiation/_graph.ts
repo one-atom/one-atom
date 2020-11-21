@@ -12,24 +12,24 @@ class Node<T> {
 export class Graph<T> {
   private readonly nodes = new Map<Instantiation.Token, Node<T>>();
 
-  constructor(private readonly lookup_fn: (dependency: T) => Instantiation.Token) {
+  constructor(private readonly lookupFn: (dependency: T) => Instantiation.Token) {
     // Empty
   }
 
   public insertEdge(from: T, to: T): void {
-    const from_node = this.lookup_or_insert_node(from);
-    const to_node = this.lookup_or_insert_node(to);
+    const from_node = this.lookupOrInsertNode(from);
+    const to_node = this.lookupOrInsertNode(to);
 
-    from_node.outgoing.set(this.lookup_fn(to), to_node);
-    to_node.incoming.set(this.lookup_fn(from), from_node);
+    from_node.outgoing.set(this.lookupFn(to), to_node);
+    to_node.incoming.set(this.lookupFn(from), from_node);
   }
 
   public lookup(key: Instantiation.Token): Node<T> | null {
     return this.nodes.get(key) ?? null;
   }
 
-  public lookup_or_insert_node(data: T): Node<T> {
-    const key = this.lookup_fn(data);
+  public lookupOrInsertNode(data: T): Node<T> {
+    const key = this.lookupFn(data);
     let node = this.nodes.get(key);
 
     if (!node) {
