@@ -2,7 +2,6 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "boot": "lerna bootstrap",
     "build": "tsc --build",
     "test": "jest",
     "clean": "rimraf npm_target/dist"
