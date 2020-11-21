@@ -36,7 +36,6 @@ export namespace View {
   }
 
   type NumberOrNull = number | null;
-  // type ClockTuple = [NumberOrNull?, NumberOrNull?, NumberOrNull?, NumberOrNull?];
   type MaxMin = [NumberOrNull, number?];
   type DirectionStrUnion = 'row' | 'column';
   type ClipStrUnion = 'y' | 'x' | 'xy' | 'hide';
@@ -277,7 +276,7 @@ export namespace View {
   };
 
   export const h: FC<Prop> = function Kira_Frame({
-    alignment = 'center',
+    alignment = 'topLeading',
     direction = 'column',
     shrink = true,
     box = 'inner',
