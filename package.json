@@ -5,7 +5,7 @@
     "boot": "lerna bootstrap",
     "build": "tsc --build",
     "test": "jest",
-    "clean": "rimraf modules/*/{tsconfig.tsbuildinfo,lib,dist}"
+    "clean": "rimraf npm_target/dist"
   },
   "dependencies": {
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
