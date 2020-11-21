@@ -6,6 +6,8 @@
     "composite": true,
   },
   "files": [
+    "_utils/_node_dependency_exits.ts",
+    "_utils/mod.ts",
     "_config_babel.ts",
     "_config_inject_process.ts",
     "_config_typeScript.ts",
