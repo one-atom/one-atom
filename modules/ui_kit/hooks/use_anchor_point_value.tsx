@@ -22,7 +22,7 @@ export function useAnchorPointValue(name: string): EventOutput {
         set_position(vec_2.getAsObj());
       });
     } else {
-      function listener(event: any): void {
+      const listener = (event: any): void => {
         if (event !== name) return;
 
         AnchorPointConsumer.notifier.off(AnchorPointConsumer.Events.Notify, listener);
@@ -35,7 +35,7 @@ export function useAnchorPointValue(name: string): EventOutput {
         disposer = anchor_point_instance.onChange((vec_2) => {
           set_position(vec_2.getAsObj());
         });
-      }
+      };
 
       AnchorPointConsumer.notifier.on(AnchorPointConsumer.Events.Notify, listener);
     }
