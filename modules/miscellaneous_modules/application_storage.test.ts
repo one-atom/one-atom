@@ -1,4 +1,4 @@
-import { ApplicationStorage } from '../application_storage';
+import { ApplicationStorage } from './application_storage';
 
 type Typing = {
   a: string;
