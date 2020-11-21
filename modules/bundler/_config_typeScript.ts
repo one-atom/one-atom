@@ -2,7 +2,7 @@
 
 import ts from 'typescript';
 import { Logger } from '../logger/mod';
-import { readJsonSync } from './_read_json_sync';
+import { readJsonSync } from './_utils/mod';
 
 export namespace TypeScriptConfig {
   type ParsedCompilerOptions = {

@@ -1,4 +1,4 @@
-import { readJsonSync } from './_read_json_sync';
+import { readJsonSync } from './_utils/mod';
 import { Logger } from '../logger/mod';
 
 export namespace InjectProcessConfig {
