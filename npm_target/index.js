@@ -22,7 +22,6 @@ var __exportStar =
   };
 Object.defineProperty(exports, '__esModule', { value: true });
 __exportStar(require('./dist/application_state/mod.js'), exports);
-__exportStar(require('./dist/id/mod'), exports);
 __exportStar(require('./dist/instantiation/mod'), exports);
 __exportStar(require('./dist/logger/mod'), exports);
 __exportStar(require('./dist/miscellaneous_modules/mod'), exports);

@@ -20,7 +20,6 @@
   "references": [
     { "path": "modules/application_state" },
     { "path": "modules/bundler" },
-    { "path": "modules/id" },
     { "path": "modules/instantiation" },
     { "path": "modules/logger" },
     { "path": "modules/miscellaneous_modules" },

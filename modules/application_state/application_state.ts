@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
 import { DataStruct, ValidStateData } from './_data_struct';
-import { Id } from '../id/mod';
 
 type CurrStateFn<T extends ValidStateData> = (curr_state: Omit<DataStruct<T>, 'insert'>) => Partial<T>;
 
@@ -28,7 +27,7 @@ if (window) {
 export class State<T extends ValidStateData> {
   public readonly id = `hook_id_${++ids}`;
   public flow_state = FlowState.UNSET;
-  private readonly hooks: Map<string, () => void> = new Map();
+  private readonly hooks: Map<symbol, () => void> = new Map();
 
   private readonly data: DataStruct<T>;
 
@@ -87,7 +86,8 @@ export class State<T extends ValidStateData> {
   }
 
   public subscribe(event: () => void): Disposer {
-    const id = Id.short();
+    const id = Symbol();
+
     this.hooks.set(id, event);
 
     return () => {

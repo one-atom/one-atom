@@ -13,6 +13,5 @@
   ],
   "references": [
     { "path": "../miscellaneous_modules" },
-    { "path": "../id" },
   ],
 }
