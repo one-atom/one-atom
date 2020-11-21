@@ -1,7 +1,7 @@
 // @ts-check
 /* eslint-disable */
 
-const { Run } = require('../../../../../npm_target/run');
+const { Run } = require('../../../../npm_target/run');
 
 Run.production({
   parseWithBabel: true,
