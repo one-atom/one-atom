@@ -4,16 +4,16 @@ type AnyFunction = (args?: any) => any;
 
 export class Timer {
   private disposers = new Map<number, Timer.Disposer>();
-  private registered_id = 0;
+  private registeredId = 0;
 
   public wait(callback: AnyFunction, duration: number): Timer.Disposer {
     const timeout = setTimeout(callback, duration);
 
-    const disposer = () => {
+    const disposer = (): void => {
       clearTimeout(timeout);
     };
 
-    return this.register_disposer(disposer);
+    return this.registerDisposer(disposer);
   }
 
   public repeat(callback: AnyFunction, duration: number, callOnceOnInvoke = false): Timer.Disposer {
@@ -23,24 +23,24 @@ export class Timer {
 
     const interval = setInterval(callback, duration);
 
-    const disposer = () => {
+    const disposer = (): void => {
       clearInterval(interval);
     };
 
-    return this.register_disposer(disposer);
+    return this.registerDisposer(disposer);
   }
 
   public flush(): void {
     this.disposers.forEach((disposer) => disposer());
   }
 
-  private register_disposer(disposer: Timer.Disposer): Timer.Disposer {
-    const local_id = this.registered_id++;
+  private registerDisposer(disposer: Timer.Disposer): Timer.Disposer {
+    const localId = this.registeredId++;
 
-    this.disposers.set(local_id, disposer);
+    this.disposers.set(localId, disposer);
 
     return () => {
-      this.disposers.delete(local_id);
+      this.disposers.delete(localId);
 
       disposer();
     };
@@ -56,7 +56,6 @@ export namespace Timer {
 
   export function wait(...args: GetArgumentTypes<Timer['wait']>): Disposer {
     const time = new Timer();
-
     time.wait(...args);
 
     return time.flush.bind(time);
@@ -64,7 +63,6 @@ export namespace Timer {
 
   export function repeat(...args: GetArgumentTypes<Timer['repeat']>): Disposer {
     const time = new Timer();
-
     time.repeat(...args);
 
     return time.flush.bind(time);
