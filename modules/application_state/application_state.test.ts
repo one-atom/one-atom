@@ -1,4 +1,4 @@
-import { newApplicationState, FlowState } from '../application_state';
+import { newApplicationState, FlowState } from './application_state';
 
 function get_typical_state(): { name: string; age: number } {
   return {

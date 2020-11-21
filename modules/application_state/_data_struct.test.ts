@@ -1,6 +1,12 @@
-import { DataStruct } from '../_data_struct';
+import { DataStruct } from './_data_struct';
 
-function get_typical_state() {
+function getTypicalState(): {
+  name: string;
+  age: number;
+  location: {
+    country: string;
+  };
+} {
   return {
     name: 'max',
     age: 25,
@@ -12,7 +18,7 @@ function get_typical_state() {
 
 describe('Data Struct', () => {
   it('should insert new data and not destroy previous', () => {
-    const data = new DataStruct(get_typical_state());
+    const data = new DataStruct(getTypicalState());
 
     data.insert({
       name: 'ezra',
@@ -74,7 +80,7 @@ describe('Data Struct', () => {
   });
 
   it('should keep object reference', () => {
-    const state = get_typical_state();
+    const state = getTypicalState();
     const data = new DataStruct(state);
 
     state.location.country = 'norway';

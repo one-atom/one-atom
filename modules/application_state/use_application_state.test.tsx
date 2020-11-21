@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import { render } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
-import { useApplicationState } from '../use_application_state';
-import { FlowState, newApplicationState, State } from '../application_state';
+import { useApplicationState } from './use_application_state';
+import { FlowState, newApplicationState, State } from './application_state';
 
 type TestState = {
   is: boolean;
