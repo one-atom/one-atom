@@ -7,7 +7,6 @@ beforeEach(() => {
     'standard/tsconfig.json': JSON.stringify({
       compilerOptions: {
         module: 'ESNext',
-        target: 'es2019',
         jsx: 'react',
         rootDir: 'standardSrc',
         outDir: 'standardDist',
@@ -31,7 +30,6 @@ describe('TypeScript Config', () => {
 
     expect(config.rootDir).toBe('standardSrc');
     expect(config.outDir).toBe('standardDist');
-    expect(config.target).toBe(ts.ScriptTarget.ES2019);
     expect(config.module).toBe('ESNext');
     expect(config.baseUrl).toBe('standardBaseUrl');
   });
