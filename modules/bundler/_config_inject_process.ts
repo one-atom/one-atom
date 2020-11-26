@@ -9,7 +9,7 @@ export namespace InjectProcessConfig {
   export const CUSTOM_ENV = 'CUSTOM_ENV';
   export const CUSTOM_GLOBAL_ENV = 'CUSTOM_GLOBAL_ENV';
 
-  export function get_custom_env(location: string): InjectProcessConfigLike | null {
+  export function getCustomEnv(location: string): InjectProcessConfigLike | null {
     try {
       const located_json = readJsonSync<InjectProcessConfigLike>(location);
       const builder: InjectProcessConfigLike = {};

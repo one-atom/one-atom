@@ -36,7 +36,7 @@ export namespace WebpackConfig {
     }
 
     if (loadConfigPathToFile) {
-      const processConfig = InjectProcessConfig.get_custom_env(loadConfigPathToFile);
+      const processConfig = InjectProcessConfig.getCustomEnv(loadConfigPathToFile);
 
       if (processConfig !== null) {
         definedEnv[`process.env.${InjectProcessConfig.CUSTOM_GLOBAL_ENV}`] = processConfig;

@@ -5,7 +5,7 @@ import { Paths } from './_paths';
 import { WebpackConfig } from './_config_webpack';
 
 export namespace Run {
-  interface DevSpecification {
+  interface DevSpecification extends Paths.Option {
     root: string;
     customEnv?: string;
     loadConfigPathToFile?: string;
@@ -13,7 +13,7 @@ export namespace Run {
     hmr?: boolean;
   }
 
-  interface ProdSpecification {
+  interface ProdSpecification extends Paths.Option {
     root: string;
     customEnv?: string;
     loadConfigPathToFile?: string;
@@ -21,17 +21,17 @@ export namespace Run {
     useBundleAnalyzer?: boolean;
   }
 
-  export function development({ root, customEnv, loadConfigPathToFile, parseWithBabel, hmr }: DevSpecification): void {
+  export function development({ root, customEnv, loadConfigPathToFile, parseWithBabel, hmr, ...rest }: DevSpecification): void {
     process.env.NODE_ENV = 'development';
     hmr = hmr ?? false;
 
-    const paths = Paths.get(root);
+    const paths = Paths.get(root, rest);
     const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 8000;
     const webpackDevServerConfiguration: WebpackDevServer.Configuration = {
       port,
       host: 'localhost',
       clientLogLevel: 'none',
-      contentBase: paths.dir,
+      contentBase: paths.static,
       disableHostCheck: true,
       compress: true,
       hot: hmr,
@@ -75,10 +75,11 @@ export namespace Run {
     loadConfigPathToFile,
     parseWithBabel,
     useBundleAnalyzer,
+    ...rest
   }: ProdSpecification): Promise<void> {
     process.env.NODE_ENV = 'production';
 
-    const paths = Paths.get(root);
+    const paths = Paths.get(root, rest);
     const webpackConfiguration = WebpackConfig.production({
       output: paths.outDir,
       paths,
