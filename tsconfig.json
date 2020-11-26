@@ -6,7 +6,6 @@
     "baseUrl": ".",
     "rootDir": "./modules",
     "lib": ["esnext"],
-    "target": "es2020",
     "strict": true,
     "declaration": true,
     "skipLibCheck": true,
