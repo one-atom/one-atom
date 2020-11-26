@@ -2,7 +2,7 @@
 
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { Size } from './size';
+import { Size } from './size.component';
 import { OneAtomCommonPropType } from '../prop_type';
 
 /**

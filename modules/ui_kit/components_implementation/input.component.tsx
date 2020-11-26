@@ -3,8 +3,8 @@
 import React, { FC, forwardRef } from 'react';
 import styled from 'styled-components';
 import { OneAtomCommonPropType } from '../prop_type';
-import { BaseInput } from '../components_base/base_input';
-import { Size } from './size';
+import { BaseInput } from '../components_base/base_input.component';
+import { Size } from './size.component';
 
 /**
  * Input

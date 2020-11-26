@@ -1,2 +1,2 @@
-export * from './a11y_region';
-export * from './a11y_role';
+export * from './a11y_region.component';
+export * from './a11y_role.component';

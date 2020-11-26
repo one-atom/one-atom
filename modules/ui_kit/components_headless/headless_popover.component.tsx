@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Portal } from '../components_implementation/portal';
+import { Portal } from '../components_implementation/portal.component';
 import { useAnchorPointValue } from '../hooks/use_anchor_point_value';
 import { OneAtomCommonPropType } from '../prop_type';
 

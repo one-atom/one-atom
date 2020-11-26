@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { BaseButton } from '../components_base/base_button';
+import { BaseButton } from '../components_base/base_button.component';
 import { OneAtomCommonPropType } from '../prop_type';
-import { Size } from './size';
+import { Size } from './size.component';
 
 /**
  * Button

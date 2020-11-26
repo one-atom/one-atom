@@ -1,2 +1,2 @@
-export * from './headless_stack';
-export * from './headless_popover';
+export * from './headless_stack.component';
+export * from './headless_popover.component';
