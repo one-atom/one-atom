@@ -24,6 +24,6 @@
     { "path": "modules/instantiation" },
     { "path": "modules/logger" },
     { "path": "modules/miscellaneous_modules" },
-    { "path": "modules/ui_kit" },
+    { "path": "modules/atom_ui" },
   ]
 }

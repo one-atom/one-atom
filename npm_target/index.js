@@ -26,4 +26,4 @@ __exportStar(require('./dist/application_state/mod.js'), exports);
 __exportStar(require('./dist/instantiation/mod.js'), exports);
 __exportStar(require('./dist/logger/mod.js'), exports);
 __exportStar(require('./dist/miscellaneous_modules/mod.js'), exports);
-__exportStar(require('./dist/ui_kit/mod.js'), exports);
+__exportStar(require('./dist/atom_ui/mod.js'), exports);
