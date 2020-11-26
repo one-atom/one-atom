@@ -1,15 +1,15 @@
 import React, { FC } from 'react';
 import { HeadLessStack } from '../components_headless/headless_stack';
 import { unwrapFragment } from '../helpers/unwrap_fragment';
-import { KiraPropType } from '../prop_type';
+import { OneAtomCommonPropType } from '../prop_type';
 
 /**
  * HStack
  */
 export namespace HStack {
-  export interface Props extends Partial<Omit<HeadLessStack.Props, 'axis'>>, KiraPropType {}
+  export interface Props extends Partial<Omit<HeadLessStack.Props, 'axis'>>, OneAtomCommonPropType {}
 
-  export const h: FC<Props> = function Kira_horizontal_stack({ className, spacing = 0, fluid = true, children }) {
+  export const h: FC<Props> = function OneAtom_horizontal_stack({ className, spacing = 0, fluid = true, children }) {
     const flatten = unwrapFragment(children);
 
     return (

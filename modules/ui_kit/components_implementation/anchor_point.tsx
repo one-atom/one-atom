@@ -1,13 +1,13 @@
 import React, { useRef, useEffect, FC } from 'react';
 import styled from 'styled-components';
 import { AnchorPointConsumer } from '../helpers/anchor_point_consumer';
-import { KiraPropType } from '../prop_type';
+import { OneAtomCommonPropType } from '../prop_type';
 
 /**
  * AnchorPoint
  */
 export namespace AnchorPoint {
-  export interface Props extends KiraPropType {
+  export interface Props extends OneAtomCommonPropType {
     /** Name of registered anchor point */
     name: string;
 
@@ -24,7 +24,7 @@ export namespace AnchorPoint {
     `,
   };
 
-  export const h: FC<Props> = function Kira_AnchorPoint({ name, top, left, children }) {
+  export const h: FC<Props> = function OneAtom_AnchorPoint({ name, top, left, children }) {
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {

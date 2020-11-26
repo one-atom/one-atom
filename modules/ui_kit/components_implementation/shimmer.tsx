@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { KiraPropType } from '../prop_type';
+import { OneAtomCommonPropType } from '../prop_type';
 
 /**
  * change this
  */
 export namespace Shimmer {
-  export interface Props extends KiraPropType {
+  export interface Props extends OneAtomCommonPropType {
     width: number;
     height: number;
     cornerRadius?: number;
@@ -43,9 +43,9 @@ export namespace Shimmer {
         height: 100%;
         background-image: linear-gradient(
           -80deg,
-          var(--kira_shimmer_bg_from, #333333) 8%,
-          var(--kira_shimmer_bg_to, #222223) 18%,
-          var(--kira_shimmer_bg_from, #333333) 33%
+          var(--oa-shimmer-bg-from, #333333) 8%,
+          var(--oa-shimmer-bg-to, #222223) 18%,
+          var(--oa-shimmer-bg-from, #333333) 33%
         );
         background-repeat: no-repeat;
         background-position: 0 0;
@@ -60,7 +60,7 @@ export namespace Shimmer {
     `,
   };
 
-  export const h: FC<Props> = function Kira_Shimmer({ className, width, height, opacity = 1, cornerRadius = 0 }) {
+  export const h: FC<Props> = function OneAtom_Shimmer({ className, width, height, opacity = 1, cornerRadius = 0 }) {
     return (
       <elements.shimmer
         className={className}

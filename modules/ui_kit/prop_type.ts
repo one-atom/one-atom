@@ -1,3 +1,3 @@
-export type KiraPropType = {
+export type OneAtomCommonPropType = {
   className?: string;
 };

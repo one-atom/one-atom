@@ -1,12 +1,12 @@
 import React, { useState, InputHTMLAttributes, forwardRef, FC } from 'react';
 import styled from 'styled-components';
-import { KiraPropType } from '../prop_type';
+import { OneAtomCommonPropType } from '../prop_type';
 
 /**
  * BaseInput
  */
 export namespace BaseInput {
-  export interface Props extends InputHTMLAttributes<HTMLInputElement>, KiraPropType {
+  export interface Props extends InputHTMLAttributes<HTMLInputElement>, OneAtomCommonPropType {
     ref?: any;
     type:
       | 'button'
@@ -47,15 +47,15 @@ export namespace BaseInput {
       background: none;
       -webkit-tap-highlight-color: transparent;
       outline: none;
-      color: var(--kira_input_subtle, #888);
+      color: var(--oa-input-subtle, #888);
 
       &:focus:not(:disabled) {
-        color: var(--kira_input_clr, #ffffff);
+        color: var(--oa-input-clr, #ffffff);
       }
     `,
   };
 
-  export const h: FC<Props> = forwardRef(function Kira_BaseInput(props, ref) {
+  export const h: FC<Props> = forwardRef(function OneAtom_BaseInput(props, ref) {
     const {
       // Takes out these values to be used as variables here.
       children,

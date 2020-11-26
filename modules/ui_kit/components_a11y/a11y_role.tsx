@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { KiraPropType } from '../prop_type';
+import { OneAtomCommonPropType } from '../prop_type';
 import styled from 'styled-components';
 
 /**
@@ -7,7 +7,7 @@ import styled from 'styled-components';
  */
 export namespace A11yRole {
   // prettier-ignore
-  export type Props = KiraPropType & {
+  export type Props = OneAtomCommonPropType & {
     role:
       | 'alert'         // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/Alert_Role
       | 'application'   // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/Application_Role

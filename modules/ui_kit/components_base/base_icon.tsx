@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { KiraPropType } from '../prop_type';
+import { OneAtomCommonPropType } from '../prop_type';
 
 /**
  * BaseIcon
  */
 export namespace BaseIcon {
-  export interface Props extends KiraPropType {
+  export interface Props extends OneAtomCommonPropType {
     viewBox?: string;
     rotation?: number;
     mirror?: Mirror;
@@ -66,7 +66,7 @@ export namespace BaseIcon {
     `,
   };
 
-  export const h: FC<Props> = function Kira_Icon({ children, viewBox, rotation, mirror, center }) {
+  export const h: FC<Props> = function OneAtom_Icon({ children, viewBox, rotation, mirror, center }) {
     return (
       <elements.svg
         data-testid="svg"

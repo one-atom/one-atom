@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { KiraPropType } from '../prop_type';
+import { OneAtomCommonPropType } from '../prop_type';
 
 /**
  * Spacer
  */
 export namespace Spacer {
-  export interface Props extends KiraPropType {
+  export interface Props extends OneAtomCommonPropType {
     height?: number;
     width?: number;
   }
@@ -18,7 +18,7 @@ export namespace Spacer {
     `,
   };
 
-  export const h: FC<Props> = function Kira_Spacer({ height, width }) {
+  export const h: FC<Props> = function OneAtom_Spacer({ height, width }) {
     return <elements.body height={height} width={width}></elements.body>;
   };
 }

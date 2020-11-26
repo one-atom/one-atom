@@ -2,7 +2,7 @@
 
 import React, { FC, forwardRef } from 'react';
 import styled from 'styled-components';
-import { KiraPropType } from '../prop_type';
+import { OneAtomCommonPropType } from '../prop_type';
 import { BaseInput } from '../components_base/base_input';
 import { Size } from './size';
 
@@ -10,7 +10,7 @@ import { Size } from './size';
  * Input
  */
 export namespace Input {
-  export interface Props extends BaseInput.Props, Size.Props, KiraPropType {}
+  export interface Props extends BaseInput.Props, Size.Props, OneAtomCommonPropType {}
 
   const elements = {
     label: styled.label`
@@ -24,19 +24,19 @@ export namespace Input {
       padding: 0px 16px;
       box-sizing: border-box;
       border-radius: 10px;
-      background-color: var(--kira_input_bg, rgb(51, 51, 51));
+      background-color: var(--oa-input-bg, rgb(51, 51, 51));
       width: 100%;
       font-size: 0.8125rem; // 13px
       line-height: 1.05875; // 16.94px
 
       &:focus:not(:disabled) {
         outline-width: 0px;
-        box-shadow: inset 0 0 0 1px var(--kira_input_focus_clr, #0099ff);
+        box-shadow: inset 0 0 0 1px var(--oa-input-focus-clr, #0099ff);
       }
     `,
   };
 
-  export const h: FC<Props> = forwardRef(function Kira__Input({ fluid, className, ...rest }, ref) {
+  export const h: FC<Props> = forwardRef(function OneAtom__Input({ fluid, className, ...rest }, ref) {
     return (
       <Size.h fluid={fluid} className={className}>
         <elements.label>

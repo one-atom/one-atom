@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { KiraPropType } from '../prop_type';
+import { OneAtomCommonPropType } from '../prop_type';
 
 /**
  * Separator
  */
 export namespace Separator {
-  export interface Props extends KiraPropType {
+  export interface Props extends OneAtomCommonPropType {
     padding?: number;
   }
 
@@ -19,11 +19,11 @@ export namespace Separator {
     inner: styled.div<{ padding: number }>`
       height: 1px;
       width: calc(100% - ${({ padding }) => padding}px);
-      background: var(--kira_separator_bg, #343438);
+      background: var(--oa-separator-bg, #343438);
     `,
   };
 
-  export const h: FC<Props> = function Kira_Separator({ children, className, padding }) {
+  export const h: FC<Props> = function OneAtom_Separator({ children, className, padding }) {
     return (
       <elements.separator aria-hidden="true" className={className}>
         <elements.inner padding={padding ?? 0}>{children}</elements.inner>

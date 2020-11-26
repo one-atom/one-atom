@@ -36,10 +36,10 @@ export namespace WebpackConfig {
     }
 
     if (loadConfigPathToFile) {
-      const kira_config = InjectProcessConfig.get_custom_env(loadConfigPathToFile);
+      const processConfig = InjectProcessConfig.get_custom_env(loadConfigPathToFile);
 
-      if (kira_config !== null) {
-        definedEnv[`process.env.${InjectProcessConfig.CUSTOM_GLOBAL_ENV}`] = kira_config;
+      if (processConfig !== null) {
+        definedEnv[`process.env.${InjectProcessConfig.CUSTOM_GLOBAL_ENV}`] = processConfig;
       }
     }
 

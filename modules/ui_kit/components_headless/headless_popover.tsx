@@ -1,13 +1,13 @@
 import React, { Fragment } from 'react';
 import { Portal } from '../components_implementation/portal';
 import { useAnchorPointValue } from '../hooks/use_anchor_point_value';
-import { KiraPropType } from '../prop_type';
+import { OneAtomCommonPropType } from '../prop_type';
 
 /**
  * HeadLessPopover
  */
 export namespace HeadLessPopover {
-  export interface Props extends KiraPropType {
+  export interface Props extends OneAtomCommonPropType {
     /** A registered anchor point */
     attachTo: string;
   }
@@ -21,7 +21,7 @@ export namespace HeadLessPopover {
     children: (props: HeadLessProps) => JSX.Element;
   }
 
-  const Inner: React.FC<InternalProps> = function Kira_HeadlessPopover_inner({ attachTo, children }) {
+  const Inner: React.FC<InternalProps> = function OneAtom_HeadlessPopover_inner({ attachTo, children }) {
     const position = useAnchorPointValue(attachTo);
 
     return <Fragment>{position !== null && children({ x: position.x, y: position.y })}</Fragment>;

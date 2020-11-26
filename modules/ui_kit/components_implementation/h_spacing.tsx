@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { KiraPropType } from '../prop_type';
+import { OneAtomCommonPropType } from '../prop_type';
 
 /**
  * change this
  */
 export namespace HSpacing {
-  export interface Props extends KiraPropType {
+  export interface Props extends OneAtomCommonPropType {
     px: number;
   }
 
@@ -19,7 +19,7 @@ export namespace HSpacing {
     `,
   };
 
-  export const h: FC<Props> = function Kira_horizontal_spacing({ px }) {
+  export const h: FC<Props> = function OneAtom_horizontal_spacing({ px }) {
     return <elements.spacing px={px} aria-hidden="true" />;
   };
 }

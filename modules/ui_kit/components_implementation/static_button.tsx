@@ -3,13 +3,13 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import { Size } from './size';
-import { KiraPropType } from '../prop_type';
+import { OneAtomCommonPropType } from '../prop_type';
 
 /**
  * StaticButton
  */
 export namespace StaticButton {
-  export interface Props extends Size.Props, KiraPropType {}
+  export interface Props extends Size.Props, OneAtomCommonPropType {}
 
   const elements = {
     button: styled.div`
@@ -22,7 +22,7 @@ export namespace StaticButton {
     `,
   };
 
-  export const h: FC<Props> = function Kira_Button({ children, fluid, className, ...rest }) {
+  export const h: FC<Props> = function OneAtom_Button({ children, fluid, className, ...rest }) {
     return (
       <Size.h fluid={fluid} className={className}>
         <elements.button {...rest}>{children}</elements.button>

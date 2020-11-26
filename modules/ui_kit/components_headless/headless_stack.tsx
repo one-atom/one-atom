@@ -1,12 +1,12 @@
 import { FC } from 'react';
 import { StyleSheetController } from '../helpers/style_sheet_controller';
-import { KiraPropType } from '../prop_type';
+import { OneAtomCommonPropType } from '../prop_type';
 
 /**
  * HeadLessStack
  */
 export namespace HeadLessStack {
-  interface HeadLessProps extends KiraPropType {
+  interface HeadLessProps extends OneAtomCommonPropType {
     parentClassName: string;
     childClassName: string;
   }
@@ -24,7 +24,7 @@ export namespace HeadLessStack {
 
   const style_sheet_controller = new StyleSheetController();
 
-  export const h: FC<InternalProps> = function Kira_HeadlessStack({ axis, fluid, spacing, children }) {
+  export const h: FC<InternalProps> = function OneAtom_HeadlessStack({ axis, fluid, spacing, children }) {
     const half_spacing = spacing / 2;
     const base_str = `${spacing}_${fluid ? 'y' : 'n'}_${axis === 'Vertical' ? 'v' : 'h'}`;
     const parent_class_name = `p_${base_str}`;

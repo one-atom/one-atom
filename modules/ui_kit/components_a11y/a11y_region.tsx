@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { KiraPropType } from '../prop_type';
+import { OneAtomCommonPropType } from '../prop_type';
 import styled from 'styled-components';
 import { A11yRole } from './a11y_role';
 
@@ -7,7 +7,7 @@ import { A11yRole } from './a11y_role';
  * A11yRegion
  */
 export namespace A11yRegion {
-  export type Props = KiraPropType & {
+  export type Props = OneAtomCommonPropType & {
     label: string;
   };
 

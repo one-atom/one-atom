@@ -1,13 +1,13 @@
 import React, { FC, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { focusContext } from '../helpers/focus_context';
-import { KiraPropType } from '../prop_type';
+import { OneAtomCommonPropType } from '../prop_type';
 
 /**
  * BaseButton
  */
 export namespace BaseButton {
-  export interface Props extends KiraPropType {
+  export interface Props extends OneAtomCommonPropType {
     label: string;
     tabIndex?: number;
     disabled?: boolean;
@@ -55,7 +55,7 @@ export namespace BaseButton {
     `,
   };
 
-  export const h: FC<Props> = function Kira_Base_button({ ...props }) {
+  export const h: FC<Props> = function OneAtom_BaseButton({ ...props }) {
     // Takes out these values to be used as variables here.
     const {
       children,

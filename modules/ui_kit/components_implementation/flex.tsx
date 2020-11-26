@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { KiraPropType } from '../prop_type';
+import { OneAtomCommonPropType } from '../prop_type';
 import styled from 'styled-components';
 
 /**
@@ -16,7 +16,7 @@ export namespace Flex {
     shrink?: number;
     basis?: number | string;
     applySize?: boolean;
-  } & KiraPropType;
+  } & OneAtomCommonPropType;
 
   // Exits to not add attributes to the dom element
   type SanitizedStyleProps = {
@@ -45,7 +45,7 @@ export namespace Flex {
     `,
   };
 
-  export const h: FC<Props> = function Kira_Flex({
+  export const h: FC<Props> = function OneAtom_Flex({
     grow,
     basis,
     className,

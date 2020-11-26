@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { KiraPropType } from '../prop_type';
+import { OneAtomCommonPropType } from '../prop_type';
 
 /**
  * Article
  */
 export namespace Article {
-  export interface Props extends KiraPropType {
+  export interface Props extends OneAtomCommonPropType {
     center?: boolean;
   }
 
@@ -46,7 +46,7 @@ export namespace Article {
     `,
   };
 
-  export const h: FC<Props> = function Kira_Article({ children, className, center, ...rest }) {
+  export const h: FC<Props> = function OneAtom_Article({ children, className, center, ...rest }) {
     return (
       <elements.article center={center} className={className} {...rest}>
         {children}

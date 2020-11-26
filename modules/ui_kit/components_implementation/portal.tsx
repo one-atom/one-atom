@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { StyleSheetController } from '../helpers/style_sheet_controller';
 import { Logger } from '../../logger/mod';
-import { KiraPropType } from '../prop_type';
+import { OneAtomCommonPropType } from '../prop_type';
 
 /**
  * Portal
@@ -10,9 +10,9 @@ import { KiraPropType } from '../prop_type';
 export namespace Portal {
   export type Props = {
     mountTo?: string | HTMLElement;
-  } & KiraPropType;
+  } & OneAtomCommonPropType;
 
-  const id = 'kira-portal';
+  const id = 'one-atom-portal';
   const className = `${id}-container`;
 
   if (!document.getElementById(id)) {
@@ -20,7 +20,7 @@ export namespace Portal {
     root_element.id = id;
     document.body!.appendChild(root_element);
   } else {
-    Logger.assert(Logger.Level.WARN, 'multiple instances of kira-ui-common has been made');
+    Logger.assert(Logger.Level.WARN, "multiple instances of One Atom's portal has been made");
   }
 
   const style_sheet = new StyleSheetController();
@@ -44,19 +44,19 @@ export namespace Portal {
     `,
   );
 
-  export const h: FC<Props> = function Kira_Portal({ children, mountTo }) {
+  export const h: FC<Props> = function OneAtom_Portal({ children, mountTo }) {
     let mount: HTMLElement;
 
     if (typeof mountTo === 'string') {
-      const kiraPortal = document.getElementById(mountTo);
-      if (!kiraPortal) throw new Error(`Could not find an element ${mountTo}`);
-      mount = kiraPortal;
+      const oneAtomPortal = document.getElementById(mountTo);
+      if (!oneAtomPortal) throw new Error(`Could not find an element ${mountTo}`);
+      mount = oneAtomPortal;
     } else if (mountTo instanceof HTMLElement) {
       mount = mountTo;
     } else {
-      const kiraPortal = document.getElementById(id);
-      if (!kiraPortal) throw new Error("root element was removed, don't do that");
-      mount = kiraPortal;
+      const oneAtomPortal = document.getElementById(id);
+      if (!oneAtomPortal) throw new Error("root element was removed, don't do that");
+      mount = oneAtomPortal;
     }
 
     const el = document.createElement('div');

@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { KiraPropType } from '../prop_type';
+import { OneAtomCommonPropType } from '../prop_type';
 
 export namespace View {
-  export interface Prop extends KiraPropType {
+  export interface Prop extends OneAtomCommonPropType {
     alignment?: AlignmentStrUnionMatrix | AlignmentStrUnionExtra;
     direction?: DirectionStrUnion;
     height?: number | MaxMin;
@@ -275,7 +275,7 @@ export namespace View {
     `,
   };
 
-  export const h: FC<Prop> = function Kira_Frame({
+  export const h: FC<Prop> = function OneAtom_Frame({
     alignment = 'topLeading',
     direction = 'column',
     shrink = true,

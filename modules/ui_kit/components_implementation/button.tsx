@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import { BaseButton } from '../components_base/base_button';
-import { KiraPropType } from '../prop_type';
+import { OneAtomCommonPropType } from '../prop_type';
 import { Size } from './size';
 
 /**
  * Button
  */
 export namespace Button {
-  export interface Props extends BaseButton.Props, Size.Props, KiraPropType {
+  export interface Props extends BaseButton.Props, Size.Props, OneAtomCommonPropType {
     round?: boolean;
   }
 
@@ -36,20 +36,20 @@ export namespace Button {
 
   const elements = {
     actionButton: styled(elements_shared.button)`
-      color: var(--kira-button-action-clr, #ffffff);
-      background: var(--kira-button-action-bg, #0099ff);
+      color: var(--oa-button-action-clr, #ffffff);
+      background: var(--oa-button-action-bg, #0099ff);
 
       &:hover:not(:disabled) {
-        background: var(--kira-button-action-bg-hover, #0088ff);
+        background: var(--oa-button-action-bg-hover, #0088ff);
       }
 
       &:active:not(:disabled) {
-        background: var(--kira-button-action-bg-active, #0077ff);
+        background: var(--oa-button-action-bg-active, #0077ff);
       }
     `,
     controlButton: styled(elements_shared.button)`
-      color: var(--kira-button-alt-clr, var(--kira-text-color, #ffffff));
-      background: var(--kira-button-alt-bg, #333333);
+      color: var(--oa-button-alt-clr, var(--oa-text-color, #ffffff));
+      background: var(--oa-button-alt-bg, #333333);
 
       &:hover:not(:disabled) {
         filter: brightness(90%) hue-rotate(2deg);
@@ -61,7 +61,7 @@ export namespace Button {
     `,
   };
 
-  export const action: FC<Props> = function Kira_Button_action({ children, fluid, className, round, type = 'action', ...rest }) {
+  export const action: FC<Props> = function OneAtom_Button_action({ children, fluid, className, round, type = 'action', ...rest }) {
     const cls_name = `${className ?? ''} ${round ? 'round' : ''}`;
 
     return (
@@ -73,7 +73,7 @@ export namespace Button {
     );
   };
 
-  export const alt: FC<Props> = function Kira_Button_control({ children, fluid, className, round, type = 'action', ...rest }) {
+  export const alt: FC<Props> = function OneAtom_Button_control({ children, fluid, className, round, type = 'action', ...rest }) {
     const cls_name = `${className ?? ''} ${round ? 'round' : ''}`;
 
     return (
@@ -85,7 +85,7 @@ export namespace Button {
     );
   };
 
-  export const h: FC<Props> = function Kira_Button({ children, fluid, className, type = 'action', ...rest }) {
+  export const h: FC<Props> = function OneAtom_Button({ children, fluid, className, type = 'action', ...rest }) {
     return (
       <Size.h fluid={fluid}>
         <elements_shared.button className={className ?? ''} {...rest}>

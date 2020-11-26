@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { KiraPropType } from '../prop_type';
+import { OneAtomCommonPropType } from '../prop_type';
 
 /**
  * Size
  */
 export namespace Size {
-  export interface Props extends KiraPropType {
+  export interface Props extends OneAtomCommonPropType {
     fluid?: boolean;
   }
 
@@ -22,7 +22,7 @@ export namespace Size {
     `,
   };
 
-  export const h: FC<Props> = function Kira_Size({ children, className, fluid = false }) {
+  export const h: FC<Props> = function OneAtom_Size({ children, className, fluid = false }) {
     if (fluid) {
       return <elements.fluid className={className}>{children}</elements.fluid>;
     }

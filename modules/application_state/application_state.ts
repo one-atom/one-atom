@@ -16,7 +16,7 @@ export enum FlowState {
 export type CurrStateTuple<T> = [Readonly<T>, FlowState];
 
 let ids = 0;
-const GLOBAL_HOOK = '__KIRA_APPLICATION_STATE_GLOBAL_HOOK__';
+const GLOBAL_HOOK = '__ONE_ATOM_APPLICATION_STATE_GLOBAL_HOOK__';
 
 //@ts-ignore
 if (window) {
