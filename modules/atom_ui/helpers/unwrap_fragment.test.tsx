@@ -1,9 +1,9 @@
-import React, { Fragment } from 'react';
+import { Fragment, FC } from 'react';
 import { render } from '@testing-library/react';
 import { unwrapFragment } from '../helpers/unwrap_fragment';
 
 describe('unwrapFragment', () => {
-  const T: React.FC = ({ children }) => {
+  const T: FC = ({ children }) => {
     const flatten = unwrapFragment(children);
 
     return <Fragment>{flatten}</Fragment>;

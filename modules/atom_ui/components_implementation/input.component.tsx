@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-interface*/
 
-import React, { FC, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import styled from 'styled-components';
 import { OneAtomCommonPropType } from '../prop_type';
 import { BaseInput } from '../components_base/base_input.component';

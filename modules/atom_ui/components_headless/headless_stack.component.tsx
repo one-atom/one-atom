@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { StyleSheetController } from '../helpers/style_sheet_controller';
 import { OneAtomCommonPropType } from '../prop_type';
 

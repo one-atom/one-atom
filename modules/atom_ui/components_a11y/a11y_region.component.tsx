@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+
 import { OneAtomCommonPropType } from '../prop_type';
 import styled from 'styled-components';
 import { A11yRole } from './a11y_role.component';

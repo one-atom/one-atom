@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { cloneElement } from 'react';
 import { HeadLessStack } from '../components_headless/headless_stack.component';
 import { unwrapFragment } from '../helpers/unwrap_fragment';
 import { OneAtomCommonPropType } from '../prop_type';
@@ -19,7 +19,7 @@ export namespace HStack {
             {flatten.map((child) => {
               if (child === null) return child;
 
-              return React.cloneElement(child, {
+              return cloneElement(child, {
                 ...child.props,
                 className: `${child.props.className ?? ''} ${childClassName}`.trim(),
               });

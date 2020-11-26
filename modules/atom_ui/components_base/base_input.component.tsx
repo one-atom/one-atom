@@ -1,4 +1,4 @@
-import React, { useState, InputHTMLAttributes, forwardRef, FC } from 'react';
+import { useState, InputHTMLAttributes, forwardRef } from 'react';
 import styled from 'styled-components';
 import { OneAtomCommonPropType } from '../prop_type';
 

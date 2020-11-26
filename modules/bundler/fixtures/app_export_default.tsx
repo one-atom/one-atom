@@ -1,7 +1,6 @@
-import React, { FC } from 'react';
 import { ExampleComponent } from './example.component';
 
-const AppExportDefault: FC = () => {
+const AppExportDefault = (): JSX.Element => {
   return <ExampleComponent />;
 };
 

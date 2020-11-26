@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -6,7 +6,7 @@ const Wrapper = styled.div`
   color: violet;
 `;
 
-export const ExampleComponent: React.FC = () => {
+export const ExampleComponent = (): JSX.Element => {
   const [state, setState] = useState(0);
 
   function handle_click(): void {

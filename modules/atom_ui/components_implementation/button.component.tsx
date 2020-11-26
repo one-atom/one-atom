@@ -1,4 +1,3 @@
-import React, { FC } from 'react';
 import styled from 'styled-components';
 import { BaseButton } from '../components_base/base_button.component';
 import { OneAtomCommonPropType } from '../prop_type';

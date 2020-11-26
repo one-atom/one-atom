@@ -3,7 +3,7 @@
     "lib": ["dom", "esnext"],
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "module": "ESNext",
     "importsNotUsedAsValues": "preserve", // this is important for proper files watching
   }

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import { Fragment, FC } from 'react';
 import { flushAll, useService, Singleton, Scoped } from './mod';
 import { render } from '@testing-library/react';
 
@@ -13,7 +13,7 @@ describe('useService', () => {
       public foo = 'foo';
     }
 
-    const Comp: React.FC = () => {
+    const Comp: FC = () => {
       const cls1 = useService(Cls);
       const cls2 = useService(Cls);
       cls1.foo = 'baz';
@@ -38,7 +38,7 @@ describe('useService', () => {
       public foo = 'foo';
     }
 
-    const Comp: React.FC = () => {
+    const Comp: FC = () => {
       const cls1 = useService(Cls);
       const cls2 = useService(Cls);
       cls1.foo = 'baz';

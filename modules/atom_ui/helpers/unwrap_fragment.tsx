@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react';
+import { Fragment, Children } from 'react';
 
 export function unwrapFragment(children: React.ReactNode): React.ReactElement[] {
-  const child_arr = React.Children.toArray(children) as React.ReactElement[];
+  const child_arr = Children.toArray(children) as React.ReactElement[];
 
   const new_arr: React.ReactElement[] = child_arr.reduce<React.ReactElement[]>((builder, child) => {
     if (child.type === Fragment) {

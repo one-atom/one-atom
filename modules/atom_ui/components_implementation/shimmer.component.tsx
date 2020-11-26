@@ -1,4 +1,3 @@
-import React, { FC } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { OneAtomCommonPropType } from '../prop_type';
 

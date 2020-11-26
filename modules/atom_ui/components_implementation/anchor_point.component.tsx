@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, FC } from 'react';
+import { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { AnchorPointConsumer } from '../helpers/anchor_point_consumer';
 import { OneAtomCommonPropType } from '../prop_type';

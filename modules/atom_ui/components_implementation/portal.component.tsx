@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { StyleSheetController } from '../helpers/style_sheet_controller';
 import { Logger } from '../../logger/mod';
