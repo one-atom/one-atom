@@ -290,6 +290,7 @@ export namespace View {
     clip,
     className,
     children,
+    ...rest
   }) {
     return (
       <elements.body
@@ -307,6 +308,7 @@ export namespace View {
         styleMargin={margin}
         styleClip={clip}
         className={className}
+        {...rest}
       >
         {children}
       </elements.body>

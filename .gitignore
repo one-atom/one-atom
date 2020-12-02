@@ -3,7 +3,8 @@ node_modules/
 built/*
 target/*
 **/dist/*
+**/videos/*
 **/.DS_Store
 coverage/
 yarn-error.log
-
+debug.log

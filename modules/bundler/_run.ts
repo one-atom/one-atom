@@ -60,7 +60,7 @@ export namespace Run {
       hmr,
       parseWithBabel: parseWithBabel ?? false,
     });
-    const server = new WebpackDevServer(webpack(webpackConfiguration), webpackDevServerConfiguration);
+    const server = new WebpackDevServer(webpack(webpackConfiguration) as any, webpackDevServerConfiguration);
 
     server.listen(port, 'localhost', (error) => {
       if (error) {
