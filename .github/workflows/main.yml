@@ -37,7 +37,7 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install cypress binary
-        run: cypress install
+        run: yarn cypress install
 
       - name: Install packages
         run: yarn install
