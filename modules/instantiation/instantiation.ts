@@ -363,13 +363,7 @@ export function flushRegisteredServices(): void {
 }
 
 /**
- * Marking a class with `@Service` ensures that the compiler will generate the necessary metadata to create the class's dependencies when the class is instantized.
- *
- * The marked class must have a public static property `ctor_name`. It ensure
- * that scrambled and minified code will resolve into the correct instance.
- *
- * By default a service has a Lifetime set to Singleton. This can be changed by
- * declaring a public static property `ctor_lifetime` set to e.g. Transient.
+ * Registers a class as a service with a Singleton lifetime.
  */
 export function Singleton(): Instantiation.GenericClassDecorator<Instantiation.Ctor<any>> {
   return <T>(ctor: Instantiation.Ctor<T>) =>
@@ -378,6 +372,9 @@ export function Singleton(): Instantiation.GenericClassDecorator<Instantiation.C
     });
 }
 
+/**
+ * Registers a class as a service with a Transient lifetime.
+ */
 export function Transient(): Instantiation.GenericClassDecorator<Instantiation.Ctor<any>> {
   return <T>(ctor: Instantiation.Ctor<T>) =>
     Instantiation.register(ctor, {
@@ -385,6 +382,9 @@ export function Transient(): Instantiation.GenericClassDecorator<Instantiation.C
     });
 }
 
+/**
+ * Registers a class as a service with a Scoped lifetime.
+ */
 export function Scoped(): Instantiation.GenericClassDecorator<Instantiation.Ctor<any>> {
   return <T>(ctor: Instantiation.Ctor<T>) =>
     Instantiation.register(ctor, {

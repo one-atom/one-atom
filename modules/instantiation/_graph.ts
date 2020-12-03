@@ -17,11 +17,11 @@ export class Graph<T> {
   }
 
   public insertEdge(from: T, to: T): void {
-    const from_node = this.lookupOrInsertNode(from);
-    const to_node = this.lookupOrInsertNode(to);
+    const fromNode = this.lookupOrInsertNode(from);
+    const toNode = this.lookupOrInsertNode(to);
 
-    from_node.outgoing.set(this.lookupFn(to), to_node);
-    to_node.incoming.set(this.lookupFn(from), from_node);
+    fromNode.outgoing.set(this.lookupFn(to), toNode);
+    toNode.incoming.set(this.lookupFn(from), fromNode);
   }
 
   public lookup(key: Instantiation.Token): Node<T> | null {

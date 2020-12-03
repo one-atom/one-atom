@@ -1,4 +1,4 @@
-import { Instantiation, flushAll, flushSingletons, Singleton, Scoped, Transient } from './instantiation';
+import { Instantiation, flushAll, flushSingletons, Singleton, Scoped, Transient, flushRegisteredServices } from './instantiation';
 
 describe('Instantiation', () => {
   afterEach(() => {
@@ -18,29 +18,11 @@ describe('Instantiation', () => {
     const registered_singleton = Instantiation.getRegisteredService(SingletonService)!;
     const registered_scoped = Instantiation.getRegisteredService(ScopedService)!;
     const registered_transient = Instantiation.getRegisteredService(TransientService)!;
+    const registered_null = Instantiation.getRegisteredService(class {});
     expect(registered_singleton.ctor).toEqual(SingletonService);
     expect(registered_scoped.ctor).toEqual(ScopedService);
     expect(registered_transient.ctor).toEqual(TransientService);
-  });
-
-  it('should throw if cyclic dependency is detected', () => {
-    @Singleton()
-    class A {
-      constructor(public a: A) {}
-    }
-    expect(() => Instantiation.resolve(A)).toThrow();
-
-    @Scoped()
-    class B {
-      constructor(public b: B) {}
-    }
-    expect(() => Instantiation.resolve(B)).toThrow();
-
-    @Transient()
-    class C {
-      constructor(public c: C) {}
-    }
-    expect(() => Instantiation.resolve(C)).toThrow();
+    expect(registered_null).toEqual(null);
   });
 
   it('should not use same singleton instances after a flush', () => {
@@ -2067,6 +2049,20 @@ describe('Instantiation', () => {
     });
     const c = Instantiation.resolve(C);
     expect(c.data).toEqual('c');
+
+    @Singleton()
+    class D {
+      public data = 'og';
+    }
+
+    Instantiation.register(D, {
+      lifeTimes: Instantiation.Lifetimes.Transient,
+      useClass: class Mock {
+        public data = 'd';
+      },
+    });
+    const d = Instantiation.resolve(D);
+    expect(d.data).toEqual('d');
   });
 
   it('should resolve singleton with mocked dependency', () => {
@@ -2139,5 +2135,72 @@ describe('Instantiation', () => {
     const b = Instantiation.resolve(B);
     expect(b.data).toBe('og');
     expect(b.a.data).toBe('replaced');
+  });
+
+  it('should throw an error if cyclic dependency is detected', () => {
+    @Singleton()
+    class A {
+      constructor(public a: A) {}
+    }
+    expect(() => Instantiation.resolve(A)).toThrow();
+
+    @Scoped()
+    class B {
+      constructor(public b: B) {}
+    }
+    expect(() => Instantiation.resolve(B)).toThrow();
+
+    @Transient()
+    class C {
+      constructor(public c: C) {}
+    }
+    expect(() => Instantiation.resolve(C)).toThrow();
+  });
+
+  it('should throw an error if an service is not registered', () => {
+    @Singleton()
+    class A {}
+
+    @Scoped()
+    class B {}
+
+    @Transient()
+    class C {}
+
+    flushRegisteredServices();
+
+    expect(() => Instantiation.resolve(A)).toThrow();
+    expect(() => Instantiation.resolve(B)).toThrow();
+    expect(() => Instantiation.resolve(C)).toThrow();
+  });
+
+  it('should throw an error if an dependency is not registered', () => {
+    class X {}
+
+    @Singleton()
+    class A {
+      constructor(public x: X) {
+        // Empty
+      }
+    }
+
+    expect(() => Instantiation.resolve(A)).toThrow();
+  });
+
+  it('should throw an error if lifetime is not registered', () => {
+    @Singleton()
+    class A {
+      constructor() {
+        // Empty
+      }
+    }
+
+    Instantiation.register(A, {
+      // @ts-ignore
+      lifeTimes: -1,
+      useClass: class {},
+    });
+
+    expect(() => Instantiation.resolve(A)).toThrowError('The service lacks a lifetime');
   });
 });
