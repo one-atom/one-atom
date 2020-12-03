@@ -2,6 +2,12 @@
 
 name: CI
 
+# to cache both npm modules and Cypress binary we use environment variables
+# to point at the folders we can list as paths in "cache" job settings
+variables:
+  npm_config_cache: "$CI_PROJECT_DIR/.npm"
+  CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
+
 # Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
