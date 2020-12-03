@@ -22,12 +22,6 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # just so we learn about available environment variables GitHub provides
-      - name: Print env variables
-        run: |
-          npm i -g @bahmutov/print-env
-          print-env GITHUB
-
       # Restore the previous NPM modules and Cypress binary archives.
       # Any updated archives will be saved automatically after the entire
       # workflow successfully finishes.
