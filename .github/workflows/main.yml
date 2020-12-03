@@ -47,11 +47,11 @@ jobs:
           restore-keys: |
             cypress-${{ runner.os }}-cypress-
 
-          - uses: actions/checkout@v2
-          - uses: actions/cache@v2
-            with:
-              path: '**/node_modules'
-              key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install packages
         run: yarn install
