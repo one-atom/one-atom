@@ -2,12 +2,6 @@
 
 name: CI
 
-# to cache both npm modules and Cypress binary we use environment variables
-# to point at the folders we can list as paths in "cache" job settings
-variables:
-  npm_config_cache: "$CI_PROJECT_DIR/.npm"
-  CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
-
 # Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
@@ -21,6 +15,31 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  # just so we learn about available environment variables GitHub provides
+  name: Print env variables
+    run: |
+      npm i -g @bahmutov/print-env
+      print-env GITHUB
+
+  # Restore the previous NPM modules and Cypress binary archives.
+  # Any updated archives will be saved automatically after the entire
+  # workflow successfully finishes.
+  # See https://github.com/actions/cache
+  name: Cache node modules
+    uses: actions/cache@v1
+    with:
+      path: ~/.npm
+      key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      restore-keys: |
+        ${{ runner.os }}-node-
+  name: Cache Cypress binary
+    uses: actions/cache@v1
+    with:
+      path: ~/.cache/Cypress
+      key: cypress-${{ runner.os }}-cypress-${{ hashFiles('**/package.json') }}
+      restore-keys: |
+        cypress-${{ runner.os }}-cypress-
+
   # This workflow contains a single job called "build"
   build:
     name: Test
