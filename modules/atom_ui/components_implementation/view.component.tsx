@@ -5,8 +5,8 @@ export namespace View {
   export interface Prop extends OneAtomCommonPropType {
     alignment?: AlignmentStrUnionMatrix | AlignmentStrUnionExtra;
     direction?: DirectionStrUnion;
-    height?: number | MaxMin;
-    width?: number | MaxMin;
+    height?: string | number | MaxMin;
+    width?: string | number | MaxMin;
     grow?: boolean;
     shrink?: boolean;
     background?: string;
@@ -21,8 +21,8 @@ export namespace View {
   interface SanitizedStyleProps {
     styleAlignment: AlignmentStrUnionMatrix | AlignmentStrUnionExtra;
     styleDirection?: DirectionStrUnion;
-    styleHeight?: number | MaxMin;
-    styleWidth?: number | MaxMin;
+    styleHeight?: string | number | MaxMin;
+    styleWidth?: string | number | MaxMin;
     styleGrow?: boolean;
     styleShrink?: boolean;
     styleBackground?: string;
@@ -34,8 +34,8 @@ export namespace View {
     styleClip?: ClipStrUnion;
   }
 
-  type NumberOrNull = number | null;
-  type MaxMin = [NumberOrNull, number?];
+  type StringOrNumberOrNull = string | number | null;
+  type MaxMin = [StringOrNumberOrNull, number?];
   type DirectionStrUnion = 'row' | 'column';
   type ClipStrUnion = 'y' | 'x' | 'xy' | 'hide';
   type BoxSizingUnion = 'outer' | 'inner';
@@ -82,6 +82,10 @@ export namespace View {
           return builder;
         }
 
+        if (typeof styleWidth === 'string') {
+          return `width: ${styleWidth};`;
+        }
+
         return 'width: 100%;';
       }}
 
@@ -105,6 +109,10 @@ export namespace View {
           }
 
           return builder;
+        }
+
+        if (typeof styleHeight === 'string') {
+          return `height: ${styleHeight};`;
         }
 
         return 'height: 100%;';

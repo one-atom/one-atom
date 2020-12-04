@@ -145,6 +145,62 @@ describe('View.h - flex direction and size', () => {
     cy.get('[data-testid=child-4]').invoke('css', 'height').should('eq', '660px');
     cy.get('[data-testid=child-4]').invoke('css', 'width').should('eq', '250px');
   });
+
+  it('asserts that a child may have fixed width', () => {
+    mount(
+      <Parent>
+        <View.h direction="row" data-testid="parent" background={prettyColors[0]}>
+          <View.h data-testid="child-1" background={prettyColors[1]} width="625px" shrink={false}></View.h>
+          <View.h data-testid="child-2" background={prettyColors[2]}></View.h>
+          <View.h data-testid="child-3" background={prettyColors[3]}></View.h>
+          <View.h data-testid="child-4" background={prettyColors[4]}></View.h>
+        </View.h>
+      </Parent>,
+    );
+
+    cy.get('[data-testid=parent]').invoke('css', 'height').should('eq', '660px');
+    cy.get('[data-testid=parent]').invoke('css', 'width').should('eq', '1000px');
+
+    cy.get('[data-testid=child-1]').invoke('css', 'height').should('eq', '660px');
+    cy.get('[data-testid=child-1]').invoke('css', 'width').should('eq', '625px');
+
+    cy.get('[data-testid=child-2]').invoke('css', 'height').should('eq', '660px');
+    cy.get('[data-testid=child-2]').invoke('css', 'width').should('eq', '125px');
+
+    cy.get('[data-testid=child-3]').invoke('css', 'height').should('eq', '660px');
+    cy.get('[data-testid=child-3]').invoke('css', 'width').should('eq', '125px');
+
+    cy.get('[data-testid=child-4]').invoke('css', 'height').should('eq', '660px');
+    cy.get('[data-testid=child-4]').invoke('css', 'width').should('eq', '125px');
+  });
+
+  it('asserts that a child may have fixed height', () => {
+    mount(
+      <Parent>
+        <View.h direction="row" data-testid="parent" background={prettyColors[0]}>
+          <View.h data-testid="child-1" background={prettyColors[1]} height="500px"></View.h>
+          <View.h data-testid="child-2" background={prettyColors[2]}></View.h>
+          <View.h data-testid="child-3" background={prettyColors[3]}></View.h>
+          <View.h data-testid="child-4" background={prettyColors[4]}></View.h>
+        </View.h>
+      </Parent>,
+    );
+
+    cy.get('[data-testid=parent]').invoke('css', 'height').should('eq', '660px');
+    cy.get('[data-testid=parent]').invoke('css', 'width').should('eq', '1000px');
+
+    cy.get('[data-testid=child-1]').invoke('css', 'height').should('eq', '500px');
+    cy.get('[data-testid=child-1]').invoke('css', 'width').should('eq', '250px');
+
+    cy.get('[data-testid=child-2]').invoke('css', 'height').should('eq', '660px');
+    cy.get('[data-testid=child-2]').invoke('css', 'width').should('eq', '250px');
+
+    cy.get('[data-testid=child-3]').invoke('css', 'height').should('eq', '660px');
+    cy.get('[data-testid=child-3]').invoke('css', 'width').should('eq', '250px');
+
+    cy.get('[data-testid=child-4]').invoke('css', 'height').should('eq', '660px');
+    cy.get('[data-testid=child-4]').invoke('css', 'width').should('eq', '250px');
+  });
 });
 
 // ***********************************************
