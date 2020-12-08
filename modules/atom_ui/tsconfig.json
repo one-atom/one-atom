@@ -8,7 +8,7 @@
     "lib": ["DOM"]
   },
   "files": [
-    "enviroment.d.ts",
+    "environment.d.ts",
     "components_a11y/a11y_region.component.tsx",
     "components_a11y/a11y_role.component.tsx",
     "components_a11y/mod.tsx",
