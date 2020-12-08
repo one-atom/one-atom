@@ -12,19 +12,28 @@ class Registration<T> {
     // Empty
   }
 }
+const registeredServices = new Map<Instantiation.Token, Registration<any>>();
 
-class Context {
-  public readonly services = new Map<Instantiation.Token, any>();
+class Context<T> {
+  private readonly instances = new Map<Instantiation.Token, T>();
 
-  constructor() {
-    // Empty
+  public drop(): void {
+    this.instances.clear();
+  }
+
+  public isInstanced(token: Instantiation.Token): boolean {
+    return this.instances.has(token);
+  }
+
+  public retrieve(token: Instantiation.Token): T | undefined {
+    return this.instances.get(token);
+  }
+
+  public add(key: Instantiation.Token, value: T): void {
+    this.instances.set(key, value);
   }
 }
-
-const globalContext = new Context();
-
-let cachedRegisteredServices = new Map<Instantiation.Token, Registration<any>>();
-let cachedSingletonServices = new Map<Instantiation.Token, any>();
+const globalContext = new Context<any>();
 
 export namespace Instantiation {
   export type GenericClassDecorator<T> = (target: T) => void;
@@ -46,7 +55,7 @@ export namespace Instantiation {
       throw new Error(`Retrieved undefined, this is caused of circular JS imports`);
     }
 
-    const registeredCtor = cachedRegisteredServices.get(resolvingCtor);
+    const registeredCtor = registeredServices.get(resolvingCtor);
     if (registeredCtor === undefined) {
       throw new Error(`ctor is not registered`);
     }
@@ -106,7 +115,7 @@ export namespace Instantiation {
         throw new Error('Recursion in branch step');
       }
 
-      const registeredServiceFactory = cachedRegisteredServices.get(resolvingStackElement.registrationId);
+      const registeredServiceFactory = registeredServices.get(resolvingStackElement.registrationId);
       if (registeredServiceFactory === undefined) {
         throw new Error(`${'anonymous'} is not registered`);
       }
@@ -116,7 +125,7 @@ export namespace Instantiation {
       // This row is basically the whole magic behind the service resolving logic
       const tokens: Ctor<unknown>[] = Reflect.getMetadata('design:paramtypes', registeredServiceFactory.ctor) ?? [];
       const dependencies: Dependencies[] = tokens.map((dependency) => {
-        const registeredDependency = cachedRegisteredServices.get(dependency);
+        const registeredDependency = registeredServices.get(dependency);
         if (registeredDependency === undefined) {
           throw new Error(`ctor is not registered`);
         }
@@ -141,9 +150,9 @@ export namespace Instantiation {
     // --------- Producer step ---------
 
     // Created once per service call
-    const resolvedScopedServices = new Map<Token, any>();
     const transientRoot = Symbol('transient_root');
-    const resolvedTransientServices = new Map<Token, Array<any>>();
+    const resolvedScopedServices = new Context<any>();
+    const resolvedTransientServices = new Context<Array<any>>();
 
     function retrieveArgs(id: Token): unknown[] {
       const args: unknown[] = [];
@@ -154,7 +163,7 @@ export namespace Instantiation {
 
       for (const lookupDependency of lookupDependencies) {
         if (lookupDependency.lifetime === Lifetimes.Singleton) {
-          const dependency = cachedSingletonServices.get(lookupDependency.registrationId);
+          const dependency = globalContext.retrieve(lookupDependency.registrationId);
           if (dependency === undefined) {
             throw new Error(`Singleton ${'anonymous'} service has not been resolved yet`);
           }
@@ -165,7 +174,7 @@ export namespace Instantiation {
         }
 
         if (lookupDependency.lifetime === Lifetimes.Scoped) {
-          const alreadyResolvedDependency = resolvedScopedServices.get(lookupDependency.registrationId);
+          const alreadyResolvedDependency = resolvedScopedServices.retrieve(lookupDependency.registrationId);
           if (alreadyResolvedDependency === undefined) {
             throw new Error(`Singleton ${'anonymous'} service has not been resolved yet`);
           }
@@ -181,8 +190,8 @@ export namespace Instantiation {
             throw new Error('No parentId was found and it should not go through root at this point');
           }
 
-          const transientInstances = resolvedTransientServices.get(parentId) ?? [];
-          const registeredCtorBasedOnLookupDependency = cachedRegisteredServices.get(lookupDependency.registrationId);
+          const transientInstances = resolvedTransientServices.retrieve(parentId) ?? [];
+          const registeredCtorBasedOnLookupDependency = registeredServices.get(lookupDependency.registrationId);
           if (registeredCtorBasedOnLookupDependency === undefined) {
             throw new Error(`${'anonymous'} is not registered`);
           }
@@ -224,7 +233,7 @@ export namespace Instantiation {
       }
 
       for (const { data } of edges) {
-        const lookupRegistered = cachedRegisteredServices.get(data.registrationId);
+        const lookupRegistered = registeredServices.get(data.registrationId);
         if (lookupRegistered === undefined) {
           throw new Error(`${'anonymous'} is not registered`);
         }
@@ -232,9 +241,9 @@ export namespace Instantiation {
         switch (data.lifetime) {
           case Lifetimes.Singleton: {
             // Check if dependency is already resolved
-            const alreadyResolvedService = cachedSingletonServices.get(data.id);
+            const alreadyResolvedService = globalContext.retrieve(data.id);
             if (alreadyResolvedService === undefined) {
-              cachedSingletonServices.set(data.id, new lookupRegistered.ctor(...retrieveArgs(data.registrationId)));
+              globalContext.add(data.id, new lookupRegistered.ctor(...retrieveArgs(data.registrationId)));
             }
 
             break;
@@ -242,9 +251,9 @@ export namespace Instantiation {
 
           case Lifetimes.Scoped: {
             // Check if dependency is already resolved
-            const alreadyResolvedService = resolvedScopedServices.get(data.id);
+            const alreadyResolvedService = resolvedScopedServices.retrieve(data.id);
             if (alreadyResolvedService === undefined) {
-              resolvedScopedServices.set(data.id, new lookupRegistered.ctor(...retrieveArgs(data.registrationId)));
+              resolvedScopedServices.add(data.id, new lookupRegistered.ctor(...retrieveArgs(data.registrationId)));
             }
 
             break;
@@ -252,16 +261,16 @@ export namespace Instantiation {
 
           case Lifetimes.Transient: {
             const parentId = data.parentId ?? transientRoot;
-            const shouldCreateStorage = !resolvedTransientServices.has(parentId);
+            const shouldCreateStorage = !resolvedTransientServices.isInstanced(parentId);
             const resolvedTransientInstance = new lookupRegistered.ctor(...retrieveArgs(data.registrationId));
 
             if (shouldCreateStorage) {
-              resolvedTransientServices.set(parentId, [resolvedTransientInstance]);
+              resolvedTransientServices.add(parentId, [resolvedTransientInstance]);
             } else {
               // The check has already been done above so it's fine to cast this
               // as a non null
               // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              resolvedTransientServices.get(parentId)!.push(resolvedTransientInstance);
+              resolvedTransientServices.retrieve(parentId)!.push(resolvedTransientInstance);
             }
 
             break;
@@ -278,11 +287,11 @@ export namespace Instantiation {
     // --------- Retrieve step ---------
 
     if (registeredCtor.settings.lifeTime === Lifetimes.Scoped) {
-      return resolvedScopedServices.get(resolvingCtor) as T; // Casting as T since by this point it SHOULD be in resolved_scoped_services
+      return resolvedScopedServices.retrieve(resolvingCtor) as T; // Casting as T since by this point it SHOULD be in resolved_scoped_services
     }
 
     if (registeredCtor.settings.lifeTime === Lifetimes.Transient) {
-      const resolvedTransientInstances = resolvedTransientServices.get(transientRoot);
+      const resolvedTransientInstances = resolvedTransientServices.retrieve(transientRoot);
       if (resolvedTransientInstances === undefined) {
         throw new Error(`transient root was never created`);
       }
@@ -290,7 +299,7 @@ export namespace Instantiation {
       return resolvedTransientInstances[0] as T; // Casting as T since by this point the index 0 SHOULD be the requested resolving_ctor instance
     }
 
-    return cachedSingletonServices.get(resolvingCtor) as T; // Casting as T since by this point it SHOULD be in resolved_singleton_services
+    return globalContext.retrieve(resolvingCtor) as T; // Casting as T since by this point it SHOULD be in resolved_singleton_services
   }
 
   interface ReplaceWith<T> {
@@ -302,10 +311,10 @@ export namespace Instantiation {
    * passed it'll override any previously registered service (works for any lifetime).
    */
   export function register<T>(service: Ctor<T>, replace?: ReplaceWith<any>): void {
-    const registeredService = cachedRegisteredServices.get(service);
+    const registeredService = registeredServices.get(service);
 
     if (replace?.useClass) {
-      cachedRegisteredServices.set(
+      registeredServices.set(
         service,
         new Registration(service, replace.useClass, { lifeTime: replace.lifeTimes ?? Lifetimes.Singleton }),
       );
@@ -314,10 +323,7 @@ export namespace Instantiation {
     }
 
     if (registeredService === undefined) {
-      cachedRegisteredServices.set(
-        service,
-        new Registration(service, service, { lifeTime: replace?.lifeTimes ?? Lifetimes.Singleton }),
-      );
+      registeredServices.set(service, new Registration(service, service, { lifeTime: replace?.lifeTimes ?? Lifetimes.Singleton }));
     }
   }
 
@@ -325,7 +331,7 @@ export namespace Instantiation {
    * Retrieves the Registration instance for given registered service.
    */
   export function getRegisteredService<T>(service: Ctor<T>): Registration<T> | null {
-    const reg = cachedRegisteredServices.get(service);
+    const reg = registeredServices.get(service);
 
     return reg ?? null;
   }
@@ -338,8 +344,8 @@ export namespace Instantiation {
  * Flushes the ctor registry and all singleton instances.
  */
 export function flushAll(): void {
-  cachedRegisteredServices = new Map();
-  cachedSingletonServices = new Map();
+  globalContext.drop();
+  registeredServices.clear();
 }
 
 /**
@@ -349,7 +355,7 @@ export function flushAll(): void {
  * Flushes all singleton instances.
  */
 export function flushSingletons(): void {
-  cachedSingletonServices = new Map();
+  globalContext.drop();
 }
 
 /**
@@ -359,7 +365,7 @@ export function flushSingletons(): void {
  * Flushes the ctor registry.
  */
 export function flushRegisteredServices(): void {
-  cachedRegisteredServices = new Map();
+  registeredServices.clear();
 }
 
 /**
