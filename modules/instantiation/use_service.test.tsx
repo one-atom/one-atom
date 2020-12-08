@@ -1,8 +1,8 @@
-import { Fragment, FC, useRef, useEffect } from 'react';
+import { Fragment, FC } from 'react';
 import { flushAll, useService, Singleton, Scoped } from './mod';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import { useState } from 'react';
-import { Transient } from './instantiation';
+import { Instantiation, Transient } from './instantiation';
 
 describe('useService', () => {
   afterEach(() => {
@@ -63,21 +63,39 @@ describe('useService', () => {
   });
 
   it('should register and resolve scoped service', async () => {
-    let instances = 0;
+    let clsInstances = 0;
+    let swappedInstances = 0;
 
     @Scoped()
     class Cls {
       public foo = 'foo';
 
       constructor() {
-        instances++;
+        clsInstances++;
       }
     }
 
-    const Comp: FC = () => {
+    @Scoped()
+    class ClsSwappedStart {
+      x = 's';
+      constructor() {
+        swappedInstances++;
+      }
+    }
+
+    @Scoped()
+    class ClsSwapped {
+      x = 'c';
+      constructor() {
+        swappedInstances++;
+      }
+    }
+
+    const Comp: FC<{ everyDayProp: string; ctor: Instantiation.Ctor<any> }> = ({ everyDayProp, ctor }) => {
       const [state, setState] = useState(() => 0);
       const cls1 = useService(Cls);
       const cls2 = useService(Cls);
+      const _ = useService(ctor);
       cls1.foo = 'baz';
       cls2.foo = 'bar'; // does not mute cls1 since they're two different instanced objects
 
@@ -87,17 +105,20 @@ describe('useService', () => {
 
       return (
         <Fragment>
+          {everyDayProp}
           <div>{cls1.foo}</div>
           <div>{cls2.foo}</div>
           <button onClick={handleClick}>button</button>
           <div>count: {state}</div>
+          <div>count swapped: {state}</div>
         </Fragment>
       );
     };
 
-    const { findByText, getByText, unmount } = render(<Comp />);
+    const { findByText, getByText, unmount, rerender } = render(<Comp everyDayProp="bed" ctor={ClsSwappedStart} />);
 
-    expect(instances).toBe(2);
+    expect(clsInstances).toBe(2);
+    expect(swappedInstances).toBe(1);
     await findByText(/baz/);
     await findByText(/bar/);
     await waitFor(() => {
@@ -105,34 +126,66 @@ describe('useService', () => {
     });
 
     fireEvent.click(getByText('button'));
-    expect(instances).toBe(2);
+    expect(clsInstances).toBe(2);
+    expect(swappedInstances).toBe(1);
     await findByText(/baz/);
     await findByText(/bar/);
     await waitFor(() => {
       getByText('count: 1');
     });
 
+    rerender(<Comp everyDayProp="deb" ctor={ClsSwappedStart} />);
+    expect(clsInstances).toBe(2);
+    expect(swappedInstances).toBe(1);
+    await findByText(/baz/);
+    await findByText(/bar/);
+
+    rerender(<Comp everyDayProp="deb" ctor={ClsSwapped} />);
+    expect(clsInstances).toBe(2);
+    expect(swappedInstances).toBe(2);
+    await findByText(/baz/);
+    await findByText(/bar/);
+
     unmount();
-    render(<Comp />);
-    expect(instances).toBe(4);
+    render(<Comp everyDayProp="bed" ctor={ClsSwappedStart} />);
+    expect(clsInstances).toBe(4);
+    expect(swappedInstances).toBe(3);
   });
 
   it('should register and resolve transient service', async () => {
-    let instances = 0;
+    let clsInstances = 0;
+    let swappedInstances = 0;
 
     @Transient()
     class Cls {
       public foo = 'foo';
 
       constructor() {
-        instances++;
+        clsInstances++;
       }
     }
 
-    const Comp: FC = () => {
+    @Transient()
+    class ClsSwappedStart {
+      x = 's';
+      constructor() {
+        swappedInstances++;
+      }
+    }
+
+    @Transient()
+    class ClsSwapped {
+      x = 'c';
+      constructor() {
+        swappedInstances++;
+      }
+    }
+
+    const Comp: FC<{ everyDayProp: string; ctor: Instantiation.Ctor<any> }> = ({ everyDayProp, ctor }) => {
       const [state, setState] = useState(() => 0);
       const cls1 = useService(Cls);
       const cls2 = useService(Cls);
+      const _ = useService(ctor);
       cls1.foo = 'baz';
       cls2.foo = 'bar'; // does not mute cls1 since they're two different instanced objects
 
@@ -142,17 +195,20 @@ describe('useService', () => {
 
       return (
         <Fragment>
+          {everyDayProp}
           <div>{cls1.foo}</div>
           <div>{cls2.foo}</div>
           <button onClick={handleClick}>button</button>
           <div>count: {state}</div>
+          <div>count swapped: {state}</div>
         </Fragment>
       );
     };
 
-    const { findByText, getByText, unmount } = render(<Comp />);
+    const { findByText, getByText, unmount, rerender } = render(<Comp everyDayProp="bed" ctor={ClsSwappedStart} />);
 
-    expect(instances).toBe(2);
+    expect(clsInstances).toBe(2);
+    expect(swappedInstances).toBe(1);
     await findByText(/baz/);
     await findByText(/bar/);
     await waitFor(() => {
@@ -160,15 +216,29 @@ describe('useService', () => {
     });
 
     fireEvent.click(getByText('button'));
-    expect(instances).toBe(2);
+    expect(clsInstances).toBe(2);
+    expect(swappedInstances).toBe(1);
     await findByText(/baz/);
     await findByText(/bar/);
     await waitFor(() => {
       getByText('count: 1');
     });
 
+    rerender(<Comp everyDayProp="deb" ctor={ClsSwappedStart} />);
+    expect(clsInstances).toBe(2);
+    expect(swappedInstances).toBe(1);
+    await findByText(/baz/);
+    await findByText(/bar/);
+
+    rerender(<Comp everyDayProp="deb" ctor={ClsSwapped} />);
+    expect(clsInstances).toBe(2);
+    expect(swappedInstances).toBe(2);
+    await findByText(/baz/);
+    await findByText(/bar/);
+
     unmount();
-    render(<Comp />);
-    expect(instances).toBe(4);
+    render(<Comp everyDayProp="bed" ctor={ClsSwappedStart} />);
+    expect(clsInstances).toBe(4);
+    expect(swappedInstances).toBe(3);
   });
 });
