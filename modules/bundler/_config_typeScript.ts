@@ -48,9 +48,9 @@ export namespace TypeScriptConfig {
       // Defaults
       baseUrl: '/',
       outDir: 'dist',
-      rootDir: 'src',
-      lib: '',
-      module: '',
+      rootDir: './',
+      lib: './',
+      module: './',
       paths: {},
     };
 
