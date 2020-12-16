@@ -282,7 +282,7 @@ export namespace View {
     `,
   };
 
-  export const h: FC<Prop> = function OneAtom_Frame({
+  export const h: FC<Prop> = function OneAtom_View({
     alignment = 'topLeading',
     direction = 'column',
     shrink = true,
