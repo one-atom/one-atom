@@ -19,7 +19,7 @@ export namespace VSpacing {
     `,
   };
 
-  export const h: FC<Props> = function OneAtom_Vertical_spacing({ px }) {
-    return <elements.spacing px={px} aria-hidden="true" />;
+  export const h: FC<Props> = function OneAtom_Vertical_spacing({ px, className }) {
+    return <elements.spacing className={className} px={px} aria-hidden="true" />;
   };
 }

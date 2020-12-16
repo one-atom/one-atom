@@ -19,7 +19,7 @@ export namespace HSpacing {
     `,
   };
 
-  export const h: FC<Props> = function OneAtom_horizontal_spacing({ px }) {
-    return <elements.spacing px={px} aria-hidden="true" />;
+  export const h: FC<Props> = function OneAtom_horizontal_spacing({ px, className }) {
+    return <elements.spacing className={className} px={px} aria-hidden="true" />;
   };
 }

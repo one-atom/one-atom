@@ -18,7 +18,7 @@ export namespace Spacer {
     `,
   };
 
-  export const h: FC<Props> = function OneAtom_Spacer({ height, width }) {
-    return <elements.body height={height} width={width}></elements.body>;
+  export const h: FC<Props> = function OneAtom_Spacer({ height, width, className }) {
+    return <elements.body className={className} height={height} width={width}></elements.body>;
   };
 }
