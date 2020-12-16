@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-interface*/
-
+/// <reference types="../environment" />
 import { forwardRef } from 'react';
 import styled from 'styled-components';
 import { OneAtomCommonPropType } from '../prop_type';

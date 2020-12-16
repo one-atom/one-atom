@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-interface*/
-
+/// <reference types="../environment" />
 import styled from 'styled-components';
 import { Size } from './size.component';
 import { OneAtomCommonPropType } from '../prop_type';

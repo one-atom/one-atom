@@ -1,3 +1,4 @@
+/// <reference types="../environment" />
 import { cloneElement } from 'react';
 import { HeadLessStack } from '../components_headless/headless_stack.component';
 import { unwrapFragment } from '../helpers/unwrap_fragment';

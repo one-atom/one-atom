@@ -1,3 +1,4 @@
+/// <reference types="../environment" />
 import { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { AnchorPointConsumer } from '../helpers/anchor_point_consumer';

@@ -1,3 +1,4 @@
+/// <reference types="../environment" />
 import { createGlobalStyle } from 'styled-components';
 
 export namespace ResetCss {

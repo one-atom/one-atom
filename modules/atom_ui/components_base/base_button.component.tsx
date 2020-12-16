@@ -1,3 +1,4 @@
+/// <reference types="../environment" />
 import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { focusContext } from '../helpers/focus_context';

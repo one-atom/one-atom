@@ -1,3 +1,4 @@
+/// <reference types="../environment" />
 import { Fragment } from 'react';
 import { Portal } from '../components_implementation/portal.component';
 import { useAnchorPointValue } from '../hooks/use_anchor_point_value';

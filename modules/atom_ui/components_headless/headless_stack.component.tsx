@@ -1,3 +1,4 @@
+/// <reference types="../environment" />
 import { StyleSheetController } from '../helpers/style_sheet_controller';
 import { OneAtomCommonPropType } from '../prop_type';
 

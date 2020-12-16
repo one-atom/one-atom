@@ -1,3 +1,4 @@
+/// <reference types="../environment" />
 import styled, { keyframes } from 'styled-components';
 import { OneAtomCommonPropType } from '../prop_type';
 

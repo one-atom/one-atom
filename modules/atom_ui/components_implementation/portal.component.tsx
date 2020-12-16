@@ -1,3 +1,4 @@
+/// <reference types="../environment" />
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { StyleSheetController } from '../helpers/style_sheet_controller';
