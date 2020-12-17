@@ -1,6 +1,6 @@
 {
   "files": [],
-  "include": [],
+  "include": ["./node_modules/@types/jest"],
   "exclude": ["node_modules", "dist", "lib"],
   "compilerOptions": {
     "baseUrl": ".",
