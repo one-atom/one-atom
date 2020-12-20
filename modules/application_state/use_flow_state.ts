@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { EMPTY_ARRAY } from '../miscellaneous_modules/universal_empty_constants';
-import { ApplicationState } from './application_state';
+import { FlowState, CurrStateTuple } from './flow_state';
 import { ValidStateData } from './_data_struct';
 
-export function useApplicationState<T extends ValidStateData>(state: ApplicationState<T>): Readonly<T> {
+export function useApplicationState<T extends ValidStateData>(state: FlowState<T>): CurrStateTuple<T> {
   const [, forceUpdate] = useState([]);
 
   useEffect(() => {

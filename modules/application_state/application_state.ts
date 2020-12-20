@@ -1,88 +1,21 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
-import { DataStruct, ValidStateData } from './_data_struct';
+import { MutationFn, DataStruct, ValidStateData } from './_data_struct';
 
-type CurrStateFn<T extends ValidStateData> = (curr_state: Omit<DataStruct<T>, 'insert'>) => Partial<T>;
+type Disposer = () => void;
+type BeforeDispatchHandler = () => void;
 
-export type Disposer = () => void;
+export class BaseApplicationState<T extends ValidStateData> {
+  protected readonly data: DataStruct<T>;
+  protected readonly hooks: Map<symbol, () => void> = new Map();
+  protected onBeforeDispatch: BeforeDispatchHandler | null = null;
 
-export enum FlowState {
-  ACCESSIBLE,
-  UNSET,
-  PENDING,
-  ERROR,
-}
-
-export type CurrStateTuple<T> = [Readonly<T>, FlowState];
-
-let ids = 0;
-const GLOBAL_HOOK = '__ONE_ATOM_APPLICATION_STATE_GLOBAL_HOOK__';
-
-//@ts-ignore
-if (window) {
-  //@ts-ignore
-  window[GLOBAL_HOOK] = window[GLOBAL_HOOK] || {};
-}
-
-export class State<T extends ValidStateData> {
-  public readonly id = `hook_id_${++ids}`;
-  public flow_state = FlowState.UNSET;
-  private readonly hooks: Map<symbol, () => void> = new Map();
-
-  private readonly data: DataStruct<T>;
-
-  constructor(data: T, designatedFlowState?: FlowState) {
-    if (typeof data !== 'object') {
-      throw new Error('a state can only be represented as object literal');
+  constructor(initialState: T) {
+    if (typeof initialState !== 'object') {
+      throw new Error('a state can only be represented as an object literal');
     }
 
-    this.data = new DataStruct(data);
-
-    if (designatedFlowState !== undefined) this.flow_state = designatedFlowState;
-  }
-
-  public read(): CurrStateTuple<T> {
-    // The following is purposely being ignored by TypeScript, when the state is
-    // not accessible it should deliberately cause an error so a correct
-    // Behavior can be written
-    switch (this.flow_state) {
-      case FlowState.PENDING:
-        // @ts-ignore
-        return [undefined, FlowState.PENDING];
-      case FlowState.UNSET:
-        // @ts-ignore
-        return [undefined, FlowState.UNSET];
-      case FlowState.ERROR:
-        // @ts-ignore
-        return [undefined, FlowState.ERROR];
-      default:
-        return [this.data.extract(), FlowState.ACCESSIBLE];
-    }
-  }
-
-  public peekState(): Readonly<T> {
-    const [state] = this.read();
-
-    return state;
-  }
-
-  public inFlow(action: FlowState): void {
-    this.flow_state = action;
-
-    this.dispatch();
-  }
-
-  public mutate(curr_state: CurrStateFn<T>): void {
-    try {
-      const new_state = curr_state(this.data);
-
-      this.data.insert(new_state);
-      this.flow_state = FlowState.ACCESSIBLE;
-
-      this.dispatch();
-    } catch (error) {
-      console.error(`could not mutate the state:\n\n${error}`);
-    }
+    this.data = new DataStruct(initialState);
   }
 
   public subscribe(event: () => void): Disposer {
@@ -95,19 +28,35 @@ export class State<T extends ValidStateData> {
     };
   }
 
-  private dispatch(): void {
+  public write(currentState: MutationFn<T>): void {
+    try {
+      const newState = currentState(this.data);
+
+      this.data.insert(newState);
+      if (this.onBeforeDispatch) this.onBeforeDispatch();
+      this.dispatch();
+    } catch (error) {
+      console.error(`could not mutate the state:\n\n${error}`);
+    }
+  }
+
+  protected dispatch(): void {
     this.hooks.forEach((hook) => hook());
   }
 }
 
-export function newApplicationState<T extends ValidStateData>(state: T): State<T> {
-  const application_state = new State<T>(state);
-
-  //@ts-ignore
-  if (window) {
-    //@ts-ignore
-    window[GLOBAL_HOOK][application_state.id] = application_state;
+export class ApplicationState<T extends ValidStateData> extends BaseApplicationState<T> {
+  constructor(args: T) {
+    super(args);
   }
 
-  return application_state;
+  public read(): Readonly<T> {
+    return this.data.extract();
+  }
+}
+
+export function createApplicationState<T extends ValidStateData>(initialState: T): ApplicationState<T> {
+  const applicationState = new ApplicationState<T>(initialState);
+
+  return applicationState;
 }

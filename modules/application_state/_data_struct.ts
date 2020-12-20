@@ -2,8 +2,10 @@ type ValidStateDataType = string | number | symbol | boolean | null | Array<unkn
 
 export type ValidStateData = Record<string, ValidStateDataType>;
 
+export type MutationFn<T extends ValidStateData> = (currentState: Readonly<Omit<DataStruct<T>, 'insert'>>) => Partial<T>;
+
 export class DataStruct<T extends ValidStateData> {
-  private readonly stored_data = new Map<keyof T, T[keyof T]>();
+  private readonly storedData = new Map<keyof T, T[keyof T]>();
   private readonly keys: string[];
 
   constructor(data: T) {
@@ -11,24 +13,24 @@ export class DataStruct<T extends ValidStateData> {
     this.insert(data);
   }
 
-  public insert(from_object: Partial<T>): void {
+  public insert(fromObject: Partial<T>): void {
     for (const key of this.keys) {
-      const pre_value = this.stored_data.get(key);
+      const preValue = this.storedData.get(key);
 
       // Continue if undefined, from_object is Partial<T> and we can't determine
       // if the value or index was undefined. Null should be used to represent
       // non-assigned values
-      if (from_object[key] === undefined) {
+      if (fromObject[key] === undefined) {
         continue;
       }
 
       // Keeps the mem ref to the original object and
-      if (typeof pre_value === 'object' && pre_value === from_object[key]) {
-        this.stored_data.set(key, from_object[key] as T[keyof T]);
+      if (typeof preValue === 'object' && preValue === fromObject[key]) {
+        this.storedData.set(key, fromObject[key] as T[keyof T]);
         continue;
       }
 
-      this.stored_data.set(key, from_object[key] as T[keyof T]);
+      this.storedData.set(key, fromObject[key] as T[keyof T]);
     }
   }
 
@@ -36,13 +38,13 @@ export class DataStruct<T extends ValidStateData> {
     const builder: Record<string, unknown> = {};
 
     for (const key of this.keys) {
-      builder[key] = this.stored_data.get(key);
+      builder[key] = this.storedData.get(key);
     }
 
     return builder as T;
   }
 
   public toIter(): IterableIterator<[keyof T, T[keyof T]]> {
-    return this.stored_data.entries();
+    return this.storedData.entries();
   }
 }

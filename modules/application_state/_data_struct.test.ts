@@ -16,97 +16,95 @@ function getTypicalState(): {
   };
 }
 
-describe('Data Struct', () => {
-  it('should insert new data and not destroy previous', () => {
-    const data = new DataStruct(getTypicalState());
+test('asserts that a DataStruct inserts new data and does not destroy previous', () => {
+  const data = new DataStruct(getTypicalState());
 
-    data.insert({
-      name: 'ezra',
-    });
-    expect(data.extract()).toMatchInlineSnapshot(`
-      Object {
-        "age": 25,
-        "location": Object {
-          "country": "sweden",
-        },
-        "name": "ezra",
-      }
-    `);
-
-    data.insert({
-      age: 22,
-    });
-    expect(data.extract()).toMatchInlineSnapshot(`
-      Object {
-        "age": 22,
-        "location": Object {
-          "country": "sweden",
-        },
-        "name": "ezra",
-      }
-    `);
-
-    data.insert({
-      location: {
-        country: 'norway',
+  data.insert({
+    name: 'ezra',
+  });
+  expect(data.extract()).toMatchInlineSnapshot(`
+    Object {
+      "age": 25,
+      "location": Object {
+        "country": "sweden",
       },
-    });
-    expect(data.extract()).toMatchInlineSnapshot(`
-      Object {
-        "age": 22,
-        "location": Object {
-          "country": "norway",
-        },
-        "name": "ezra",
-      }
-    `);
+      "name": "ezra",
+    }
+  `);
 
-    data.insert({
-      age: 25,
-      name: 'max',
-      location: {
-        country: 'sweden',
+  data.insert({
+    age: 22,
+  });
+  expect(data.extract()).toMatchInlineSnapshot(`
+    Object {
+      "age": 22,
+      "location": Object {
+        "country": "sweden",
       },
-    });
-    expect(data.extract()).toMatchInlineSnapshot(`
-      Object {
-        "age": 25,
-        "location": Object {
-          "country": "sweden",
-        },
-        "name": "max",
-      }
-    `);
+      "name": "ezra",
+    }
+  `);
+
+  data.insert({
+    location: {
+      country: 'norway',
+    },
+  });
+  expect(data.extract()).toMatchInlineSnapshot(`
+    Object {
+      "age": 22,
+      "location": Object {
+        "country": "norway",
+      },
+      "name": "ezra",
+    }
+  `);
+
+  data.insert({
+    age: 25,
+    name: 'max',
+    location: {
+      country: 'sweden',
+    },
+  });
+  expect(data.extract()).toMatchInlineSnapshot(`
+    Object {
+      "age": 25,
+      "location": Object {
+        "country": "sweden",
+      },
+      "name": "max",
+    }
+  `);
+});
+
+test('asserts that DataStruct keeps object identity', () => {
+  const state = getTypicalState();
+  const data = new DataStruct(state);
+
+  state.location.country = 'norway';
+  data.insert({
+    location: state.location,
   });
 
-  it('should keep object reference', () => {
-    const state = getTypicalState();
-    const data = new DataStruct(state);
+  const extracted_data = data.extract();
+  expect(extracted_data.location.country).toEqual('norway');
+  expect(extracted_data.location).toBe(extracted_data.location);
+});
 
-    state.location.country = 'norway';
-    data.insert({
-      location: state.location,
-    });
-
-    const extracted_data = data.extract();
-    expect(extracted_data.location.country).toEqual('norway');
-    expect(extracted_data.location).toBe(extracted_data.location);
+test('asserts that iteration over keys works', () => {
+  const data = new DataStruct({
+    a: '1',
+    b: '1',
+    c: '1',
   });
 
-  it('should iterate over keys', () => {
-    const data = new DataStruct({
-      a: '1',
-      b: '1',
-      c: '1',
-    });
+  let i = 0;
 
-    let i = 0;
-
-    Array.from(data.toIter()).forEach(([, value]) => {
-      i++;
-      expect(value).toEqual('1');
-    });
-
-    expect(i).toEqual(3);
+  Array.from(data.toIter()).forEach(([, value]) => {
+    i++;
+    expect(value).toEqual('1');
   });
+
+  expect(i).toEqual(3);
 });
