@@ -65,7 +65,7 @@ export class ConcurrentState<T extends ValidStateData> {
   }
 }
 
-export function createConcurrentApplicationState<T extends ValidStateData>(state: T): ConcurrentState<T> {
+export function createConcurrentState<T extends ValidStateData>(state: T): ConcurrentState<T> {
   const concurrentState = new ConcurrentState<T>(state);
 
   return concurrentState;
