@@ -28,6 +28,7 @@ export namespace Input {
       width: 100%;
       font-size: 0.8125rem; // 13px
       line-height: 1.05875; // 16.94px
+      transition: background-color 0.3s ease;
 
       &:focus:not(:disabled) {
         outline-width: 0px;

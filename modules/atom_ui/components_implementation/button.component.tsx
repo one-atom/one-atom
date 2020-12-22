@@ -24,8 +24,8 @@ export namespace Button {
       font-weight: 700;
       padding: 0px 14px;
       box-sizing: border-box;
-      transition: background 150ms ease;
       font-size: 0.8125rem; // 13px
+      transition: background-color 0.3s ease;
 
       &.round {
         font-size: 16px;

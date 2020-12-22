@@ -60,6 +60,7 @@ export namespace View {
       border-radius: ${({ styleCornerRadius }) =>
         styleCornerRadius ? (typeof styleCornerRadius === 'string' ? styleCornerRadius : `${styleCornerRadius}px`) : null};
       box-shadow: ${({ styleShadow }) => styleShadow ?? null};
+      transition: background-color 0.3s ease;
 
       ${({ styleWidth }) => {
         if (typeof styleWidth === 'number') {
