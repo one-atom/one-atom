@@ -8,23 +8,23 @@ import ReactRefreshTypeScript from 'react-refresh-typescript';
 import { Paths } from './_paths';
 import { InjectProcessConfig } from './_config_inject_process';
 import { BabelConfig } from './_config_babel';
+import { Options as TsLoaderOptions } from 'ts-loader';
 
 export namespace WebpackConfig {
-  interface DevelopmentConfiguration {
-    paths: Paths.Dictionary;
+  interface Configuration {
+    paths: Paths.PathList;
     parseWithBabel: boolean;
-    hmr: boolean;
-    port: number;
     loadConfigPathToFile?: string;
     customEnv?: string;
   }
 
-  interface ProductionConfiguration {
-    paths: Paths.Dictionary;
-    parseWithBabel: boolean;
+  interface DevelopmentConfiguration extends Configuration {
+    hmr: boolean;
+    port: number;
+  }
+
+  interface ProductionConfiguration extends Configuration {
     output: string;
-    loadConfigPathToFile?: string;
-    customEnv?: string;
     useBundleAnalyzer?: boolean;
   }
 
@@ -65,7 +65,7 @@ export namespace WebpackConfig {
         filename: '[name].js',
         publicPath: '/',
       },
-      devtool: 'cheap-module-source-map',
+      devtool: 'inline-source-map',
       resolve: {
         extensions: extensionsArr(),
       },
@@ -155,10 +155,11 @@ export namespace WebpackConfig {
               options: {
                 // disable type checker - we will use it in fork plugin
                 transpileOnly: true,
-                getCustomTransformers: () => ({
+                getCustomTransformers: (_) => ({
                   before: [ReactRefreshTypeScript()],
                 }),
-              },
+                configFile: paths.tsConfig,
+              } as TsLoaderOptions,
             },
           ],
         },
@@ -300,7 +301,8 @@ export namespace WebpackConfig {
               options: {
                 // disable type checker - we will use it in fork plugin
                 transpileOnly: true,
-              },
+                configFile: paths.tsConfig,
+              } as TsLoaderOptions,
             },
           ],
         },

@@ -1,6 +1,5 @@
 import { TypeScriptConfig } from './_config_typeScript';
 import mock from 'mock-fs';
-import ts from 'typescript';
 
 beforeEach(() => {
   mock({
@@ -10,7 +9,6 @@ beforeEach(() => {
         jsx: 'react',
         rootDir: 'standardSrc',
         outDir: 'standardDist',
-        baseUrl: 'standardBaseUrl',
         noEmit: true,
         strict: true,
         resolveJsonModule: true,
@@ -31,6 +29,5 @@ describe('TypeScript Config', () => {
     expect(config.rootDir).toBe('standardSrc');
     expect(config.outDir).toBe('standardDist');
     expect(config.module).toBe('ESNext');
-    expect(config.baseUrl).toBe('standardBaseUrl');
   });
 });

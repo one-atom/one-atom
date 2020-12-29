@@ -1,8 +1,9 @@
+import { types } from '@babel/core';
 import path from 'path';
 import { TypeScriptConfig } from './_config_typeScript';
 
 export namespace Paths {
-  export interface Dictionary {
+  export interface PathList {
     root: string;
     outDir: string;
     rootDir: string;
@@ -11,15 +12,17 @@ export namespace Paths {
     main: string;
     packageJson: string;
     nodeModules: string;
+    tsConfig: string;
   }
 
   export interface Option {
     contentBase?: string;
     relativeIndexHTMLPath?: string;
+    configFile?: string;
   }
 
-  export function get(root: string, option?: Option): Readonly<Dictionary> {
-    const { outDir, rootDir } = TypeScriptConfig.getCompilerOptions(root);
+  export function get(root: string, option?: Option): Readonly<PathList> {
+    const { outDir, rootDir } = TypeScriptConfig.getCompilerOptions(root, option?.configFile);
 
     function resolveRelative(root: string, location: string): string {
       return path.resolve(root, location);
@@ -30,12 +33,13 @@ export namespace Paths {
     return Object.freeze({
       root,
       static: resolveRelative(root, option?.contentBase ?? STATIC_DEFAULT),
-      outDir: resolveRelative(root, outDir),
-      rootDir: resolveRelative(root, rootDir),
+      outDir: resolveRelative(root, outDir ?? 'dist'),
+      rootDir: resolveRelative(root, rootDir ?? './'),
       html: resolveRelative(root, `${option?.relativeIndexHTMLPath ?? option?.contentBase ?? STATIC_DEFAULT}/index.html`),
       main: resolveRelative(root, `${rootDir}/main.tsx`),
       packageJson: resolveRelative(root, 'package.json'),
       nodeModules: resolveRelative(root, 'node_modules'),
+      tsConfig: resolveRelative(root, TypeScriptConfig.getTsConfigPath(root, option?.configFile)),
     });
   }
 }
