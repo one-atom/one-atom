@@ -1,5 +1,5 @@
-import { Flow, FlowState } from './flow_state';
-import { ValidStateData } from './_data_struct';
+import { Disposer, Flow, FlowState } from './flow_state';
+import { MutationFn, ValidStateData } from './_data_struct';
 
 export class ConcurrentState<T extends ValidStateData> {
   private readonly state: FlowState<T>;
@@ -41,6 +41,17 @@ export class ConcurrentState<T extends ValidStateData> {
         this.state.changeFlowTo(Flow.ERROR);
       },
     );
+  }
+
+  public write(currentState: MutationFn<T>): void {
+    // TODO
+    // This write needs be added to a queue or lock other writes to not have
+    // issues with concurrency
+    this.state.write(currentState);
+  }
+
+  public subscribe(event: () => void): Disposer {
+    return this.state.subscribe(event);
   }
 
   private createPromise(): Promise<void> {

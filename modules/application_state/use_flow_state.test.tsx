@@ -1,7 +1,7 @@
 import { Fragment, FC } from 'react';
 import { render } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
-import { useApplicationState } from './use_flow_state';
+import { useFlowState } from './use_flow_state';
 import { Flow, createFlowState, FlowState } from './flow_state';
 
 type TestState = {
@@ -16,7 +16,7 @@ enum FlowTexts {
 }
 
 const FlowComp: FC<{ providedState: FlowState<TestState> }> = ({ providedState }) => {
-  const [state, flow] = useApplicationState(providedState);
+  const [state, flow] = useFlowState(providedState);
 
   return (
     <Fragment>

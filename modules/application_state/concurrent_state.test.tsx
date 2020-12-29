@@ -7,7 +7,7 @@ type TypicalState = {
   age: number;
 };
 
-function getTypicalState(): { name: string; age: number } {
+function getTypicalState(): TypicalState {
   return {
     name: 'max',
     age: 25,
