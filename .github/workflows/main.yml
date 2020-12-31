@@ -36,9 +36,6 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Install cypress binary
-        run: yarn cypress install
-
       - name: Install packages
         run: yarn install
 
@@ -47,6 +44,9 @@ jobs:
 
       - name: Run tests
         run: yarn test
+
+      - name: Install cypress binary
+        run: yarn cypress install
 
       - name: Run e2e tests
         run: yarn test:e2e
