@@ -42,7 +42,7 @@ export namespace BabelConfig {
   const dependencies: Dependency[] = [
     {
       id: '@babel/core',
-      version: '^7.12.7',
+      version: '^7.12.10',
     },
     {
       id: '@babel/plugin-proposal-class-properties',
@@ -50,7 +50,7 @@ export namespace BabelConfig {
     },
     {
       id: '@babel/plugin-proposal-decorators',
-      version: '^7.12.1',
+      version: '^7.12.12',
     },
     {
       id: '@babel/plugin-proposal-export-namespace-from',
@@ -70,11 +70,11 @@ export namespace BabelConfig {
     },
     {
       id: '@babel/preset-env',
-      version: '^7.12.7',
+      version: '^7.12.11',
     },
     {
       id: '@babel/preset-react',
-      version: '^7.12.7',
+      version: '^7.12.10',
     },
     {
       id: '@babel/preset-typescript',
@@ -126,11 +126,11 @@ export namespace BabelConfig {
   export function createBabelrcForTest(): BabelRcLike {
     validateThatResolutionHasDependenciesInstalled();
 
-    const plugins_modded: Entry[] = plugins.concat(['@babel/plugin-transform-modules-commonjs']);
+    const pluginsModded: Entry[] = plugins.concat(['@babel/plugin-transform-modules-commonjs']);
 
     return {
       presets,
-      plugins: plugins_modded,
+      plugins: pluginsModded,
     };
   }
 }
