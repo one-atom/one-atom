@@ -1,5 +1,6 @@
 import { TypeScriptConfig } from './_config_typeScript';
 import mock from 'mock-fs';
+import * as compiler from 'typescript';
 
 beforeEach(() => {
   mock({
@@ -22,12 +23,10 @@ beforeEach(() => {
 });
 afterEach(mock.restore);
 
-describe('TypeScript Config', () => {
-  it('should be able to parse a located tsconfig.json', () => {
-    const config = TypeScriptConfig.getCompilerOptions('standard');
+test('asserts it should be able to parse a tsconfig.json', () => {
+  const config = TypeScriptConfig.getCompilerOptions('standard');
 
-    expect(config.rootDir).toBe('standardSrc');
-    expect(config.outDir).toBe('standardDist');
-    expect(config.module).toBe('ESNext');
-  });
+  expect(config.rootDir).toBe('standard/standardSrc');
+  expect(config.outDir).toBe('standard/standardDist');
+  expect(config.module).toBe(compiler.ModuleKind.ESNext);
 });

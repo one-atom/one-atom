@@ -1,4 +1,3 @@
-import { types } from '@babel/core';
 import path from 'path';
 import { TypeScriptConfig } from './_config_typeScript';
 
@@ -21,20 +20,20 @@ export namespace Paths {
     configFile?: string;
   }
 
+  const STATIC_DEFAULT = 'public';
+
+  function resolveRelative(root: string, location: string): string {
+    return path.resolve(root, location);
+  }
+
   export function get(root: string, option?: Option): Readonly<PathList> {
     const { outDir, rootDir } = TypeScriptConfig.getCompilerOptions(root, option?.configFile);
 
-    function resolveRelative(root: string, location: string): string {
-      return path.resolve(root, location);
-    }
-
-    const STATIC_DEFAULT = 'public';
-
     return Object.freeze({
-      root,
+      root: resolveRelative(root, ''),
       static: resolveRelative(root, option?.contentBase ?? STATIC_DEFAULT),
-      outDir: resolveRelative(root, outDir ?? 'dist'),
-      rootDir: resolveRelative(root, rootDir ?? './'),
+      outDir: resolveRelative('', outDir ?? 'dist'),
+      rootDir: resolveRelative('', rootDir ?? './'),
       html: resolveRelative(root, `${option?.relativeIndexHTMLPath ?? option?.contentBase ?? STATIC_DEFAULT}/index.html`),
       main: resolveRelative(root, `${rootDir}/main.tsx`),
       packageJson: resolveRelative(root, 'package.json'),
