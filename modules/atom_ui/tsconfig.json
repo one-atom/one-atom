@@ -25,7 +25,7 @@
     "components_implementation/article.component.tsx",
     "components_implementation/button.component.tsx",
     "components_implementation/flex.component.tsx",
-    "components_implementation/view.component.tsx",
+    "components_implementation/layout.component.tsx",
     "components_implementation/h_spacing.component.tsx",
     "components_implementation/h_stack.component.tsx",
     "components_implementation/input.component.tsx",

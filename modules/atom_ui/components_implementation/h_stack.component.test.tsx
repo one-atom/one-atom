@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import { HStack } from './h_stack.component';
 import {
   VStack,
-  View,
+  Layout,
   Text,
   Separator,
   HSpacing,
@@ -45,7 +45,7 @@ test('asserts that children gets className applied', () => {
       <StaticButton.h />
       <Text.h />
       <VSpacing.h px={0} />
-      <View.h />
+      <Layout.h />
       <div />
     </HStack.h>,
   );

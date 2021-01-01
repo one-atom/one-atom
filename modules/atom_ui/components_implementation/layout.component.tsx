@@ -2,7 +2,7 @@
 import styled from 'styled-components';
 import { OneAtomCommonPropType } from '../prop_type';
 
-export namespace View {
+export namespace Layout {
   export interface Prop extends OneAtomCommonPropType {
     alignment?: AlignmentStrUnionMatrix | AlignmentStrUnionExtra;
     direction?: DirectionStrUnion;
