@@ -3,7 +3,7 @@
 /// <reference types="../environment" />
 
 import { mount } from 'cypress-react-unit-test';
-import { View } from '../../modules/atom_ui/mod';
+import { Layout } from '../../modules/atom_ui/mod';
 import { Parent } from '../utils/_parent';
 
 const prettyColors = ['#10100e', '#01fdf8', '#0041f8', '#f93bfa', '#f70000'] as const;
@@ -33,16 +33,16 @@ const locationInvoke = (top: number, right: number, bottom: number, left: number
   };
 };
 
-describe('View.h - flex direction and size', () => {
+describe('Layout.h - flex direction and size', () => {
   it('asserts that parent will have children as columns and they will grow', () => {
     mount(
       <Parent>
-        <View.h data-testid="parent" background={prettyColors[0]}>
-          <View.h data-testid="child-1" background={prettyColors[1]}></View.h>
-          <View.h data-testid="child-2" background={prettyColors[2]}></View.h>
-          <View.h data-testid="child-3" background={prettyColors[3]}></View.h>
-          <View.h data-testid="child-4" background={prettyColors[4]}></View.h>
-        </View.h>
+        <Layout.h data-testid="parent" background={prettyColors[0]}>
+          <Layout.h data-testid="child-1" background={prettyColors[1]}></Layout.h>
+          <Layout.h data-testid="child-2" background={prettyColors[2]}></Layout.h>
+          <Layout.h data-testid="child-3" background={prettyColors[3]}></Layout.h>
+          <Layout.h data-testid="child-4" background={prettyColors[4]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -65,12 +65,12 @@ describe('View.h - flex direction and size', () => {
   it('asserts that parent will have children as rows and they will grow', () => {
     mount(
       <Parent>
-        <View.h direction="row" data-testid="parent" background={prettyColors[0]}>
-          <View.h data-testid="child-1" background={prettyColors[1]}></View.h>
-          <View.h data-testid="child-2" background={prettyColors[2]}></View.h>
-          <View.h data-testid="child-3" background={prettyColors[3]}></View.h>
-          <View.h data-testid="child-4" background={prettyColors[4]}></View.h>
-        </View.h>
+        <Layout.h direction="row" data-testid="parent" background={prettyColors[0]}>
+          <Layout.h data-testid="child-1" background={prettyColors[1]}></Layout.h>
+          <Layout.h data-testid="child-2" background={prettyColors[2]}></Layout.h>
+          <Layout.h data-testid="child-3" background={prettyColors[3]}></Layout.h>
+          <Layout.h data-testid="child-4" background={prettyColors[4]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -93,12 +93,12 @@ describe('View.h - flex direction and size', () => {
   it('asserts that a child may have fixed width', () => {
     mount(
       <Parent>
-        <View.h direction="row" data-testid="parent" background={prettyColors[0]}>
-          <View.h data-testid="child-1" background={prettyColors[1]} width={625} shrink={false}></View.h>
-          <View.h data-testid="child-2" background={prettyColors[2]}></View.h>
-          <View.h data-testid="child-3" background={prettyColors[3]}></View.h>
-          <View.h data-testid="child-4" background={prettyColors[4]}></View.h>
-        </View.h>
+        <Layout.h direction="row" data-testid="parent" background={prettyColors[0]}>
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={625} shrink={false}></Layout.h>
+          <Layout.h data-testid="child-2" background={prettyColors[2]}></Layout.h>
+          <Layout.h data-testid="child-3" background={prettyColors[3]}></Layout.h>
+          <Layout.h data-testid="child-4" background={prettyColors[4]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -121,12 +121,12 @@ describe('View.h - flex direction and size', () => {
   it('asserts that a child may have fixed height', () => {
     mount(
       <Parent>
-        <View.h direction="row" data-testid="parent" background={prettyColors[0]}>
-          <View.h data-testid="child-1" background={prettyColors[1]} height={500}></View.h>
-          <View.h data-testid="child-2" background={prettyColors[2]}></View.h>
-          <View.h data-testid="child-3" background={prettyColors[3]}></View.h>
-          <View.h data-testid="child-4" background={prettyColors[4]}></View.h>
-        </View.h>
+        <Layout.h direction="row" data-testid="parent" background={prettyColors[0]}>
+          <Layout.h data-testid="child-1" background={prettyColors[1]} height={500}></Layout.h>
+          <Layout.h data-testid="child-2" background={prettyColors[2]}></Layout.h>
+          <Layout.h data-testid="child-3" background={prettyColors[3]}></Layout.h>
+          <Layout.h data-testid="child-4" background={prettyColors[4]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -149,12 +149,12 @@ describe('View.h - flex direction and size', () => {
   it('asserts that a child may have fixed width', () => {
     mount(
       <Parent>
-        <View.h direction="row" data-testid="parent" background={prettyColors[0]}>
-          <View.h data-testid="child-1" background={prettyColors[1]} width="625px" shrink={false}></View.h>
-          <View.h data-testid="child-2" background={prettyColors[2]}></View.h>
-          <View.h data-testid="child-3" background={prettyColors[3]}></View.h>
-          <View.h data-testid="child-4" background={prettyColors[4]}></View.h>
-        </View.h>
+        <Layout.h direction="row" data-testid="parent" background={prettyColors[0]}>
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width="625px" shrink={false}></Layout.h>
+          <Layout.h data-testid="child-2" background={prettyColors[2]}></Layout.h>
+          <Layout.h data-testid="child-3" background={prettyColors[3]}></Layout.h>
+          <Layout.h data-testid="child-4" background={prettyColors[4]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -177,12 +177,12 @@ describe('View.h - flex direction and size', () => {
   it('asserts that a child may have fixed height', () => {
     mount(
       <Parent>
-        <View.h direction="row" data-testid="parent" background={prettyColors[0]}>
-          <View.h data-testid="child-1" background={prettyColors[1]} height="500px"></View.h>
-          <View.h data-testid="child-2" background={prettyColors[2]}></View.h>
-          <View.h data-testid="child-3" background={prettyColors[3]}></View.h>
-          <View.h data-testid="child-4" background={prettyColors[4]}></View.h>
-        </View.h>
+        <Layout.h direction="row" data-testid="parent" background={prettyColors[0]}>
+          <Layout.h data-testid="child-1" background={prettyColors[1]} height="500px"></Layout.h>
+          <Layout.h data-testid="child-2" background={prettyColors[2]}></Layout.h>
+          <Layout.h data-testid="child-3" background={prettyColors[3]}></Layout.h>
+          <Layout.h data-testid="child-4" background={prettyColors[4]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -207,15 +207,15 @@ describe('View.h - flex direction and size', () => {
 // Alignment assertions
 // ***********************************************
 
-describe('View.h - alignment', () => {
+describe('Layout.h - alignment', () => {
   const size = [100, 100] as const;
 
   it("asserts that parent as a column will align it's children topLeading", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} alignment="topLeading">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={100} height={100}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} alignment="topLeading">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={100} height={100}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -225,9 +225,9 @@ describe('View.h - alignment', () => {
   it("asserts that parent as a column will align it's children top", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} alignment="top">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={100} height={100}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} alignment="top">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={100} height={100}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -237,9 +237,9 @@ describe('View.h - alignment', () => {
   it("asserts that parent as a column will align it's children topTrailing", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} alignment="topTrailing">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={100} height={100}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} alignment="topTrailing">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={100} height={100}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -249,9 +249,9 @@ describe('View.h - alignment', () => {
   it("asserts that parent as a column will align it's children leading", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} alignment="leading">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={100} height={100}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} alignment="leading">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={100} height={100}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -261,9 +261,9 @@ describe('View.h - alignment', () => {
   it("asserts that parent as a column align it's children center", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} alignment="center">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} alignment="center">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -273,9 +273,9 @@ describe('View.h - alignment', () => {
   it("asserts that parent as a column align it's children trailing", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} alignment="trailing">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} alignment="trailing">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -285,9 +285,9 @@ describe('View.h - alignment', () => {
   it("asserts that parent as a column align it's children bottomLeading", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} alignment="bottomLeading">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} alignment="bottomLeading">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -297,9 +297,9 @@ describe('View.h - alignment', () => {
   it("asserts that parent as a column align it's children bottom", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} alignment="bottom">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} alignment="bottom">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -309,9 +309,9 @@ describe('View.h - alignment', () => {
   it("asserts that parent as a column align it's children bottomTrailing", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} alignment="bottomTrailing">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} alignment="bottomTrailing">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -321,9 +321,9 @@ describe('View.h - alignment', () => {
   it("asserts that parent as a column align it's children bottomTrailing", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} alignment="bottomTrailing">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} alignment="bottomTrailing">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -333,10 +333,10 @@ describe('View.h - alignment', () => {
   it("asserts that parent as a column align it's children spaceStart", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} alignment="spaceStart">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></View.h>
-          <View.h data-testid="child-2" background={prettyColors[2]} width={size[0]} height={size[1]}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} alignment="spaceStart">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></Layout.h>
+          <Layout.h data-testid="child-2" background={prettyColors[2]} width={size[0]} height={size[1]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -347,10 +347,10 @@ describe('View.h - alignment', () => {
   it("asserts that parent as a column align it's children spaceCenter", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} alignment="spaceCenter">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></View.h>
-          <View.h data-testid="child-2" background={prettyColors[2]} width={size[0]} height={size[1]}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} alignment="spaceCenter">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></Layout.h>
+          <Layout.h data-testid="child-2" background={prettyColors[2]} width={size[0]} height={size[1]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -361,10 +361,10 @@ describe('View.h - alignment', () => {
   it("asserts that parent as a column align it's children spaceEnd", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} alignment="spaceEnd">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></View.h>
-          <View.h data-testid="child-2" background={prettyColors[2]} width={size[0]} height={size[1]}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} alignment="spaceEnd">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></Layout.h>
+          <Layout.h data-testid="child-2" background={prettyColors[2]} width={size[0]} height={size[1]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -379,9 +379,9 @@ describe('View.h - alignment', () => {
   it("asserts that parent as a row will align it's children topLeading", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} direction="row" alignment="topLeading">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={100} height={100}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} direction="row" alignment="topLeading">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={100} height={100}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -391,9 +391,9 @@ describe('View.h - alignment', () => {
   it("asserts that parent as a row will align it's children top", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} direction="row" alignment="top">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={100} height={100}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} direction="row" alignment="top">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={100} height={100}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -403,9 +403,9 @@ describe('View.h - alignment', () => {
   it("asserts that parent as a row will align it's children topTrailing", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} direction="row" alignment="topTrailing">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={100} height={100}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} direction="row" alignment="topTrailing">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={100} height={100}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -415,9 +415,9 @@ describe('View.h - alignment', () => {
   it("asserts that parent as a row will align it's children leading", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} direction="row" alignment="leading">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={100} height={100}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} direction="row" alignment="leading">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={100} height={100}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -427,9 +427,9 @@ describe('View.h - alignment', () => {
   it("asserts that parent as a row align it's children center", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} direction="row" alignment="center">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} direction="row" alignment="center">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -439,9 +439,9 @@ describe('View.h - alignment', () => {
   it("asserts that parent as a row align it's children trailing", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} direction="row" alignment="trailing">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} direction="row" alignment="trailing">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -451,9 +451,9 @@ describe('View.h - alignment', () => {
   it("asserts that parent as a row align it's children bottomLeading", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} direction="row" alignment="bottomLeading">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} direction="row" alignment="bottomLeading">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -463,9 +463,9 @@ describe('View.h - alignment', () => {
   it("asserts that parent as a row align it's children bottom", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} direction="row" alignment="bottom">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} direction="row" alignment="bottom">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -475,9 +475,9 @@ describe('View.h - alignment', () => {
   it("asserts that parent as a row align it's children bottomTrailing", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} direction="row" alignment="bottomTrailing">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} direction="row" alignment="bottomTrailing">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -487,9 +487,9 @@ describe('View.h - alignment', () => {
   it("asserts that parent as a row align it's children bottomTrailing", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} direction="row" alignment="bottomTrailing">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} direction="row" alignment="bottomTrailing">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -499,10 +499,10 @@ describe('View.h - alignment', () => {
   it("asserts that parent as a row align it's children spaceStart", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} direction="row" alignment="spaceStart">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></View.h>
-          <View.h data-testid="child-2" background={prettyColors[2]} width={size[0]} height={size[1]}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} direction="row" alignment="spaceStart">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></Layout.h>
+          <Layout.h data-testid="child-2" background={prettyColors[2]} width={size[0]} height={size[1]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -513,10 +513,10 @@ describe('View.h - alignment', () => {
   it("asserts that parent as a row align it's children spaceCenter", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} direction="row" alignment="spaceCenter">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></View.h>
-          <View.h data-testid="child-2" background={prettyColors[2]} width={size[0]} height={size[1]}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} direction="row" alignment="spaceCenter">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></Layout.h>
+          <Layout.h data-testid="child-2" background={prettyColors[2]} width={size[0]} height={size[1]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -527,10 +527,10 @@ describe('View.h - alignment', () => {
   it("asserts that parent as a row align it's children spaceEnd", () => {
     mount(
       <Parent>
-        <View.h background={prettyColors[0]} direction="row" alignment="spaceEnd">
-          <View.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></View.h>
-          <View.h data-testid="child-2" background={prettyColors[2]} width={size[0]} height={size[1]}></View.h>
-        </View.h>
+        <Layout.h background={prettyColors[0]} direction="row" alignment="spaceEnd">
+          <Layout.h data-testid="child-1" background={prettyColors[1]} width={size[0]} height={size[1]}></Layout.h>
+          <Layout.h data-testid="child-2" background={prettyColors[2]} width={size[0]} height={size[1]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -539,13 +539,13 @@ describe('View.h - alignment', () => {
   });
 });
 
-describe('View.h - boxes', () => {
+describe('Layout.h - boxes', () => {
   it('padding', () => {
     mount(
       <Parent>
-        <View.h data-testid="parent" padding={20} background={prettyColors[0]}>
-          <View.h data-testid="child-1" background={prettyColors[1]}></View.h>
-        </View.h>
+        <Layout.h data-testid="parent" padding={20} background={prettyColors[0]}>
+          <Layout.h data-testid="child-1" background={prettyColors[1]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
@@ -555,9 +555,9 @@ describe('View.h - boxes', () => {
   it('margin', () => {
     mount(
       <Parent>
-        <View.h data-testid="parent" background={prettyColors[0]}>
-          <View.h data-testid="child-1" margin="20px 0" background={prettyColors[3]}></View.h>
-        </View.h>
+        <Layout.h data-testid="parent" background={prettyColors[0]}>
+          <Layout.h data-testid="child-1" margin="20px 0" background={prettyColors[3]}></Layout.h>
+        </Layout.h>
       </Parent>,
     );
 
