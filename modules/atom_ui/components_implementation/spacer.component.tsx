@@ -2,23 +2,18 @@
 import styled from 'styled-components';
 import { OneAtomCommonPropType } from '../prop_type';
 
-/**
- * Spacer
- */
-export namespace Spacer {
-  export interface Props extends OneAtomCommonPropType {
-    height?: number;
-    width?: number;
-  }
-
-  const elements = {
-    body: styled.span<{ width?: number; height?: number }>`
-      width: ${({ width }) => width ?? null}px;
-      height: ${({ height }) => height ?? null}px;
-    `,
-  };
-
-  export const h: FC<Props> = function OneAtom_Spacer({ height, width, className }) {
-    return <elements.body className={className} height={height} width={width}></elements.body>;
-  };
+export interface OneAtomSpacerProps extends OneAtomCommonPropType {
+  height?: number;
+  width?: number;
 }
+
+const elements = {
+  body: styled.span<{ width?: number; height?: number }>`
+    width: ${({ width }) => width ?? null}px;
+    height: ${({ height }) => height ?? null}px;
+  `,
+};
+
+export const Spacer: FC<OneAtomSpacerProps> = function OneAtom_Spacer({ height, width, className }) {
+  return <elements.body className={className} height={height} width={width}></elements.body>;
+};

@@ -20,9 +20,9 @@ import {
 
 test('asserts that parent gets className applied', () => {
   const { container } = render(
-    <HStack.h>
+    <HStack>
       <div>test</div>
-    </HStack.h>,
+    </HStack>,
   );
 
   expect(container.querySelectorAll('.p_0_y_h').length).toBe(1);
@@ -30,24 +30,24 @@ test('asserts that parent gets className applied', () => {
 
 test('asserts that children gets className applied', () => {
   const { container } = render(
-    <HStack.h>
-      <Article.h />
+    <HStack>
+      <Article />
       <Button.h label="-" />
-      <Flex.h />
-      <HSpacing.h px={0} />
-      <HStack.h />
-      <Input.h type="text" />
-      <Separator.h />
-      <Shimmer.h height={100} width={100} />
-      <Size.h />
-      <Spacer.h />
-      <VStack.h />
-      <StaticButton.h />
+      <Flex />
+      <HSpacing px={0} />
+      <HStack />
+      <Input type="text" />
+      <Separator />
+      <Shimmer height={100} width={100} />
+      <Size />
+      <Spacer />
+      <VStack />
+      <StaticButton />
       <Text.h />
-      <VSpacing.h px={0} />
-      <Layout.h />
+      <VSpacing px={0} />
+      <Layout />
       <div />
-    </HStack.h>,
+    </HStack>,
   );
 
   expect(container.querySelectorAll('.c_0_y_h').length).toBe(16);
@@ -55,9 +55,9 @@ test('asserts that children gets className applied', () => {
 
 test('asserts that spacing prop gets applied', () => {
   const { container } = render(
-    <HStack.h spacing={10}>
+    <HStack spacing={10}>
       <div>test</div>
-    </HStack.h>,
+    </HStack>,
   );
 
   expect(container.querySelectorAll('.p_10_y_h').length).toBe(1);

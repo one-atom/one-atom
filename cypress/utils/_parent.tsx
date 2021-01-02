@@ -9,7 +9,7 @@ export const Parent: FC = ({ children }) => {
         display: 'flex',
       }}
     >
-      <ResetCss.h />
+      <ResetCss />
       {children}
     </div>
   );

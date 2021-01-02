@@ -3,23 +3,18 @@ import { OneAtomCommonPropType } from '../prop_type';
 import styled from 'styled-components';
 import { A11yRole } from './a11y_role.component';
 
-/**
- * A11yRegion
- */
-export namespace A11yRegion {
-  export type Props = OneAtomCommonPropType & {
-    label: string;
-  };
+export type OneAtomA11yRegionProps = OneAtomCommonPropType & {
+  label: string;
+};
 
-  const elements = {
-    container: styled(A11yRole.h)``,
-  };
+const elements = {
+  container: styled(A11yRole)``,
+};
 
-  export const h: FC<Props> = function A11yRegion({ children, label, ...rest }) {
-    return (
-      <elements.container aria-label={label} role="region" {...rest}>
-        {children}
-      </elements.container>
-    );
-  };
-}
+export const A11yRegion: FC<OneAtomA11yRegionProps> = function A11yRegion({ children, label, ...rest }) {
+  return (
+    <elements.container aria-label={label} role="region" {...rest}>
+      {children}
+    </elements.container>
+  );
+};

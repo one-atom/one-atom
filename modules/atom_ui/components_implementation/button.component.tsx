@@ -1,19 +1,19 @@
 /// <reference types="../environment" />
 import styled from 'styled-components';
-import { BaseButton } from '../components_base/base_button.component';
+import { BaseButton, OneAtomBaseButtonProps } from '../components_base/base_button.component';
 import { OneAtomCommonPropType } from '../prop_type';
-import { Size } from './size.component';
+import { OneAtomSizeProps, Size } from './size.component';
 
 /**
  * Button
  */
 export namespace Button {
-  export interface Props extends BaseButton.Props, Size.Props, OneAtomCommonPropType {
+  export interface Props extends OneAtomBaseButtonProps, OneAtomSizeProps, OneAtomCommonPropType {
     round?: boolean;
   }
 
   const elements_shared = {
-    button: styled(BaseButton.h)`
+    button: styled(BaseButton)`
       border-radius: 15px;
       display: flex;
       align-items: center;
@@ -65,11 +65,11 @@ export namespace Button {
     const cls_name = `${className ?? ''} ${round ? 'round' : ''}`;
 
     return (
-      <Size.h fluid={fluid}>
+      <Size fluid={fluid}>
         <elements.actionButton className={cls_name} {...rest}>
           {children}
         </elements.actionButton>
-      </Size.h>
+      </Size>
     );
   };
 
@@ -77,21 +77,21 @@ export namespace Button {
     const cls_name = `${className ?? ''} ${round ? 'round' : ''}`;
 
     return (
-      <Size.h fluid={fluid}>
+      <Size fluid={fluid}>
         <elements.controlButton className={cls_name} {...rest}>
           {children}
         </elements.controlButton>
-      </Size.h>
+      </Size>
     );
   };
 
   export const h: FC<Props> = function OneAtom_Button({ children, fluid, className, type = 'action', ...rest }) {
     return (
-      <Size.h fluid={fluid}>
+      <Size fluid={fluid}>
         <elements_shared.button className={className ?? ''} {...rest}>
           {children}
         </elements_shared.button>
-      </Size.h>
+      </Size>
     );
   };
 }
