@@ -24,7 +24,7 @@ const Inner: FC<InternalProps> = function OneAtom_HeadlessPopover_inner({ attach
   return <Fragment>{position !== null && children({ x: position.x, y: position.y })}</Fragment>;
 };
 
-export const HeadlessPopover: FC<InternalProps> = function HeadlessPopover({ attachTo, children }) {
+export const HeadLessPopover: FC<InternalProps> = function HeadlessPopover({ attachTo, children }) {
   return (
     <Portal>
       <Inner attachTo={attachTo}>{children}</Inner>
