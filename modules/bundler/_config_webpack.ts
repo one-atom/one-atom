@@ -105,18 +105,13 @@ export namespace WebpackConfig {
         parseWithBabel
           ? {
               typescript: {
-                configFile: paths.tsConfig,
                 diagnosticOptions: {
                   semantic: true,
                   syntactic: true,
                 },
               },
             }
-          : {
-              typescript: {
-                configFile: paths.tsConfig,
-              },
-            },
+          : undefined,
       ),
       new HtmlWebpackPlugin({
         template: paths.html,
@@ -253,18 +248,13 @@ export namespace WebpackConfig {
         parseWithBabel
           ? {
               typescript: {
-                configFile: paths.tsConfig,
                 diagnosticOptions: {
                   semantic: true,
                   syntactic: true,
                 },
               },
             }
-          : {
-              typescript: {
-                configFile: paths.tsConfig,
-              },
-            },
+          : undefined,
       ),
       new HtmlWebpackPlugin({
         template: paths.html,
