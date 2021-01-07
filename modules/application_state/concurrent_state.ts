@@ -1,14 +1,16 @@
-import { Disposer, Flow, FlowState } from './flow_state';
+import { Flow, FlowState } from './flow_state';
 import { MutationFn, ValidStateData } from './_data_struct';
+
+type Disposer = () => void;
 
 export class ConcurrentState<T extends ValidStateData> {
   private readonly state: FlowState<T>;
   private suspender: Promise<void> | null = null;
   private error: unknown | null = null;
 
-  constructor(state: T) {
+  constructor(initialState?: T) {
     this.state = new FlowState({
-      state,
+      initialState,
       designatedFlowState: Flow.UNSET,
     });
   }
@@ -34,7 +36,14 @@ export class ConcurrentState<T extends ValidStateData> {
 
     promise.then(
       (response) => {
-        this.state.write(() => (parseFn ? parseFn(response) : response));
+        const fn = (): T | K => (parseFn ? parseFn(response) : response);
+
+        try {
+          this.state.write(fn);
+        } catch (error: unknown) {
+          this.state.overwriteData(fn() as T);
+          this.state.changeFlowTo(Flow.ACCESSIBLE);
+        }
       },
       (error: unknown) => {
         this.error = error;
@@ -47,6 +56,7 @@ export class ConcurrentState<T extends ValidStateData> {
     // TODO
     // This write needs be added to a queue or lock other writes to not have
     // issues with concurrency
+
     this.state.write(currentState);
   }
 
@@ -76,8 +86,8 @@ export class ConcurrentState<T extends ValidStateData> {
   }
 }
 
-export function createConcurrentState<T extends ValidStateData>(state: T): ConcurrentState<T> {
-  const concurrentState = new ConcurrentState<T>(state);
+export function createConcurrentState<T extends ValidStateData>(initialState?: T): ConcurrentState<T> {
+  const concurrentState = new ConcurrentState<T>(initialState);
 
   return concurrentState;
 }

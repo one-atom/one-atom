@@ -1,14 +1,11 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-
 import { MutationFn, DataStruct, ValidStateData } from './_data_struct';
 
 type Disposer = () => void;
-type BeforeDispatchHandler = () => void;
 
-export class BaseApplicationState<T extends ValidStateData> {
-  protected readonly data: DataStruct<T>;
-  protected readonly hooks: Map<symbol, () => void> = new Map();
-  protected onBeforeDispatch: BeforeDispatchHandler | null = null;
+export class ApplicationState<T extends ValidStateData> {
+  private readonly data: DataStruct<T>;
+  private readonly hooks: Map<symbol, () => void> = new Map();
 
   constructor(initialState: T) {
     if (typeof initialState !== 'object') {
@@ -33,21 +30,14 @@ export class BaseApplicationState<T extends ValidStateData> {
       const newState = currentState(this.data);
 
       this.data.insert(newState);
-      if (this.onBeforeDispatch) this.onBeforeDispatch();
       this.dispatch();
     } catch (error) {
       console.error(`could not mutate the state:\n\n${error}`);
     }
   }
 
-  protected dispatch(): void {
+  public dispatch(): void {
     this.hooks.forEach((hook) => hook());
-  }
-}
-
-export class ApplicationState<T extends ValidStateData> extends BaseApplicationState<T> {
-  constructor(args: T) {
-    super(args);
   }
 
   public read(): Readonly<T> {

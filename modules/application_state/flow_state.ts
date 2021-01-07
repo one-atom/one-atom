@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
-import { ValidStateData } from './_data_struct';
-import { BaseApplicationState } from './application_state';
+import { DataStruct, MutationFn, ValidStateData } from './_data_struct';
 
-export type Disposer = () => void;
+type Disposer = () => void;
 
 export enum Flow {
   ACCESSIBLE,
@@ -15,21 +14,52 @@ export enum Flow {
 export type CurrStateTuple<T> = [data: Readonly<T>, flow: Flow];
 
 interface Specification<T> {
-  state: T;
+  initialState?: T;
   designatedFlowState?: Flow;
 }
 
-export class FlowState<T extends ValidStateData> extends BaseApplicationState<T> {
+export class FlowState<T extends ValidStateData> {
+  public error: Error | null = null;
   public flowState: Readonly<Flow> = Flow.UNSET;
+  private data: DataStruct<T> | null = null;
+  private readonly hooks: Map<symbol, () => void> = new Map();
 
-  constructor({ state, designatedFlowState }: Specification<T>) {
-    super(state);
-
+  constructor({ initialState, designatedFlowState }: Specification<T>) {
     if (designatedFlowState !== undefined) this.flowState = designatedFlowState;
 
-    this.onBeforeDispatch = () => {
-      this.flowState = Flow.ACCESSIBLE;
+    if (initialState) {
+      this.data = new DataStruct(initialState);
+    }
+  }
+
+  public subscribe(event: () => void): Disposer {
+    const id = Symbol();
+
+    this.hooks.set(id, event);
+
+    return () => {
+      this.hooks.delete(id);
     };
+  }
+
+  // Todo: change this api
+  /** @depricated */
+  public write(currentState: MutationFn<T>): void {
+    if (!this.data) throw new Error('data need to first be set');
+
+    // todo: have this corrolated with concurrent?
+    try {
+      const newState = currentState(this.data);
+
+      this.data.insert(newState);
+      this.error = null;
+      this.flowState = Flow.ACCESSIBLE;
+      this.dispatch();
+    } catch (error) {
+      this.error = new Error(`could not mutate the state:\n\n${error}`);
+      this.flowState = Flow.ERROR;
+      this.dispatch();
+    }
   }
 
   public read(): CurrStateTuple<T> {
@@ -46,8 +76,16 @@ export class FlowState<T extends ValidStateData> extends BaseApplicationState<T>
       case Flow.ERROR:
         // @ts-ignore
         return [undefined, this.flowState];
-      default:
+      default: {
+        if (!this.data) {
+          this.flowState = Flow.UNSET;
+
+          // @ts-ignore
+          return [this.flowState, Flow.UNSET];
+        }
+
         return [this.data.extract(), this.flowState];
+      }
     }
   }
 
@@ -59,14 +97,21 @@ export class FlowState<T extends ValidStateData> extends BaseApplicationState<T>
 
   public changeFlowTo(action: Flow): void {
     this.flowState = action;
-
     this.dispatch();
+  }
+
+  public overwriteData(state: T): void {
+    this.data = new DataStruct(state);
+  }
+
+  private dispatch(): void {
+    this.hooks.forEach((hook) => hook());
   }
 }
 
-export function createFlowState<T extends ValidStateData>(state: T, designatedFlowState?: Flow): FlowState<T> {
+export function createFlowState<T extends ValidStateData>(initialState?: T, designatedFlowState?: Flow): FlowState<T> {
   const flowState = new FlowState<T>({
-    state,
+    initialState,
     designatedFlowState,
   });
 
