@@ -47,7 +47,7 @@ const elements = {
   container: styled.div``,
 };
 
-export const A11yRole: FC<OneAtomA11yRoleProps> = function A11yRole({ children, role, ...rest }) {
+export const A11yRole: FC<OneAtomA11yRoleProps> = function OneAtom_A11yRole({ children, role, ...rest }) {
   return (
     <elements.container role={role} {...rest}>
       {children}

@@ -9,9 +9,8 @@
   },
   "files": [
     "environment.d.ts",
-    "components_a11y/a11y_region.component.tsx",
-    "components_a11y/a11y_role.component.tsx",
-    "components_a11y/mod.tsx",
+    "components_base/base_a11y_region.component.tsx",
+    "components_base/base_a11y_role.component.tsx",
     "components_base/base_button.component.tsx",
     "components_base/base_icon.component.tsx",
     "components_base/base_input.component.tsx",
