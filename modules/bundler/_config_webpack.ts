@@ -14,7 +14,7 @@ export namespace WebpackConfig {
   interface Configuration {
     paths: Paths.PathList;
     parseWithBabel: boolean;
-    customConfig?: string;
+    customConfig?: string | Record<string, unknown>;
     customEnv?: string;
   }
 
@@ -28,7 +28,10 @@ export namespace WebpackConfig {
     useBundleAnalyzer?: boolean;
   }
 
-  function createInjectProcessEnvLike(customEnv?: string, customConfig?: string): InjectProcessConfig.InjectProcessConfigLike {
+  function createInjectProcessEnvLike(
+    customEnv?: string,
+    customConfig?: string | Configuration['customConfig'],
+  ): InjectProcessConfig.InjectProcessConfigLike {
     const definedEnv: InjectProcessConfig.InjectProcessConfigLike = {};
 
     if (customEnv) {

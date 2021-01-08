@@ -8,7 +8,7 @@ export namespace Run {
   interface Base {
     root: string;
     customEnv?: string;
-    customConfig?: string;
+    customConfig?: string | Record<string, unknown>;
     parseWithBabel?: boolean;
   }
 
