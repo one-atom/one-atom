@@ -1,4 +1,4 @@
-import { readJsonSync } from './_utils/mod';
+import { JsonFailReturnStates, readJsonSync } from './_utils/mod';
 import { Logger } from '../logger/mod';
 
 export namespace InjectProcessConfig {
@@ -9,13 +9,30 @@ export namespace InjectProcessConfig {
   export const CUSTOM_ENV = 'CUSTOM_ENV';
   export const CUSTOM_GLOBAL_ENV = 'CUSTOM_GLOBAL_ENV';
 
-  export function getCustomEnv(location: string): InjectProcessConfigLike | null {
+  export function getCustomEnv(locationOrConfig: string | Record<string, unknown>): InjectProcessConfigLike | null {
     try {
-      const located_json = readJsonSync<InjectProcessConfigLike>(location);
+      let parsingObj: Record<string, unknown>;
+
+      if (typeof locationOrConfig === 'string') {
+        const [locatedJson, error] = readJsonSync<Record<string, unknown>>(locationOrConfig);
+
+        if (!locatedJson) {
+          if (error === JsonFailReturnStates.ReadFileFail) {
+            throw new Error(`Could not locale the file at ${locationOrConfig}`);
+          }
+
+          throw new Error(`Could not parse the file located at ${locationOrConfig}`);
+        }
+
+        parsingObj = locatedJson;
+      } else {
+        parsingObj = locationOrConfig;
+      }
+
       const builder: InjectProcessConfigLike = {};
 
-      for (const key in located_json) {
-        const value = located_json[key];
+      for (const key in parsingObj) {
+        const value = parsingObj[key];
 
         switch (value) {
           case value === null:

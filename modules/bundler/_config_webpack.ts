@@ -14,7 +14,7 @@ export namespace WebpackConfig {
   interface Configuration {
     paths: Paths.PathList;
     parseWithBabel: boolean;
-    loadConfigPathToFile?: string;
+    customConfig?: string;
     customEnv?: string;
   }
 
@@ -28,15 +28,15 @@ export namespace WebpackConfig {
     useBundleAnalyzer?: boolean;
   }
 
-  function createInjectProcessEnvLike(customEnv?: string, loadConfigPathToFile?: string): InjectProcessConfig.InjectProcessConfigLike {
+  function createInjectProcessEnvLike(customEnv?: string, customConfig?: string): InjectProcessConfig.InjectProcessConfigLike {
     const definedEnv: InjectProcessConfig.InjectProcessConfigLike = {};
 
     if (customEnv) {
       definedEnv[`process.env.${InjectProcessConfig.CUSTOM_ENV}`] = JSON.stringify(customEnv);
     }
 
-    if (loadConfigPathToFile) {
-      const processConfig = InjectProcessConfig.getCustomEnv(loadConfigPathToFile);
+    if (customConfig) {
+      const processConfig = InjectProcessConfig.getCustomEnv(customConfig);
 
       if (processConfig !== null) {
         definedEnv[`process.env.${InjectProcessConfig.CUSTOM_GLOBAL_ENV}`] = processConfig;
@@ -54,7 +54,7 @@ export namespace WebpackConfig {
     hmr,
     parseWithBabel,
     paths,
-    loadConfigPathToFile,
+    customConfig,
     customEnv,
   }: DevelopmentConfiguration): webpack.Configuration {
     const base: Partial<webpack.Configuration> = {
@@ -96,7 +96,7 @@ export namespace WebpackConfig {
     }
 
     const plugins: webpack.Plugin[] = [
-      new webpack.DefinePlugin(createInjectProcessEnvLike(customEnv, loadConfigPathToFile)),
+      new webpack.DefinePlugin(createInjectProcessEnvLike(customEnv, customConfig)),
       new webpack.EnvironmentPlugin({
         NODE_ENV: 'development',
         CUSTOM_ENV: 'development',
@@ -170,7 +170,7 @@ export namespace WebpackConfig {
   export function production({
     parseWithBabel,
     paths,
-    loadConfigPathToFile,
+    customConfig,
     customEnv,
     output,
     useBundleAnalyzer,
@@ -239,7 +239,7 @@ export namespace WebpackConfig {
         new BundleAnalyzerPlugin({
           analyzerMode: 'static',
         }),
-      new webpack.DefinePlugin(createInjectProcessEnvLike(customEnv, loadConfigPathToFile)),
+      new webpack.DefinePlugin(createInjectProcessEnvLike(customEnv, customConfig)),
       new webpack.EnvironmentPlugin({
         NODE_ENV: 'production',
         CUSTOM_ENV: 'production',

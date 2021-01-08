@@ -5,23 +5,22 @@ import { Paths } from './_paths';
 import { WebpackConfig } from './_config_webpack';
 
 export namespace Run {
-  interface DevSpecification extends Paths.Option {
+  interface Base {
     root: string;
     customEnv?: string;
-    loadConfigPathToFile?: string;
+    customConfig?: string;
     parseWithBabel?: boolean;
+  }
+
+  interface DevSpecification extends Paths.Option, Base {
     hmr?: boolean;
   }
 
-  interface ProdSpecification extends Paths.Option {
-    root: string;
-    customEnv?: string;
-    loadConfigPathToFile?: string;
-    parseWithBabel?: boolean;
+  interface ProdSpecification extends Paths.Option, Base {
     useBundleAnalyzer?: boolean;
   }
 
-  export function development({ root, customEnv, loadConfigPathToFile, parseWithBabel, hmr, ...rest }: DevSpecification): void {
+  export function development({ root, customEnv, customConfig, parseWithBabel, hmr, ...rest }: DevSpecification): void {
     process.env.NODE_ENV = 'development';
     hmr = hmr ?? false;
 
@@ -55,7 +54,7 @@ export namespace Run {
     const webpackConfiguration = WebpackConfig.development({
       port,
       paths,
-      loadConfigPathToFile,
+      customConfig,
       customEnv,
       hmr,
       parseWithBabel: parseWithBabel ?? false,
@@ -72,7 +71,7 @@ export namespace Run {
   export function production({
     root,
     customEnv,
-    loadConfigPathToFile,
+    customConfig,
     parseWithBabel,
     useBundleAnalyzer,
     ...rest
@@ -83,7 +82,7 @@ export namespace Run {
     const webpackConfiguration = WebpackConfig.production({
       output: paths.outDir,
       paths,
-      loadConfigPathToFile,
+      customConfig,
       customEnv,
       useBundleAnalyzer,
       parseWithBabel: parseWithBabel ?? false,

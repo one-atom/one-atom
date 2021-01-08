@@ -21,18 +21,31 @@ beforeEach(() => {
 });
 afterEach(mock.restore);
 
-describe('TypeScript Config', () => {
-  it('should be able to located test_env.env.json5', () => {
+test('asserts that a custom config can be loaded through a json file', () => {
+  {
     const env = InjectProcessConfig.getCustomEnv('json5/test_env.json5') as any;
 
     expect(env['deep']).toEqual('{"json5property1":"value","json5property2":"value2"}');
     expect(env['top']).toEqual(true);
-  });
+  }
 
-  it('should be able to located test_env.env.json', () => {
+  {
     const env = InjectProcessConfig.getCustomEnv('standard/test_env.json') as any;
 
     expect(env['deep']).toEqual('{"property1":"value","property2":"value2"}');
     expect(env['top']).toEqual(true);
-  });
+  }
+});
+
+test('asserts that a custom config can be passed as an obj', () => {
+  const env = InjectProcessConfig.getCustomEnv({
+    deep: {
+      property1: 'value',
+      property2: 'value2',
+    },
+    top: true,
+  }) as any;
+
+  expect(env['deep']).toEqual('{"property1":"value","property2":"value2"}');
+  expect(env['top']).toEqual(true);
 });

@@ -12,15 +12,19 @@ beforeEach(() => {
 afterEach(mock.restore);
 
 test('asserts valid json file returns parsed value', () => {
-  expect(readJsonSync('valid.json')).toMatchObject({
+  expect(readJsonSync('valid.json')[0]).toMatchObject({
     x: 'x',
   });
 });
 
 test('asserts that no file returns null', () => {
-  expect(readJsonSync('no.json')).toBe(null);
+  const returnedValue = readJsonSync('no.json');
+  expect(returnedValue[0]).toBe(null);
+  expect(returnedValue[1]).toBe(0);
 });
 
 test('asserts that bad json file returns null', () => {
-  expect(readJsonSync('bad.json')).toBe(null);
+  const returnedValue = readJsonSync('bad.json');
+  expect(returnedValue[0]).toBe(null);
+  expect(returnedValue[1]).toBe(-1);
 });
