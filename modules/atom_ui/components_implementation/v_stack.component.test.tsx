@@ -50,7 +50,7 @@ test('asserts that children gets className applied', () => {
     </VStack>,
   );
 
-  expect(container.querySelectorAll('.c_0_y_v').length).toBe(16);
+  expect(container.querySelectorAll('.c_0_y_v_l_16').length).toBe(16);
 });
 
 test('asserts that spacing prop gets applied', () => {
@@ -61,5 +61,5 @@ test('asserts that spacing prop gets applied', () => {
   );
 
   expect(container.querySelectorAll('.p_10_y_v').length).toBe(1);
-  expect(container.querySelectorAll('.c_10_y_v').length).toBe(1);
+  expect(container.querySelectorAll('.c_10_y_v_l_1').length).toBe(1);
 });
