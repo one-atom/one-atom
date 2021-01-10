@@ -43,7 +43,7 @@ export const HeadLessStack: FC<InternalProps> = function OneAtom_HeadlessStack({
       .addToRegister(
         `.${childClassName}`,
         `
-          ${fluid ? `height: ${childLength !== 0 ? 100 / childLength : 100}%!important;` : ''}
+          ${fluid ? `height: calc(${childLength !== 0 ? 100 / childLength : 100}% - ${spacing}px)!important;` : ''}
           margin-top: ${halfSpacing}px!important;
           margin-bottom: ${halfSpacing}px!important;
         `,
@@ -63,7 +63,7 @@ export const HeadLessStack: FC<InternalProps> = function OneAtom_HeadlessStack({
       .addToRegister(
         `.${childClassName}`,
         `
-        ${fluid ? `width: ${childLength !== 0 ? 100 / childLength : 100}%!important;` : ''}
+        ${fluid ? `width: calc(${childLength !== 0 ? 100 / childLength : 100}% - ${spacing}px)!important;` : ''}
         margin-left: ${halfSpacing}px!important;
         margin-right: ${halfSpacing}px!important;
       `,
