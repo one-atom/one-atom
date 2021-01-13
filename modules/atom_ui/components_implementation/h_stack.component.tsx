@@ -12,14 +12,14 @@ export const HStack: FC<OneAtomHStackProps> = function OneAtom_horizontal_stack(
 
   return (
     <HeadLessStack spacing={spacing} axis={'Horizontal'} fluid={fluid} childLength={childLength}>
-      {({ childClassName, parentClassName }) => (
+      {({ parentClassName }) => (
         <div className={`${className ?? ''} ${parentClassName}`.trim()}>
           {flatten.map((child) => {
             if (child === null) return child;
 
             return cloneElement(child, {
               ...child.props,
-              className: `${child.props.className ?? ''} ${childClassName}`.trim(),
+              className: `${child.props.className ?? ''}`.trim(),
             });
           })}
         </div>

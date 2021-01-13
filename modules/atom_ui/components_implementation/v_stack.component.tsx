@@ -12,14 +12,14 @@ export const VStack: FC<OneAtomVStackProps> = function OneAtom_Vertical_stack({ 
 
   return (
     <HeadLessStack spacing={spacing} axis={'Vertical'} fluid={fluid} childLength={childLength}>
-      {({ childClassName, parentClassName }) => (
+      {({ parentClassName }) => (
         <div className={`${className ?? ''} ${parentClassName}`.trim()}>
           {flatten.map((child) => {
             if (child === null) return child;
 
             return cloneElement(child, {
               ...child.props,
-              className: `${child.props.className ?? ''} ${childClassName}`.trim(),
+              className: `${child.props.className ?? ''}`.trim(),
             });
           })}
         </div>

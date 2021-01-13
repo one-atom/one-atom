@@ -25,7 +25,7 @@ test('asserts that parent gets className applied', () => {
     </HStack>,
   );
 
-  expect(container.querySelectorAll('.p_0_y_h').length).toBe(1);
+  expect(container.querySelectorAll('.p_0_y_h_c_0_y_h_l_1').length).toBe(1);
 });
 
 test('asserts that children gets className applied', () => {
@@ -50,7 +50,7 @@ test('asserts that children gets className applied', () => {
     </HStack>,
   );
 
-  expect(container.querySelectorAll('.c_0_y_h_l_16').length).toBe(16);
+  expect(container.querySelectorAll('.p_0_y_h_c_0_y_h_l_16').length).toBe(1);
 });
 
 test('asserts that spacing prop gets applied', () => {
@@ -60,6 +60,5 @@ test('asserts that spacing prop gets applied', () => {
     </HStack>,
   );
 
-  expect(container.querySelectorAll('.p_10_y_h').length).toBe(1);
-  expect(container.querySelectorAll('.c_10_y_h_l_1').length).toBe(1);
+  expect(container.querySelectorAll('.p_10_y_h_c_10_y_h_l_1').length).toBe(1);
 });
