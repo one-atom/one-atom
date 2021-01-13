@@ -7,6 +7,7 @@ export class ConcurrentState<T extends ValidStateData> {
   private readonly state: FlowState<T>;
   private suspender: Promise<void> | null = null;
   private error: unknown | null = null;
+  private fallback: ((error: unknown) => Promise<T | Error>) | null = null;
 
   constructor(initialState?: T) {
     this.state = new FlowState({
@@ -27,36 +28,64 @@ export class ConcurrentState<T extends ValidStateData> {
     throw this.createPromise();
   }
 
-  public suspend<K>(promise: Promise<T>): void;
-  public suspend<K>(promise: Promise<K>, parseFn: (data: K) => T): void;
-  public suspend<K>(promise: Promise<K>, parseFn?: (data: K) => T): void {
+  public gracefulDegradation<K extends ValidStateData>(fallback: (error: unknown) => Promise<T>): void;
+  public gracefulDegradation<K extends Error>(fallback: (error: unknown) => Promise<K>): void;
+  public gracefulDegradation(fallback: (error: unknown) => Promise<T | Error>): void {
+    this.fallback = fallback;
+  }
+
+  public suspend<K>(promise: Promise<T>): ConcurrentState<T>;
+  public suspend<K>(promise: Promise<K>, parseFn: (data: K) => T): ConcurrentState<T>;
+  public suspend<K>(promise: Promise<K>, parseFn?: (data: K) => T): ConcurrentState<T> {
     this.createPromise();
     this.error = null;
     this.state.flowState = Flow.PENDING;
 
-    promise.then(
-      (response) => {
-        const fn = (): T | K => (parseFn ? parseFn(response) : response);
+    const writeBlock = (response: K): void => {
+      const fn = (): T | K => (parseFn ? parseFn(response) : response);
 
-        try {
-          this.state.write(fn);
-        } catch (error: unknown) {
-          this.state.overwriteData(fn() as T);
-          this.state.changeFlowTo(Flow.ACCESSIBLE);
-        }
-      },
-      (error: unknown) => {
+      try {
+        this.state.write(fn);
+      } catch (error: unknown) {
+        this.state.overwriteData(fn() as T);
+        this.state.changeFlowTo(Flow.ACCESSIBLE);
+      }
+    };
+
+    promise.then(writeBlock, async (error: unknown) => {
+      if (!this.fallback) {
         this.error = error;
         this.state.changeFlowTo(Flow.ERROR);
-      },
-    );
+
+        return;
+      }
+
+      try {
+        const resolve = await this.fallback(error);
+        if (resolve instanceof Error) throw resolve;
+
+        if (!resolve) {
+          this.error = error;
+          this.state.changeFlowTo(Flow.ERROR);
+
+          return;
+        }
+
+        writeBlock((resolve as unknown) as K);
+      } catch (fallbackError: unknown) {
+        this.error = fallbackError;
+        this.state.changeFlowTo(Flow.ERROR);
+      }
+    });
+
+    return this;
   }
 
+  // TODO
+  // This write needs be added to a queue or lock other writes to not have
+  // issues with concurrency
+  /** @depricated */
   public write(currentState: MutationFn<T>): void {
-    // TODO
-    // This write needs be added to a queue or lock other writes to not have
-    // issues with concurrency
-
     this.state.write(currentState);
   }
 
