@@ -7,6 +7,7 @@ export const Parent: FC = ({ children }) => {
       style={{
         height: '100vh',
         display: 'flex',
+        overflowY: 'hidden',
       }}
     >
       <ResetCss />
