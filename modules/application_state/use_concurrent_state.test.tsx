@@ -83,14 +83,14 @@ test('asserts that components using useApplicationState rerenders after write', 
   await findByText(/Jocke/i);
 
   act(() => {
-    concurrentState.write(() => ({
+    concurrentState.unsafeWrite(() => ({
       name: 'Anton',
     }));
   });
   await findByText(/Anton/i);
 
   act(() => {
-    concurrentState.write(() => ({
+    concurrentState.unsafeWrite(() => ({
       name: 'Jocke',
     }));
   });

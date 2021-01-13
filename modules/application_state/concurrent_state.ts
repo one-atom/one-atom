@@ -85,8 +85,16 @@ export class ConcurrentState<T extends ValidStateData> {
   // This write needs be added to a queue or lock other writes to not have
   // issues with concurrency
   /** @depricated */
-  public write(currentState: MutationFn<T>): void {
+  public unsafeWrite(currentState: MutationFn<T>): void {
     this.state.write(currentState);
+  }
+
+  // Todo: change this api
+  /** @depricated */
+  public unsafeRead(): T {
+    const [state] = this.state.read();
+
+    return state;
   }
 
   public subscribe(event: () => void): Disposer {
