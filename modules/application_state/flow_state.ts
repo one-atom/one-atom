@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
-import { DataStruct, MutationFn, ValidStateData } from './_data_struct';
+import { DataStruct, MutationFn } from './_data_struct';
 
 type Disposer = () => void;
 
@@ -18,7 +18,7 @@ interface Specification<T> {
   designatedFlowState?: Flow;
 }
 
-export class FlowState<T extends ValidStateData> {
+export class FlowState<T extends object> {
   public error: Error | null = null;
   public flowState: Readonly<Flow> = Flow.UNSET;
   private data: DataStruct<T> | null = null;
@@ -109,7 +109,7 @@ export class FlowState<T extends ValidStateData> {
   }
 }
 
-export function createFlowState<T extends ValidStateData>(initialState?: T, designatedFlowState?: Flow): FlowState<T> {
+export function createFlowState<T extends object>(initialState?: T, designatedFlowState?: Flow): FlowState<T> {
   const flowState = new FlowState<T>({
     initialState,
     designatedFlowState,

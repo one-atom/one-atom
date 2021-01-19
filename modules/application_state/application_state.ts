@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { MutationFn, DataStruct, ValidStateData } from './_data_struct';
+/* eslint-disable @typescript-eslint/ban-types */
+import { MutationFn, DataStruct } from './_data_struct';
 
 type Disposer = () => void;
 
-export class ApplicationState<T extends ValidStateData> {
+export class ApplicationState<T extends object> {
   private readonly data: DataStruct<T>;
   private readonly hooks: Map<symbol, () => void> = new Map();
 
@@ -45,7 +46,7 @@ export class ApplicationState<T extends ValidStateData> {
   }
 }
 
-export function createApplicationState<T extends ValidStateData>(initialState: T): ApplicationState<T> {
+export function createApplicationState<T extends object>(initialState: T): ApplicationState<T> {
   const applicationState = new ApplicationState<T>(initialState);
 
   return applicationState;

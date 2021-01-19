@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { useEffect, useState } from 'react';
 import { EMPTY_ARRAY } from '../miscellaneous_modules/universal_empty_constants';
 import { ConcurrentState } from './concurrent_state';
-import { ValidStateData } from './_data_struct';
 
-export function useConcurrentState<T extends ValidStateData>(state: ConcurrentState<T>): Readonly<T> {
+export function useConcurrentState<T extends object>(state: ConcurrentState<T>): Readonly<T> {
   const [, forceUpdate] = useState([]);
 
   useEffect(() => {

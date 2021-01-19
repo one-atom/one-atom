@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { Flow, FlowState } from './flow_state';
-import { MutationFn, ValidStateData } from './_data_struct';
+import { MutationFn } from './_data_struct';
 
 type Disposer = () => void;
 
-export class ConcurrentState<T extends ValidStateData> {
+export class ConcurrentState<T extends object> {
   private readonly state: FlowState<T>;
   private suspender: Promise<void> | null = null;
   private error: unknown | null = null;
@@ -28,7 +29,7 @@ export class ConcurrentState<T extends ValidStateData> {
     throw this.createPromise();
   }
 
-  public gracefulDegradation<K extends ValidStateData>(fallback: (error: unknown) => Promise<T>): void;
+  public gracefulDegradation<K extends object>(fallback: (error: unknown) => Promise<T>): void;
   public gracefulDegradation<K extends Error>(fallback: (error: unknown) => Promise<K>): void;
   public gracefulDegradation(fallback: (error: unknown) => Promise<T | Error>): void {
     this.fallback = fallback;
@@ -123,7 +124,7 @@ export class ConcurrentState<T extends ValidStateData> {
   }
 }
 
-export function createConcurrentState<T extends ValidStateData>(initialState?: T): ConcurrentState<T> {
+export function createConcurrentState<T extends object>(initialState?: T): ConcurrentState<T> {
   const concurrentState = new ConcurrentState<T>(initialState);
 
   return concurrentState;
