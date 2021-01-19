@@ -15,3 +15,4 @@ export * from './shimmer.component';
 export * from './flex.component';
 export * from './anchor_point.component';
 export * from './spacer.component';
+export * from './portal.component';
