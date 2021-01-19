@@ -108,3 +108,36 @@ test('asserts that iteration over keys works', () => {
 
   expect(i).toEqual(3);
 });
+
+test('asserts that typescript accepts both "type" and "interface"', () => {
+  // Not really a Jest test, more to check that the type works
+  type T1 = {
+    a: 'a';
+  };
+  new DataStruct<T1>({
+    a: 'a',
+  });
+
+  interface T2 {
+    a: 'a';
+  }
+  new DataStruct<T2>({
+    a: 'a',
+  });
+
+  interface T3 {
+    a: 'a';
+    [index: string]: string;
+  }
+  new DataStruct<T3>({
+    a: 'a',
+  });
+
+  type T4 = {
+    a: 'a';
+    [index: string]: string;
+  };
+  new DataStruct<T4>({
+    a: 'a',
+  });
+});

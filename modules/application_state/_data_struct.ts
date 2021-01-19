@@ -1,22 +1,22 @@
-type ValidStateDataType = string | number | symbol | boolean | null | Array<unknown> | Record<string, unknown>;
+/* eslint-disable @typescript-eslint/ban-types */
 
-export type ValidStateData = Record<string, ValidStateDataType>;
+export type MutationFn<T extends object> = (currentState: Readonly<Omit<DataStruct<T>, 'insert'>>) => Partial<T>;
 
-export type MutationFn<T extends ValidStateData> = (currentState: Readonly<Omit<DataStruct<T>, 'insert'>>) => Partial<T>;
-
-export class DataStruct<T extends ValidStateData> {
+export class DataStruct<T extends object> {
   private readonly storedData = new Map<keyof T, T[keyof T]>();
-  private readonly keys: string[];
+  private readonly keys: Set<string>;
 
   constructor(data: T) {
-    this.keys = Object.keys(data);
+    this.keys = new Set(Object.keys(data));
     this.insert(data);
   }
 
   public insert(fromObject: Partial<T>): void {
-    for (const key of this.keys) {
+    for (const _ in fromObject) {
+      const key = _ as keyof T;
       const preValue = this.storedData.get(key);
 
+      // TODO: add suppport for dynamic length
       // Continue if undefined, from_object is Partial<T> and we can't determine
       // if the value or index was undefined. Null should be used to represent
       // non-assigned values
@@ -35,9 +35,10 @@ export class DataStruct<T extends ValidStateData> {
   }
 
   public extract(): T {
-    const builder: Record<string, unknown> = {};
+    const builder: Partial<T> = {};
 
-    for (const key of this.keys) {
+    for (const _ of this.keys.values()) {
+      const key = _ as keyof T;
       builder[key] = this.storedData.get(key);
     }
 
