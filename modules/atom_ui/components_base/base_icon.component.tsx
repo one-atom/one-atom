@@ -7,6 +7,7 @@ export interface OneAtomBaseIconProps extends OneAtomCommonPropType {
   rotation?: number;
   mirror?: Mirror;
   center?: boolean;
+  dangerouslySetInnerHTML?: { __html: string };
 }
 
 type Mirror = 'Vertical' | 'Horizontal' | true | null;
@@ -62,7 +63,14 @@ const elements = {
   `,
 };
 
-export const BaseIcon: FC<OneAtomBaseIconProps> = function OneAtom_Icon({ children, viewBox, rotation, mirror, center }) {
+export const BaseIcon: FC<OneAtomBaseIconProps> = function OneAtom_Icon({
+  children,
+  viewBox,
+  rotation,
+  mirror,
+  center,
+  dangerouslySetInnerHTML,
+}) {
   return (
     <elements.svg
       data-testid="svg"
@@ -71,6 +79,7 @@ export const BaseIcon: FC<OneAtomBaseIconProps> = function OneAtom_Icon({ childr
       rotation={rotation ?? 0}
       mirror={mirror ?? null}
       center={center ?? false}
+      dangerouslySetInnerHTML={dangerouslySetInnerHTML}
     >
       {children}
     </elements.svg>
