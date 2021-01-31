@@ -69,6 +69,7 @@ export const BaseIcon: FC<OneAtomBaseIconProps> = function OneAtom_Icon({
   rotation,
   mirror,
   center,
+  className,
   dangerouslySetInnerHTML,
 }) {
   return (
@@ -76,6 +77,7 @@ export const BaseIcon: FC<OneAtomBaseIconProps> = function OneAtom_Icon({
       data-testid="svg"
       xmlns="http://www.w3.org/2000/svg"
       viewBox={viewBox ?? '0 0 512 512'}
+      className={className}
       rotation={rotation ?? 0}
       mirror={mirror ?? null}
       center={center ?? false}
