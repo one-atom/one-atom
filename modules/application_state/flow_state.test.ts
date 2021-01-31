@@ -108,7 +108,7 @@ test('asserts that calling write mutates the state', () => {
   const state = createFlowState(undefined);
   state.overwriteData(getTypicalState());
 
-  state.write(() => ({
+  state.unsafeWrite(() => ({
     name: 'kyle',
   }));
   expect(state.peekState()).toMatchInlineSnapshot(`
@@ -118,7 +118,7 @@ test('asserts that calling write mutates the state', () => {
     }
   `);
 
-  state.write(() => ({
+  state.unsafeWrite(() => ({
     age: 28,
   }));
   expect(state.peekState()).toMatchInlineSnapshot(`
@@ -128,7 +128,7 @@ test('asserts that calling write mutates the state', () => {
     }
   `);
 
-  state.write(() => ({
+  state.unsafeWrite(() => ({
     name: 'ezra',
     age: 22,
   }));
@@ -143,7 +143,7 @@ test('asserts that calling write mutates the state', () => {
 test('asserts that calling write mutates the state with initial state', () => {
   const state = createFlowState(getTypicalState());
 
-  state.write(() => ({
+  state.unsafeWrite(() => ({
     name: 'kyle',
   }));
   expect(state.peekState()).toMatchInlineSnapshot(`
@@ -153,7 +153,7 @@ test('asserts that calling write mutates the state with initial state', () => {
     }
   `);
 
-  state.write(() => ({
+  state.unsafeWrite(() => ({
     age: 28,
   }));
   expect(state.peekState()).toMatchInlineSnapshot(`
@@ -163,7 +163,7 @@ test('asserts that calling write mutates the state with initial state', () => {
     }
   `);
 
-  state.write(() => ({
+  state.unsafeWrite(() => ({
     name: 'ezra',
     age: 22,
   }));
@@ -179,7 +179,7 @@ test('asserts that calling write mutates the state', () => {
   const state = createFlowState();
   state.overwriteData(getTypicalState());
 
-  state.write(() => ({
+  state.unsafeWrite(() => ({
     name: 'kyle',
   }));
   expect(state.peekState()).toMatchInlineSnapshot(`
@@ -189,7 +189,7 @@ test('asserts that calling write mutates the state', () => {
     }
   `);
 
-  state.write(() => ({
+  state.unsafeWrite(() => ({
     age: 28,
   }));
   expect(state.peekState()).toMatchInlineSnapshot(`
@@ -199,7 +199,7 @@ test('asserts that calling write mutates the state', () => {
     }
   `);
 
-  state.write(() => ({
+  state.unsafeWrite(() => ({
     name: 'ezra',
     age: 22,
   }));
@@ -214,7 +214,7 @@ test('asserts that calling write mutates the state', () => {
 test('asserts that calling write mutates the state with initial state', () => {
   const state = createFlowState(getTypicalState());
 
-  state.write(() => ({
+  state.unsafeWrite(() => ({
     name: 'kyle',
   }));
   expect(state.peekState()).toMatchInlineSnapshot(`
@@ -224,7 +224,7 @@ test('asserts that calling write mutates the state with initial state', () => {
     }
   `);
 
-  state.write(() => ({
+  state.unsafeWrite(() => ({
     age: 28,
   }));
   expect(state.peekState()).toMatchInlineSnapshot(`
@@ -234,7 +234,7 @@ test('asserts that calling write mutates the state with initial state', () => {
     }
   `);
 
-  state.write(() => ({
+  state.unsafeWrite(() => ({
     name: 'ezra',
     age: 22,
   }));
@@ -252,11 +252,11 @@ test('asserts that subscription is working', () => {
   const fn = jest.fn();
   const disposer = state.subscribe(fn);
 
-  state.write(() => ({
+  state.unsafeWrite(() => ({
     name: 'kyle',
   }));
   disposer();
-  state.write(() => ({
+  state.unsafeWrite(() => ({
     name: 'kyle',
   }));
 
@@ -268,11 +268,11 @@ test('asserts that subscription is working with initial state', () => {
   const fn = jest.fn();
   const disposer = state.subscribe(fn);
 
-  state.write(() => ({
+  state.unsafeWrite(() => ({
     name: 'kyle',
   }));
   disposer();
-  state.write(() => ({
+  state.unsafeWrite(() => ({
     name: 'kyle',
   }));
 

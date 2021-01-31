@@ -4,9 +4,11 @@ import { MutationFn, DataStruct } from './_data_struct';
 
 type Disposer = () => void;
 
+type HookFn<T> = (changeSet?: Set<keyof T>) => void;
+
 export class ApplicationState<T extends object> {
   private readonly data: DataStruct<T>;
-  private readonly hooks: Map<symbol, () => void> = new Map();
+  private readonly hooks: Map<symbol, HookFn<T>> = new Map();
 
   constructor(initialState: T) {
     if (typeof initialState !== 'object') {
@@ -16,7 +18,7 @@ export class ApplicationState<T extends object> {
     this.data = new DataStruct(initialState);
   }
 
-  public subscribe(event: () => void): Disposer {
+  public subscribe(event: HookFn<T>): Disposer {
     const id = Symbol();
 
     this.hooks.set(id, event);
@@ -30,19 +32,19 @@ export class ApplicationState<T extends object> {
     try {
       const newState = currentState(this.data);
 
-      this.data.insert(newState);
-      this.dispatch();
+      const changeSet = this.data.insert(newState);
+      this.dispatch(changeSet);
     } catch (error) {
       console.error(`could not mutate the state:\n\n${error}`);
     }
   }
 
-  public dispatch(): void {
-    this.hooks.forEach((hook) => hook());
-  }
-
   public read(): Readonly<T> {
     return this.data.extract();
+  }
+
+  private dispatch(changeSet?: Set<keyof T>): void {
+    this.hooks.forEach((hook) => hook(changeSet));
   }
 }
 

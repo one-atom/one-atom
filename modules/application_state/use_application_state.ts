@@ -1,16 +1,27 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { useEffect, useState } from 'react';
-import { EMPTY_ARRAY } from '../miscellaneous_modules/universal_empty_constants';
 import { ApplicationState } from './application_state';
 
-export function useApplicationState<T extends object>(state: ApplicationState<T>): Readonly<T> {
+export function useApplicationState<T extends object>(state: ApplicationState<T>, triggers?: (keyof T)[]): Readonly<T> {
   const [, forceUpdate] = useState([]);
 
   useEffect(() => {
-    return state.subscribe(() => {
+    return state.subscribe((changeSet) => {
+      if (triggers && changeSet) {
+        const shouldUpdate = triggers.find((trigger) => {
+          return changeSet.has(trigger);
+        });
+
+        if (shouldUpdate) {
+          forceUpdate([]);
+        }
+
+        return;
+      }
+
       forceUpdate([]);
     });
-  }, EMPTY_ARRAY);
+  }, [state, triggers]);
 
   return state.read();
 }

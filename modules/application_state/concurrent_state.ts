@@ -4,6 +4,8 @@ import { MutationFn } from './_data_struct';
 
 type Disposer = () => void;
 
+type HookFn<T> = (changeSet?: Set<keyof T>) => void;
+
 export class ConcurrentState<T extends object> {
   private readonly state: FlowState<T>;
   private suspender: Promise<void> | null = null;
@@ -46,7 +48,7 @@ export class ConcurrentState<T extends object> {
       const fn = (): T | K => (parseFn ? parseFn(response) : response);
 
       try {
-        this.state.write(fn);
+        this.state.unsafeWrite(fn);
       } catch (error: unknown) {
         this.state.overwriteData(fn() as T);
         this.state.changeFlowTo(Flow.ACCESSIBLE);
@@ -82,23 +84,17 @@ export class ConcurrentState<T extends object> {
     return this;
   }
 
-  // TODO
-  // This write needs be added to a queue or lock other writes to not have
-  // issues with concurrency
-  /** @depricated */
   public unsafeWrite(currentState: MutationFn<T>): void {
-    this.state.write(currentState);
+    this.state.unsafeWrite(currentState);
   }
 
-  // Todo: change this api
-  /** @depricated */
   public unsafeRead(): T {
     const [state] = this.state.read();
 
     return state;
   }
 
-  public subscribe(event: () => void): Disposer {
+  public subscribe(event: HookFn<T>): Disposer {
     return this.state.subscribe(event);
   }
 

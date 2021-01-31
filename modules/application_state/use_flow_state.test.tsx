@@ -45,7 +45,7 @@ test('asserts that components rerenders after write', () => {
   expect(getAllByText(FlowTexts.UNSET)).toHaveLength(2);
 
   act(() =>
-    state.write(() => ({
+    state.unsafeWrite(() => ({
       is: true,
     })),
   );
@@ -53,7 +53,7 @@ test('asserts that components rerenders after write', () => {
   expect(getAllByText('state is true')).toHaveLength(2);
 
   act(() =>
-    state.write(() => ({
+    state.unsafeWrite(() => ({
       is: false,
     })),
   );

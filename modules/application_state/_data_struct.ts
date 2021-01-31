@@ -4,34 +4,33 @@ export type MutationFn<T extends object> = (currentState: Readonly<Omit<DataStru
 
 export class DataStruct<T extends object> {
   private readonly storedData = new Map<keyof T, T[keyof T]>();
-  private readonly keys: Set<string>;
+  private readonly keys: Set<string | number | Symbol>;
 
   constructor(data: T) {
     this.keys = new Set(Object.keys(data));
     this.insert(data);
   }
 
-  public insert(fromObject: Partial<T>): void {
+  public insert(fromObject: Partial<T>): Set<keyof T> {
+    const changeSet = new Set<keyof T>();
+
     for (const _ in fromObject) {
       const key = _ as keyof T;
       const preValue = this.storedData.get(key);
+      changeSet.add(key);
 
-      // TODO: add suppport for dynamic length
-      // Continue if undefined, from_object is Partial<T> and we can't determine
-      // if the value or index was undefined. Null should be used to represent
-      // non-assigned values
-      if (fromObject[key] === undefined) {
-        continue;
-      }
-
-      // Keeps the mem ref to the original object and
-      if (typeof preValue === 'object' && preValue === fromObject[key]) {
+      if (!this.keys.has(key)) {
+        this.keys.add(key);
+      } else if (typeof preValue === 'object' && preValue === fromObject[key]) {
+        // Keeps the mem ref to the original object
         this.storedData.set(key, fromObject[key] as T[keyof T]);
         continue;
       }
 
       this.storedData.set(key, fromObject[key] as T[keyof T]);
     }
+
+    return changeSet;
   }
 
   public extract(): T {

@@ -65,3 +65,19 @@ test('asserts that subscription is working', () => {
 
   expect(fn).toHaveBeenCalledTimes(1);
 });
+
+test('asserts that changeSet works', () => {
+  const state = createApplicationState(getTypicalState());
+  const fn = jest.fn();
+  const disposer = state.subscribe(fn);
+
+  state.write(() => ({
+    name: 'kyle',
+  }));
+  disposer();
+  state.write(() => ({
+    name: 'kyle',
+  }));
+
+  expect(fn).toHaveBeenCalledTimes(1);
+});

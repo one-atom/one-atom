@@ -5,6 +5,8 @@ import { DataStruct, MutationFn } from './_data_struct';
 
 type Disposer = () => void;
 
+type HookFn<T> = (changeSet?: Set<keyof T>) => void;
+
 export enum Flow {
   ACCESSIBLE,
   UNSET,
@@ -23,7 +25,7 @@ export class FlowState<T extends object> {
   public error: Error | null = null;
   public flowState: Readonly<Flow> = Flow.UNSET;
   private data: DataStruct<T> | null = null;
-  private readonly hooks: Map<symbol, () => void> = new Map();
+  private readonly hooks: Map<symbol, HookFn<T>> = new Map();
 
   constructor({ initialState, designatedFlowState }: Specification<T>) {
     if (designatedFlowState !== undefined) this.flowState = designatedFlowState;
@@ -33,7 +35,7 @@ export class FlowState<T extends object> {
     }
   }
 
-  public subscribe(event: () => void): Disposer {
+  public subscribe(event: HookFn<T>): Disposer {
     const id = Symbol();
 
     this.hooks.set(id, event);
@@ -43,19 +45,16 @@ export class FlowState<T extends object> {
     };
   }
 
-  // Todo: change this api
-  /** @depricated */
-  public write(currentState: MutationFn<T>): void {
+  public unsafeWrite(currentState: MutationFn<T>): void {
     if (!this.data) throw new Error('data need to first be set');
 
-    // todo: have this corrolated with concurrent?
     try {
       const newState = currentState(this.data);
 
-      this.data.insert(newState);
+      const changeSet = this.data.insert(newState);
       this.error = null;
       this.flowState = Flow.ACCESSIBLE;
-      this.dispatch();
+      this.dispatch(changeSet);
     } catch (error) {
       this.error = new Error(`could not mutate the state:\n\n${error}`);
       this.flowState = Flow.ERROR;
@@ -105,8 +104,8 @@ export class FlowState<T extends object> {
     this.data = new DataStruct(state);
   }
 
-  private dispatch(): void {
-    this.hooks.forEach((hook) => hook());
+  private dispatch(changeSet?: Set<keyof T>): void {
+    this.hooks.forEach((hook) => hook(changeSet));
   }
 }
 

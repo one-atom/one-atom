@@ -141,3 +141,21 @@ test('asserts that typescript accepts both "type" and "interface"', () => {
     a: 'a',
   });
 });
+
+test('asserts that dynamic keys works', () => {
+  type T1 = {
+    a: string;
+    b?: string;
+  };
+  const d = new DataStruct<T1>({
+    a: 'a',
+  });
+
+  d.insert({
+    b: 'b',
+  });
+
+  const data = d.extract();
+
+  expect(data.b).toBe('b');
+});

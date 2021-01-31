@@ -67,7 +67,7 @@ test('asserts that React suspense works', async () => {
   await findByText(/Jocke/i);
 });
 
-test('asserts that components using useApplicationState rerenders after write', async () => {
+test('asserts that components using useConcurrentState rerenders after write', async () => {
   const concurrentState = createConcurrentState(getTypicalState());
   const { findByText, getByText } = render(<ConcurrentParent state={concurrentState} />);
 
@@ -95,4 +95,58 @@ test('asserts that components using useApplicationState rerenders after write', 
     }));
   });
   await findByText(/Jocke/i);
+});
+
+test('asserts that components using useConcurrentState only rerender when trigger matches changes', async () => {
+  const concurrentState = createConcurrentState(getTypicalState());
+  let renders = 0;
+
+  const Child: FC<{ providedState: ConcurrentState<TypicalState> }> = ({ providedState }) => {
+    const state = useConcurrentState(providedState, ['age']);
+    renders++;
+
+    return <p>age {state.age}</p>;
+  };
+
+  const Parent: FC<{ providedState: ConcurrentState<TypicalState> }> = ({ providedState }) => {
+    useConcurrentState(providedState, []);
+    renders++;
+
+    return <Child providedState={providedState} />;
+  };
+
+  const ConcurrentParent: FC<{ providedState: ConcurrentState<TypicalState> }> = ({ providedState }) => {
+    return (
+      <Suspense fallback="loading">
+        <Parent providedState={providedState} />
+      </Suspense>
+    );
+  };
+
+  const { getByText, findByText } = render(<ConcurrentParent providedState={concurrentState} />);
+
+  concurrentState.suspend(fakeApi.get(), (resolve) => {
+    return {
+      ...resolve,
+      age: 20,
+    };
+  });
+
+  getByText(/loading/i);
+
+  act(() => {
+    concurrentState.unsafeWrite(() => ({
+      age: 23,
+    }));
+  });
+  await findByText(/age 23/i);
+  expect(renders).toEqual(3);
+
+  act(() => {
+    concurrentState.unsafeWrite(() => ({
+      age: 20,
+    }));
+  });
+  await findByText(/age 20/i);
+  expect(renders).toEqual(4);
 });
