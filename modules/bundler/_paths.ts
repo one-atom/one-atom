@@ -28,14 +28,24 @@ export namespace Paths {
 
   export function get(root: string, option?: Option): Readonly<PathList> {
     const { outDir, rootDir } = TypeScriptConfig.getCompilerOptions(root, option?.configFile);
+    const defaultoutDir = './dist';
+    const defaultRootDir = './src';
+
+    if (!outDir) {
+      console.log(`outDir was not set in your tsconfig, it'll now build into a dist folder`);
+    }
+
+    if (!rootDir) {
+      console.log(`rootdir was not set in your tsconfig, it's now going to asume that your main is inside of a src folder`);
+    }
 
     return Object.freeze({
       root: resolveRelative(root, ''),
       static: resolveRelative(root, option?.contentBase ?? STATIC_DEFAULT),
-      outDir: resolveRelative('', outDir ?? 'dist'),
-      rootDir: resolveRelative('', rootDir ?? './'),
+      outDir: resolveRelative('', outDir ?? defaultoutDir),
+      rootDir: resolveRelative('', rootDir ?? defaultRootDir),
       html: resolveRelative(root, `${option?.relativeIndexHTMLPath ?? option?.contentBase ?? STATIC_DEFAULT}/index.html`),
-      main: resolveRelative(root, `${rootDir}/main.tsx`),
+      main: resolveRelative(root, `${rootDir ?? defaultRootDir}/main.tsx`),
       packageJson: resolveRelative(root, 'package.json'),
       nodeModules: resolveRelative(root, 'node_modules'),
       tsConfig: resolveRelative(root, TypeScriptConfig.getTsConfigPath(root, option?.configFile)),
