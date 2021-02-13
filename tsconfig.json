@@ -9,6 +9,7 @@
     "strict": true,
     "declaration": true,
     "skipLibCheck": true,
+    "noImplicitAny": false, // This is due to json5 module
     "esModuleInterop": true,
     "noImplicitReturns": true,
     "downlevelIteration": true,

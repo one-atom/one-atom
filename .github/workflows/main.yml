@@ -43,7 +43,7 @@ jobs:
         run: yarn build
 
       - name: Run tests
-        run: yarn test --maxWorkers 100
+        run: yarn test:ci
 
       - name: Install cypress binary
         run: yarn cypress install

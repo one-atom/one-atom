@@ -2,6 +2,8 @@ import { FC, Suspense, Component } from 'react';
 import { ConcurrentState } from './concurrent_state';
 import { render } from '@testing-library/react';
 
+jest.useFakeTimers();
+
 type TypicalState = {
   userName: string;
   age: number;
@@ -125,7 +127,6 @@ test('asserts that concurrentState throws a promise when flow is equal to Pendin
 });
 
 test('asserts that a concurrentState changes state to accessible', (done) => {
-  jest.useFakeTimers();
   const concurrentState = new ConcurrentState<TypicalState>();
 
   concurrentState.suspend(fakeApi.get(), () => {
@@ -157,7 +158,6 @@ test('asserts that a concurrentState changes state to accessible', (done) => {
 });
 
 test('asserts that a concurrentState changes state to accessible with initial state', (done) => {
-  jest.useFakeTimers();
   const concurrentState = new ConcurrentState<TypicalState>(getTypicalState());
 
   concurrentState.suspend(fakeApi.get(), () => {
@@ -189,7 +189,6 @@ test('asserts that a concurrentState changes state to accessible with initial st
 });
 
 test('asserts that concurrentState throws the catched error', (done) => {
-  jest.useFakeTimers();
   const concurrentState = new ConcurrentState<TypicalState>();
 
   concurrentState.suspend(fakeApi.getError(), () => {
@@ -226,7 +225,6 @@ test('asserts that concurrentState throws the catched error', (done) => {
 });
 
 test('asserts that concurrentState throws the catched error with initial state', (done) => {
-  jest.useFakeTimers();
   const concurrentState = new ConcurrentState<TypicalState>(getTypicalState());
 
   concurrentState.suspend(fakeApi.getError(), () => {
