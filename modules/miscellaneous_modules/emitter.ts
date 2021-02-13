@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
 
-import { EMPTY_ARRAY } from './universal_empty_constants';
-
 export type EventHandler<T = any> = (event: T) => void;
 
 export class Emitter<T extends string | number> {
@@ -18,7 +16,7 @@ export class Emitter<T extends string | number> {
   }
 
   public emit<K = any>(event: T, data: K): void {
-    (this.events[event] || EMPTY_ARRAY).forEach((handler) => {
+    (this.events[event] || []).forEach((handler) => {
       handler(data);
     });
   }
