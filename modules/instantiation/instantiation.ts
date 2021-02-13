@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { Graph } from './_graph';
 
 class Registration<T> {
@@ -35,6 +34,8 @@ class Context<T> {
 }
 const globalContext = new Context<any>();
 
+const metaData = new Map<Instantiation.Token, Instantiation.Ctor<unknown>[]>();
+
 export namespace Instantiation {
   export type GenericClassDecorator<T> = (target: T) => void;
   export type Ctor<T> = {
@@ -46,6 +47,19 @@ export namespace Instantiation {
     Scoped,
   }
   export type Token<T = any> = Ctor<T> | symbol;
+
+  export function __registerMetaData(token: Token, deps: Ctor<unknown>[]): void {
+    metaData.set(token, deps);
+  }
+
+  export function __getMetadata(token: Token): Ctor<unknown>[] {
+    return metaData.get(token) ?? [];
+  }
+
+  let __customLookUp: ((token: any) => any) | undefined = undefined;
+  export function __setCustomLookUp(fn: (token: any) => any): void {
+    __customLookUp = fn;
+  }
 
   /**
    * Returns an instance, during the process all of its dependencies will also be created.
@@ -123,7 +137,9 @@ export namespace Instantiation {
       resolvingDependenciesBranch.lookupOrInsertNode(resolvingStackElement);
 
       // This row is basically the whole magic behind the service resolving logic
-      const tokens: Ctor<unknown>[] = Reflect.getMetadata('design:paramtypes', registeredServiceFactory.ctor) ?? [];
+      const tokens: Ctor<unknown>[] = __customLookUp
+        ? __customLookUp(registeredServiceFactory.ctor)
+        : __getMetadata(registeredServiceFactory.ctor);
       const dependencies: Dependencies[] = tokens.map((dependency) => {
         const registeredDependency = registeredServices.get(dependency);
         if (registeredDependency === undefined) {

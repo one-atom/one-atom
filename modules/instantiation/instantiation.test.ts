@@ -77,6 +77,7 @@ describe('Instantiation', () => {
         fn();
       }
     }
+    Instantiation.__registerMetaData(B, [C, D]);
 
     @Singleton()
     class A {
@@ -84,6 +85,7 @@ describe('Instantiation', () => {
         fn();
       }
     }
+    Instantiation.__registerMetaData(A, [C, B]);
 
     function regardless_of_resolved_order_this_should_not_throw(a: A, b: B, c: C, d: D): void {
       expect(c).toBe(a.c);
@@ -560,6 +562,7 @@ describe('Instantiation', () => {
         fn();
       }
     }
+    Instantiation.__registerMetaData(B, [C, D]);
 
     @Scoped()
     class A {
@@ -567,6 +570,7 @@ describe('Instantiation', () => {
         fn();
       }
     }
+    Instantiation.__registerMetaData(A, [C, B]);
 
     function regardless_of_resolved_order_this_should_not_throw(a: A, b: B, c: C, d: D): void {
       expect(a.c).toBe(a.b.c);
@@ -1042,6 +1046,7 @@ describe('Instantiation', () => {
         fn();
       }
     }
+    Instantiation.__registerMetaData(B, [C, D]);
 
     @Transient()
     class A {
@@ -1049,6 +1054,7 @@ describe('Instantiation', () => {
         fn();
       }
     }
+    Instantiation.__registerMetaData(A, [C, B]);
 
     function regardless_of_resolved_order_this_should_not_throw(a: A, b: B, c: C, d: D): void {
       expect(a.c).not.toBe(a.b.c);
@@ -1536,6 +1542,7 @@ describe('Instantiation', () => {
         fn();
       }
     }
+    Instantiation.__registerMetaData(B, [C, D]);
 
     @Transient()
     class A {
@@ -1545,6 +1552,7 @@ describe('Instantiation', () => {
         fn();
       }
     }
+    Instantiation.__registerMetaData(A, [C, B]);
 
     function regardless_of_resolved_order_this_should_not_throw(a: A, b: B, c: C, d: D): void {
       expect(a.c).toBe(a.b.c);
@@ -2077,6 +2085,7 @@ describe('Instantiation', () => {
 
       constructor(public readonly a: A) {}
     }
+    Instantiation.__registerMetaData(B, [A]);
 
     Instantiation.register(A, {
       useClass: class Mock {
@@ -2101,6 +2110,7 @@ describe('Instantiation', () => {
 
       constructor(public readonly a: A) {}
     }
+    Instantiation.__registerMetaData(B, [A]);
 
     Instantiation.register(A, {
       useClass: class Mock {
@@ -2125,6 +2135,7 @@ describe('Instantiation', () => {
 
       constructor(public a: A) {}
     }
+    Instantiation.__registerMetaData(B, [A]);
 
     Instantiation.register(A, {
       useClass: class Mock {
@@ -2142,18 +2153,24 @@ describe('Instantiation', () => {
     class A {
       constructor(public a: A) {}
     }
+    Instantiation.__registerMetaData(A, [A]);
+
     expect(() => Instantiation.resolve(A)).toThrow();
 
     @Scoped()
     class B {
       constructor(public b: B) {}
     }
+    Instantiation.__registerMetaData(B, [B]);
+
     expect(() => Instantiation.resolve(B)).toThrow();
 
     @Transient()
     class C {
       constructor(public c: C) {}
     }
+    Instantiation.__registerMetaData(C, [C]);
+
     expect(() => Instantiation.resolve(C)).toThrow();
   });
 
@@ -2183,6 +2200,7 @@ describe('Instantiation', () => {
         // Empty
       }
     }
+    Instantiation.__registerMetaData(A, [X]);
 
     expect(() => Instantiation.resolve(A)).toThrow();
   });
@@ -2202,5 +2220,32 @@ describe('Instantiation', () => {
     });
 
     expect(() => Instantiation.resolve(A)).toThrowError('The service lacks a lifetime');
+  });
+
+  // Have this at the bottom since there's not reset of __setCustomLookUp
+  it('emitDecoratorMetadata should work', () => {
+    // @ts-ignore
+    require('reflect-metadata');
+
+    Instantiation.__setCustomLookUp((token) => {
+      // @ts-ignore
+      return Reflect.getMetadata('design:paramtypes', token) ?? [];
+    });
+
+    @Singleton()
+    class A {
+      public data = 'og';
+    }
+
+    @Singleton()
+    class B {
+      public data = 'og';
+
+      constructor(public readonly a: A) {}
+    }
+
+    const b = Instantiation.resolve(B);
+
+    expect(b.a).toBeInstanceOf(A);
   });
 });
