@@ -11,7 +11,6 @@
     "emitter.ts",
     "safe_json_parse.ts",
     "timer.ts",
-    "universal_empty_constants.ts",
     "vec_2.ts",
     "vec_3.ts",
     "mod.ts",
