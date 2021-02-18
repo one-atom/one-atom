@@ -28,9 +28,9 @@ export class ApplicationState<T extends object> {
     };
   }
 
-  public write(currentState: MutationFn<T>): void {
+  public write(currentState: Partial<T> | MutationFn<T>): void {
     try {
-      const newState = currentState(this.data);
+      const newState = currentState instanceof Function ? currentState(this.data) : currentState;
 
       const changeSet = this.data.insert(newState);
       this.dispatch(changeSet);
@@ -50,6 +50,8 @@ export class ApplicationState<T extends object> {
 
 export function createApplicationState<T extends object>(initialState: T): ApplicationState<T> {
   const applicationState = new ApplicationState<T>(initialState);
+
+  // todo, add to window for later debug purposes
 
   return applicationState;
 }

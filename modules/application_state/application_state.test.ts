@@ -38,10 +38,10 @@ test('asserts that calling write mutates the state', () => {
     }
   `);
 
-  state.write(() => ({
+  state.write({
     name: 'ezra',
     age: 22,
-  }));
+  });
   expect(state.read()).toMatchInlineSnapshot(`
     Object {
       "age": 22,
@@ -55,9 +55,9 @@ test('asserts that subscription is working', () => {
   const fn = jest.fn();
   const disposer = state.subscribe(fn);
 
-  state.write(() => ({
+  state.write({
     name: 'kyle',
-  }));
+  });
   disposer();
   state.write(() => ({
     name: 'kyle',
@@ -75,9 +75,9 @@ test('asserts that changeSet works', () => {
     name: 'kyle',
   }));
   disposer();
-  state.write(() => ({
+  state.write({
     name: 'kyle',
-  }));
+  });
 
   expect(fn).toHaveBeenCalledTimes(1);
 });

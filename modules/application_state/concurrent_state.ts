@@ -84,7 +84,7 @@ export class ConcurrentState<T extends object> {
     return this;
   }
 
-  public unsafeWrite(currentState: MutationFn<T>): void {
+  public unsafeWrite(currentState: Partial<T> | MutationFn<T>): void {
     this.state.unsafeWrite(currentState);
   }
 
@@ -122,6 +122,8 @@ export class ConcurrentState<T extends object> {
 
 export function createConcurrentState<T extends object>(initialState?: T): ConcurrentState<T> {
   const concurrentState = new ConcurrentState<T>(initialState);
+
+  // todo, add to window for later debug purposes
 
   return concurrentState;
 }

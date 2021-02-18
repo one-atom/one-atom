@@ -45,11 +45,11 @@ export class FlowState<T extends object> {
     };
   }
 
-  public unsafeWrite(currentState: MutationFn<T>): void {
+  public unsafeWrite(currentState: Partial<T> | MutationFn<T>): void {
     if (!this.data) throw new Error('data need to first be set');
 
     try {
-      const newState = currentState(this.data);
+      const newState = currentState instanceof Function ? currentState(this.data) : currentState;
 
       const changeSet = this.data.insert(newState);
       this.error = null;
@@ -114,6 +114,8 @@ export function createFlowState<T extends object>(initialState?: T, designatedFl
     initialState,
     designatedFlowState,
   });
+
+  // todo, add to window for later debug purposes
 
   return flowState;
 }

@@ -260,6 +260,51 @@ test('asserts that concurrentState throws the catched error with initial state',
   }
 });
 
+test('asserts that a concurrentState can write (unsafely)', (done) => {
+  const concurrentState = new ConcurrentState<TypicalState>(getTypicalState());
+
+  concurrentState.suspend(fakeApi.get(), () => {
+    return {
+      age: 20,
+      userName: 'Robin',
+    };
+  });
+
+  try {
+    concurrentState.read();
+
+    throw new Error('state was accessible');
+  } catch (promise: unknown | Promise<void>) {
+    if (!(promise instanceof Promise)) {
+      throw new Error('state was not a promise');
+    }
+
+    promise.then(() => {
+      concurrentState.unsafeWrite({
+        age: 22,
+      });
+
+      expect(concurrentState.read()).toEqual({
+        age: 22,
+        userName: 'Robin',
+      });
+
+      concurrentState.unsafeWrite((data) => ({
+        age: data.extract().age + 1,
+      }));
+
+      expect(concurrentState.read()).toEqual({
+        age: 23,
+        userName: 'Robin',
+      });
+
+      done();
+    });
+
+    jest.runAllTimers();
+  }
+});
+
 test('asserts that React suspense works', async () => {
   const concurrentState = new ConcurrentState<TypicalState>();
 

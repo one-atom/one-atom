@@ -189,9 +189,9 @@ test('asserts that calling write mutates the state', () => {
     }
   `);
 
-  state.unsafeWrite(() => ({
+  state.unsafeWrite({
     age: 28,
-  }));
+  });
   expect(state.peekState()).toMatchInlineSnapshot(`
     Object {
       "age": 28,
@@ -214,9 +214,9 @@ test('asserts that calling write mutates the state', () => {
 test('asserts that calling write mutates the state with initial state', () => {
   const state = createFlowState(getTypicalState());
 
-  state.unsafeWrite(() => ({
+  state.unsafeWrite({
     name: 'kyle',
-  }));
+  });
   expect(state.peekState()).toMatchInlineSnapshot(`
     Object {
       "age": 25,
@@ -234,10 +234,10 @@ test('asserts that calling write mutates the state with initial state', () => {
     }
   `);
 
-  state.unsafeWrite(() => ({
+  state.unsafeWrite({
     name: 'ezra',
     age: 22,
-  }));
+  });
   expect(state.peekState()).toMatchInlineSnapshot(`
     Object {
       "age": 22,
@@ -252,9 +252,9 @@ test('asserts that subscription is working', () => {
   const fn = jest.fn();
   const disposer = state.subscribe(fn);
 
-  state.unsafeWrite(() => ({
+  state.unsafeWrite({
     name: 'kyle',
-  }));
+  });
   disposer();
   state.unsafeWrite(() => ({
     name: 'kyle',
@@ -272,9 +272,9 @@ test('asserts that subscription is working with initial state', () => {
     name: 'kyle',
   }));
   disposer();
-  state.unsafeWrite(() => ({
+  state.unsafeWrite({
     name: 'kyle',
-  }));
+  });
 
   expect(fn).toHaveBeenCalledTimes(1);
 });
