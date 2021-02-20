@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
+import './_debug_hook';
 import { Flow, FlowState } from './flow_state';
 import { MutationFn } from './_data_struct';
 
@@ -13,7 +14,9 @@ export class ConcurrentState<T extends object> {
   private fallback: ((error: unknown) => Promise<T | Error>) | null = null;
 
   constructor(initialState?: T) {
-    // todo, add to window for later debug purposes
+    if (globalThis['__one_atom_debug_ref__']) {
+      globalThis['__one_atom_debug_ref__'].add(this);
+    }
 
     this.state = new FlowState({
       initialState,

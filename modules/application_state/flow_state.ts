@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/ban-types */
-
+import './_debug_hook';
 import { DataStruct, MutationFn } from './_data_struct';
 
 type Disposer = () => void;
@@ -28,6 +28,10 @@ export class FlowState<T extends object> {
   private readonly hooks: Map<symbol, HookFn<T>> = new Map();
 
   constructor(spec: Specification<T> = {}) {
+    if (globalThis['__one_atom_debug_ref__']) {
+      globalThis['__one_atom_debug_ref__'].add(this);
+    }
+
     const { initialState, designatedFlowState } = spec;
 
     if (designatedFlowState !== undefined) this.flowState = designatedFlowState;

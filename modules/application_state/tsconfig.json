@@ -7,6 +7,7 @@
   },
   "files": [
     "_data_struct.ts",
+    "_debug_hook.ts",
     "application_state.ts",
     "concurrent_state.ts",
     "flow_state.ts",

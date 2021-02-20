@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
+import './_debug_hook';
 import { useEffect, useState } from 'react';
 import { ApplicationState } from './application_state';
 import { ConcurrentState } from './concurrent_state';
@@ -14,7 +15,9 @@ export function useObservable<T extends object>(
   const [, forceUpdate] = useState([]);
 
   useEffect(() => {
-    return state.subscribe((changeSet) => {
+    globalThis['__one_atom_debug_hook__'].emit('add', state);
+
+    const disposer = state.subscribe((changeSet) => {
       if (triggers && changeSet) {
         const shouldUpdate = triggers.find((trigger) => {
           return changeSet.has(trigger);
@@ -29,6 +32,11 @@ export function useObservable<T extends object>(
 
       forceUpdate([]);
     });
+
+    return () => {
+      globalThis['__one_atom_debug_hook__'].emit('remove', state);
+      disposer();
+    };
   }, [state, triggers]);
 
   return state.read();

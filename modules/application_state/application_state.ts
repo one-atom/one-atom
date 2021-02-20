@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/ban-types */
+import './_debug_hook';
 import { MutationFn, DataStruct } from './_data_struct';
 
 type Disposer = () => void;
@@ -11,7 +12,9 @@ export class ApplicationState<T extends object> {
   private readonly hooks: Map<symbol, HookFn<T>> = new Map();
 
   constructor(initialState: T) {
-    // todo, add to window for later debug purposes
+    if (globalThis['__one_atom_debug_ref__']) {
+      globalThis['__one_atom_debug_ref__'].add(this);
+    }
 
     if (typeof initialState !== 'object') {
       throw new Error('a state can only be represented as an object literal');
