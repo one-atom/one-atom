@@ -13,6 +13,8 @@ export class ConcurrentState<T extends object> {
   private fallback: ((error: unknown) => Promise<T | Error>) | null = null;
 
   constructor(initialState?: T) {
+    // todo, add to window for later debug purposes
+
     this.state = new FlowState({
       initialState,
       designatedFlowState: Flow.UNSET,
@@ -118,12 +120,4 @@ export class ConcurrentState<T extends object> {
 
     return this.suspender;
   }
-}
-
-export function createConcurrentState<T extends object>(initialState?: T): ConcurrentState<T> {
-  const concurrentState = new ConcurrentState<T>(initialState);
-
-  // todo, add to window for later debug purposes
-
-  return concurrentState;
 }

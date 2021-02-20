@@ -11,6 +11,8 @@ export class ApplicationState<T extends object> {
   private readonly hooks: Map<symbol, HookFn<T>> = new Map();
 
   constructor(initialState: T) {
+    // todo, add to window for later debug purposes
+
     if (typeof initialState !== 'object') {
       throw new Error('a state can only be represented as an object literal');
     }
@@ -46,12 +48,4 @@ export class ApplicationState<T extends object> {
   private dispatch(changeSet?: Set<keyof T>): void {
     this.hooks.forEach((hook) => hook(changeSet));
   }
-}
-
-export function createApplicationState<T extends object>(initialState: T): ApplicationState<T> {
-  const applicationState = new ApplicationState<T>(initialState);
-
-  // todo, add to window for later debug purposes
-
-  return applicationState;
 }

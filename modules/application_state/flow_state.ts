@@ -27,7 +27,9 @@ export class FlowState<T extends object> {
   private data: DataStruct<T> | null = null;
   private readonly hooks: Map<symbol, HookFn<T>> = new Map();
 
-  constructor({ initialState, designatedFlowState }: Specification<T>) {
+  constructor(spec: Specification<T> = {}) {
+    const { initialState, designatedFlowState } = spec;
+
     if (designatedFlowState !== undefined) this.flowState = designatedFlowState;
 
     if (initialState) {

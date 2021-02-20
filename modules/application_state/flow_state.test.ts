@@ -1,4 +1,4 @@
-import { createFlowState, Flow } from './flow_state';
+import { FlowState, Flow } from './flow_state';
 
 function getTypicalState(): { name: string; age: number } {
   return {
@@ -8,7 +8,7 @@ function getTypicalState(): { name: string; age: number } {
 }
 
 test('asserts that flow rules are followed', () => {
-  const state = createFlowState();
+  const state = new FlowState();
   state.overwriteData(getTypicalState());
 
   // state is not explicitly accessible and should not have a value
@@ -33,7 +33,7 @@ test('asserts that flow rules are followed', () => {
 });
 
 test('asserts that flow rules are followed with initial state', () => {
-  const state = createFlowState();
+  const state = new FlowState();
   state.overwriteData(getTypicalState());
 
   // state is not explicitly accessible and should not have a value
@@ -58,7 +58,9 @@ test('asserts that flow rules are followed with initial state', () => {
 });
 
 test('asserts that flow rules are followed with initial state with initial state', () => {
-  const state = createFlowState(getTypicalState());
+  const state = new FlowState({
+    initialState: getTypicalState(),
+  });
 
   // state is not explicitly accessible and should not have a value
   expect(state.peekState()).toMatchInlineSnapshot('undefined');
@@ -82,7 +84,9 @@ test('asserts that flow rules are followed with initial state with initial state
 });
 
 test('asserts flow get initialized with designatedFlowState', () => {
-  const state = createFlowState(undefined, Flow.ACCESSIBLE);
+  const state = new FlowState({
+    designatedFlowState: Flow.ACCESSIBLE,
+  });
   state.overwriteData(getTypicalState());
 
   expect(state.peekState()).toMatchInlineSnapshot(`
@@ -94,7 +98,10 @@ test('asserts flow get initialized with designatedFlowState', () => {
 });
 
 test('asserts flow get initialized with designatedFlowState with initial state', () => {
-  const state = createFlowState(getTypicalState(), Flow.ACCESSIBLE);
+  const state = new FlowState({
+    initialState: getTypicalState(),
+    designatedFlowState: Flow.ACCESSIBLE,
+  });
 
   expect(state.peekState()).toMatchInlineSnapshot(`
     Object {
@@ -105,7 +112,7 @@ test('asserts flow get initialized with designatedFlowState with initial state',
 });
 
 test('asserts that calling write mutates the state', () => {
-  const state = createFlowState(undefined);
+  const state = new FlowState();
   state.overwriteData(getTypicalState());
 
   state.unsafeWrite(() => ({
@@ -141,7 +148,9 @@ test('asserts that calling write mutates the state', () => {
 });
 
 test('asserts that calling write mutates the state with initial state', () => {
-  const state = createFlowState(getTypicalState());
+  const state = new FlowState({
+    initialState: getTypicalState(),
+  });
 
   state.unsafeWrite(() => ({
     name: 'kyle',
@@ -176,7 +185,7 @@ test('asserts that calling write mutates the state with initial state', () => {
 });
 
 test('asserts that calling write mutates the state', () => {
-  const state = createFlowState();
+  const state = new FlowState();
   state.overwriteData(getTypicalState());
 
   state.unsafeWrite(() => ({
@@ -212,7 +221,9 @@ test('asserts that calling write mutates the state', () => {
 });
 
 test('asserts that calling write mutates the state with initial state', () => {
-  const state = createFlowState(getTypicalState());
+  const state = new FlowState({
+    initialState: getTypicalState(),
+  });
 
   state.unsafeWrite({
     name: 'kyle',
@@ -247,7 +258,7 @@ test('asserts that calling write mutates the state with initial state', () => {
 });
 
 test('asserts that subscription is working', () => {
-  const state = createFlowState();
+  const state = new FlowState();
   state.overwriteData(getTypicalState());
   const fn = jest.fn();
   const disposer = state.subscribe(fn);
@@ -264,7 +275,9 @@ test('asserts that subscription is working', () => {
 });
 
 test('asserts that subscription is working with initial state', () => {
-  const state = createFlowState(getTypicalState());
+  const state = new FlowState({
+    initialState: getTypicalState(),
+  });
   const fn = jest.fn();
   const disposer = state.subscribe(fn);
 

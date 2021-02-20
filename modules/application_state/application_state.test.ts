@@ -1,4 +1,4 @@
-import { createApplicationState } from './application_state';
+import { ApplicationState } from './application_state';
 
 function getTypicalState(): { name: string; age: number } {
   return {
@@ -8,7 +8,7 @@ function getTypicalState(): { name: string; age: number } {
 }
 
 test('asserts that state is initialized', () => {
-  const state = createApplicationState(getTypicalState());
+  const state = new ApplicationState(getTypicalState());
   expect(state.read()).toMatchInlineSnapshot(`
     Object {
       "age": 25,
@@ -18,7 +18,7 @@ test('asserts that state is initialized', () => {
 });
 
 test('asserts that calling write mutates the state', () => {
-  const state = createApplicationState(getTypicalState());
+  const state = new ApplicationState(getTypicalState());
 
   state.write(() => ({ name: 'kyle' }));
   expect(state.read()).toMatchInlineSnapshot(`
@@ -51,7 +51,7 @@ test('asserts that calling write mutates the state', () => {
 });
 
 test('asserts that subscription is working', () => {
-  const state = createApplicationState(getTypicalState());
+  const state = new ApplicationState(getTypicalState());
   const fn = jest.fn();
   const disposer = state.subscribe(fn);
 
@@ -67,7 +67,7 @@ test('asserts that subscription is working', () => {
 });
 
 test('asserts that changeSet works', () => {
-  const state = createApplicationState(getTypicalState());
+  const state = new ApplicationState(getTypicalState());
   const fn = jest.fn();
   const disposer = state.subscribe(fn);
 
