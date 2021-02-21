@@ -35,7 +35,7 @@ interface SanitizedStyleProps {
 }
 
 type StringOrNumberOrNull = string | number | null;
-type MaxMin = [StringOrNumberOrNull, number?];
+type MaxMin = [StringOrNumberOrNull, StringOrNumberOrNull?];
 type DirectionStrUnion = 'row' | 'column';
 type ClipStrUnion = 'y' | 'x' | 'xy' | 'hide';
 type BoxSizingUnion = 'outer' | 'inner';
@@ -70,13 +70,13 @@ const elements = {
         const [max, min] = styleWidth as MaxMin;
         let builder = 'width: 100%;';
 
-        if (max !== null) {
+        if (max != null) {
           builder += `\nmax-width: ${max}${typeof max === 'string' ? '' : 'px'};`;
         } else {
           builder = '';
         }
 
-        if (min !== undefined) {
+        if (min != null) {
           builder += `\nmin-width: ${min}${typeof max === 'string' ? '' : 'px'};`;
         }
 
@@ -99,13 +99,13 @@ const elements = {
         const [max, min] = styleHeight as MaxMin;
         let builder = 'height: 100%;';
 
-        if (max !== null) {
+        if (max != null) {
           builder += `\nmax-height: ${max}${typeof max === 'string' ? '' : 'px'};`;
         } else {
           builder = '';
         }
 
-        if (min !== undefined) {
+        if (min != null) {
           builder += `\nmin-height: ${min}${typeof max === 'string' ? '' : 'px'};`;
         }
 
