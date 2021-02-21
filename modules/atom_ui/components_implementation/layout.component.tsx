@@ -71,13 +71,13 @@ const elements = {
         let builder = 'width: 100%;';
 
         if (max !== null) {
-          builder += `\nmax-width: ${max}px;`;
+          builder += `\nmax-width: ${max}${typeof max === 'string' ? '' : 'px'};`;
         } else {
           builder = '';
         }
 
         if (min !== undefined) {
-          builder += `\nmin-width: ${min}px;`;
+          builder += `\nmin-width: ${min}${typeof max === 'string' ? '' : 'px'};`;
         }
 
         return builder;
@@ -100,13 +100,13 @@ const elements = {
         let builder = 'height: 100%;';
 
         if (max !== null) {
-          builder += `\nmax-height: ${max}px;`;
+          builder += `\nmax-height: ${max}${typeof max === 'string' ? '' : 'px'};`;
         } else {
           builder = '';
         }
 
         if (min !== undefined) {
-          builder += `\nmin-height: ${min}px;`;
+          builder += `\nmin-height: ${min}${typeof max === 'string' ? '' : 'px'};`;
         }
 
         return builder;
