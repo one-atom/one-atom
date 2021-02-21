@@ -77,7 +77,7 @@ const elements = {
         }
 
         if (min != null) {
-          builder += `\nmin-width: ${min}${typeof max === 'string' ? '' : 'px'};`;
+          builder += `\nmin-width: ${min}${typeof min === 'string' ? '' : 'px'};`;
         }
 
         return builder;
@@ -106,7 +106,7 @@ const elements = {
         }
 
         if (min != null) {
-          builder += `\nmin-height: ${min}${typeof max === 'string' ? '' : 'px'};`;
+          builder += `\nmin-height: ${min}${typeof min === 'string' ? '' : 'px'};`;
         }
 
         return builder;
