@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import './_debug_hook';
 import { useEffect, useState } from 'react';
-import { ApplicationState } from './presentation';
+import { Presentation } from './presentation';
 import { ConcurrentPresentation } from './concurrent_presentation';
 import { FlowPresentation, CurrStateTuple } from './flow_presentation';
 
 export function usePresentation<T extends object>(state: FlowPresentation<T>, deps?: ReadonlyArray<keyof T>): CurrStateTuple<T>;
 export function usePresentation<T extends object>(state: ConcurrentPresentation<T>, deps?: ReadonlyArray<keyof T>): Readonly<T>;
-export function usePresentation<T extends object>(state: ApplicationState<T>, deps?: ReadonlyArray<keyof T>): Readonly<T>;
+export function usePresentation<T extends object>(state: Presentation<T>, deps?: ReadonlyArray<keyof T>): Readonly<T>;
 export function usePresentation<T extends object>(
-  state: ApplicationState<T> | ConcurrentPresentation<T> | FlowPresentation<T>,
+  state: Presentation<T> | ConcurrentPresentation<T> | FlowPresentation<T>,
   triggers?: ReadonlyArray<keyof T>,
 ): CurrStateTuple<T> | Readonly<T> {
   const [, forceUpdate] = useState([]);

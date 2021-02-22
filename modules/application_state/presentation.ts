@@ -7,7 +7,7 @@ type Disposer = () => void;
 
 type HookFn<T> = (changeSet?: Set<keyof T>) => void;
 
-export class ApplicationState<T extends object> {
+export class Presentation<T extends object> {
   private readonly data: DataStruct<T>;
   private readonly hooks: Map<symbol, HookFn<T>> = new Map();
 

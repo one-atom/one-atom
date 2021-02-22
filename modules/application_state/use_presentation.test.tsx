@@ -3,23 +3,23 @@ import { render } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import { Flow, FlowPresentation } from './flow_presentation';
 import { ConcurrentPresentation } from './concurrent_presentation';
-import { ApplicationState } from './presentation';
+import { Presentation } from './presentation';
 import { usePresentation } from './use_presentation';
 
-describe('observable with applicationState', () => {
+describe('observable with Presentation', () => {
   type TestState = {
     is: boolean;
     opt?: string;
   };
 
-  const FlowComp: FC<{ providedState: ApplicationState<TestState> }> = ({ providedState }) => {
+  const FlowComp: FC<{ providedState: Presentation<TestState> }> = ({ providedState }) => {
     const presentation = usePresentation(providedState);
 
     return <p>{presentation.is ? 'state is true' : 'state is false'}</p>;
   };
 
-  test('asserts that components using useApplicationState rerenders after write', () => {
-    const presentation = new ApplicationState<TestState>({ is: false });
+  test('asserts that components using usePresentation rerenders after write', () => {
+    const presentation = new Presentation<TestState>({ is: false });
     const { getByText } = render(<FlowComp providedState={presentation} />);
 
     getByText(/state is false/i);
@@ -39,18 +39,18 @@ describe('observable with applicationState', () => {
     getByText(/state is false/i);
   });
 
-  test('asserts that components using useApplicationState only rerender when trigger matches changes', () => {
-    const presentation = new ApplicationState<TestState>({ is: false });
+  test('asserts that components using usePresentation only rerender when trigger matches changes', () => {
+    const presentation = new Presentation<TestState>({ is: false });
     let renders = 0;
 
-    const Child: FC<{ providedState: ApplicationState<TestState> }> = ({ providedState }) => {
+    const Child: FC<{ providedState: Presentation<TestState> }> = ({ providedState }) => {
       const state = usePresentation(providedState, ['is']);
       renders++;
 
       return <p>{state.is ? 'state is true' : 'state is false'}</p>;
     };
 
-    const Parent: FC<{ providedState: ApplicationState<TestState> }> = ({ providedState }) => {
+    const Parent: FC<{ providedState: Presentation<TestState> }> = ({ providedState }) => {
       usePresentation(providedState, []);
       renders++;
 
@@ -77,7 +77,7 @@ describe('observable with applicationState', () => {
   });
 });
 
-describe('observable with flowState', () => {
+describe('observable with FlowPresentation', () => {
   type TestState = {
     is: boolean;
   };
@@ -137,7 +137,7 @@ describe('observable with flowState', () => {
   });
 });
 
-describe('observable with concurrentState', () => {
+describe('observable with ConcurrentPresentation', () => {
   type TypicalState = {
     name: string;
     age: number;
@@ -201,7 +201,7 @@ describe('observable with concurrentState', () => {
     await findByText(/Jocke/i);
   });
 
-  test('asserts that components using useConcurrentState rerenders after write', async () => {
+  test('asserts that components using usePresentation rerenders after write', async () => {
     const presentation = new ConcurrentPresentation(getTypicalState());
     const { findByText, getByText } = render(<ConcurrentParent state={presentation} />);
 
@@ -231,7 +231,7 @@ describe('observable with concurrentState', () => {
     await findByText(/Jocke/i);
   });
 
-  test('asserts that components using useConcurrentState only rerender when trigger matches changes', async () => {
+  test('asserts that components using usePresentation only rerender when trigger matches changes', async () => {
     const presentation = new ConcurrentPresentation(getTypicalState());
     let renders = 0;
 
