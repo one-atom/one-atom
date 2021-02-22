@@ -1,25 +1,25 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import './_debug_hook';
-import { Flow, FlowState } from './flow_state';
+import { Flow, FlowPresentation } from './flow_presentation';
 import { MutationFn } from './_data_struct';
 
 type Disposer = () => void;
 
 type HookFn<T> = (changeSet?: Set<keyof T>) => void;
 
-export class ConcurrentState<T extends object> {
-  private readonly state: FlowState<T>;
+export class ConcurrentPresentation<T extends object> {
+  private readonly state: FlowPresentation<T>;
   private suspender: Promise<void> | null = null;
   private error: unknown | null = null;
   private fallback: ((error: unknown) => Promise<T | Error>) | null = null;
 
-  constructor(initialState?: T) {
+  constructor(initialValue?: T) {
     if (globalThis['__one_atom_debug_ref__']) {
       globalThis['__one_atom_debug_ref__'].add(this);
     }
 
-    this.state = new FlowState({
-      initialState,
+    this.state = new FlowPresentation({
+      initialValue,
       designatedFlowState: Flow.UNSET,
     });
   }
@@ -42,9 +42,9 @@ export class ConcurrentState<T extends object> {
     this.fallback = fallback;
   }
 
-  public suspend<K>(promise: Promise<T>): ConcurrentState<T>;
-  public suspend<K>(promise: Promise<K>, parseFn: (data: K) => T): ConcurrentState<T>;
-  public suspend<K>(promise: Promise<K>, parseFn?: (data: K) => T): ConcurrentState<T> {
+  public suspend<K>(promise: Promise<T>): ConcurrentPresentation<T>;
+  public suspend<K>(promise: Promise<K>, parseFn: (data: K) => T): ConcurrentPresentation<T>;
+  public suspend<K>(promise: Promise<K>, parseFn?: (data: K) => T): ConcurrentPresentation<T> {
     this.createPromise();
     this.error = null;
     this.state.flowState = Flow.PENDING;

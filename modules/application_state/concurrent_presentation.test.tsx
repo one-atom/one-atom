@@ -1,5 +1,5 @@
 import { FC, Suspense, Component } from 'react';
-import { ConcurrentState } from './concurrent_state';
+import { ConcurrentPresentation } from './concurrent_presentation';
 import { render } from '@testing-library/react';
 
 jest.useFakeTimers();
@@ -74,13 +74,13 @@ class ErrorBoundary extends Component<
   }
 }
 
-const ConcurrentChild: FC<{ state: ConcurrentState<TypicalState> }> = ({ state }) => {
+const ConcurrentChild: FC<{ state: ConcurrentPresentation<TypicalState> }> = ({ state }) => {
   const data = state.read();
 
   return <p>{data.userName}</p>;
 };
 
-const ConcurrentParent: FC<{ state: ConcurrentState<TypicalState> }> = ({ state }) => {
+const ConcurrentParent: FC<{ state: ConcurrentPresentation<TypicalState> }> = ({ state }) => {
   return (
     <Suspense fallback="loading">
       <ConcurrentChild state={state} />
@@ -89,47 +89,47 @@ const ConcurrentParent: FC<{ state: ConcurrentState<TypicalState> }> = ({ state 
 };
 
 test('asserts that concurrentState throws a promise when flow is equal to Unset', () => {
-  const concurrentState = new ConcurrentState();
+  const presentation = new ConcurrentPresentation();
 
-  expect(() => concurrentState.read()).toThrowError(Promise);
+  expect(() => presentation.read()).toThrowError(Promise);
 });
 
 test('asserts that concurrentState throws a promise when flow is equal to Unset with initial state', () => {
-  const concurrentState = new ConcurrentState(getTypicalState());
+  const presentation = new ConcurrentPresentation(getTypicalState());
 
-  expect(() => concurrentState.read()).toThrowError(Promise);
+  expect(() => presentation.read()).toThrowError(Promise);
 });
 
 test('asserts that concurrentState throws a promise when flow is equal to Pending', () => {
-  const concurrentState = new ConcurrentState();
+  const presentation = new ConcurrentPresentation();
 
-  concurrentState.suspend(fakeApi.get(), (response) => {
+  presentation.suspend(fakeApi.get(), (response) => {
     return {
       ...response,
       age: 20,
     };
   });
 
-  expect(() => concurrentState.read()).toThrowError(Promise);
+  expect(() => presentation.read()).toThrowError(Promise);
 });
 
 test('asserts that concurrentState throws a promise when flow is equal to Pending with initial state', () => {
-  const concurrentState = new ConcurrentState(getTypicalState());
+  const presentation = new ConcurrentPresentation(getTypicalState());
 
-  concurrentState.suspend(fakeApi.get(), (response) => {
+  presentation.suspend(fakeApi.get(), (response) => {
     return {
       ...response,
       age: 20,
     };
   });
 
-  expect(() => concurrentState.read()).toThrowError(Promise);
+  expect(() => presentation.read()).toThrowError(Promise);
 });
 
 test('asserts that a concurrentState changes state to accessible', (done) => {
-  const concurrentState = new ConcurrentState<TypicalState>();
+  const presentation = new ConcurrentPresentation<TypicalState>();
 
-  concurrentState.suspend(fakeApi.get(), () => {
+  presentation.suspend(fakeApi.get(), () => {
     return {
       age: 20,
       userName: 'Robin',
@@ -137,7 +137,7 @@ test('asserts that a concurrentState changes state to accessible', (done) => {
   });
 
   try {
-    concurrentState.read();
+    presentation.read();
 
     throw new Error('state was accessible');
   } catch (promise: unknown | Promise<void>) {
@@ -146,7 +146,7 @@ test('asserts that a concurrentState changes state to accessible', (done) => {
     }
 
     promise.then(() => {
-      expect(concurrentState.read()).toEqual({
+      expect(presentation.read()).toEqual({
         age: 20,
         userName: 'Robin',
       });
@@ -158,9 +158,9 @@ test('asserts that a concurrentState changes state to accessible', (done) => {
 });
 
 test('asserts that a concurrentState changes state to accessible with initial state', (done) => {
-  const concurrentState = new ConcurrentState<TypicalState>(getTypicalState());
+  const presentation = new ConcurrentPresentation<TypicalState>(getTypicalState());
 
-  concurrentState.suspend(fakeApi.get(), () => {
+  presentation.suspend(fakeApi.get(), () => {
     return {
       age: 20,
       userName: 'Robin',
@@ -168,7 +168,7 @@ test('asserts that a concurrentState changes state to accessible with initial st
   });
 
   try {
-    concurrentState.read();
+    presentation.read();
 
     throw new Error('state was accessible');
   } catch (promise: unknown | Promise<void>) {
@@ -177,7 +177,7 @@ test('asserts that a concurrentState changes state to accessible with initial st
     }
 
     promise.then(() => {
-      expect(concurrentState.read()).toEqual({
+      expect(presentation.read()).toEqual({
         age: 20,
         userName: 'Robin',
       });
@@ -189,9 +189,9 @@ test('asserts that a concurrentState changes state to accessible with initial st
 });
 
 test('asserts that concurrentState throws the catched error', (done) => {
-  const concurrentState = new ConcurrentState<TypicalState>();
+  const presentation = new ConcurrentPresentation<TypicalState>();
 
-  concurrentState.suspend(fakeApi.getError(), () => {
+  presentation.suspend(fakeApi.getError(), () => {
     return {
       age: 20,
       userName: 'Robin',
@@ -199,7 +199,7 @@ test('asserts that concurrentState throws the catched error', (done) => {
   });
 
   try {
-    concurrentState.read();
+    presentation.read();
 
     throw new Error('state was accessible');
   } catch (promise: unknown | Promise<void>) {
@@ -211,7 +211,7 @@ test('asserts that concurrentState throws the catched error', (done) => {
       let thrownError;
 
       try {
-        concurrentState.read();
+        presentation.read();
       } catch (error: unknown) {
         thrownError = error;
       }
@@ -225,9 +225,9 @@ test('asserts that concurrentState throws the catched error', (done) => {
 });
 
 test('asserts that concurrentState throws the catched error with initial state', (done) => {
-  const concurrentState = new ConcurrentState<TypicalState>(getTypicalState());
+  const presentation = new ConcurrentPresentation<TypicalState>(getTypicalState());
 
-  concurrentState.suspend(fakeApi.getError(), () => {
+  presentation.suspend(fakeApi.getError(), () => {
     return {
       age: 20,
       userName: 'Robin',
@@ -235,7 +235,7 @@ test('asserts that concurrentState throws the catched error with initial state',
   });
 
   try {
-    concurrentState.read();
+    presentation.read();
 
     throw new Error('state was accessible');
   } catch (promise: unknown | Promise<void>) {
@@ -247,7 +247,7 @@ test('asserts that concurrentState throws the catched error with initial state',
       let thrownError;
 
       try {
-        concurrentState.read();
+        presentation.read();
       } catch (error: unknown) {
         thrownError = error;
       }
@@ -261,9 +261,9 @@ test('asserts that concurrentState throws the catched error with initial state',
 });
 
 test('asserts that a concurrentState can write (unsafely)', (done) => {
-  const concurrentState = new ConcurrentState<TypicalState>(getTypicalState());
+  const presentation = new ConcurrentPresentation<TypicalState>(getTypicalState());
 
-  concurrentState.suspend(fakeApi.get(), () => {
+  presentation.suspend(fakeApi.get(), () => {
     return {
       age: 20,
       userName: 'Robin',
@@ -271,7 +271,7 @@ test('asserts that a concurrentState can write (unsafely)', (done) => {
   });
 
   try {
-    concurrentState.read();
+    presentation.read();
 
     throw new Error('state was accessible');
   } catch (promise: unknown | Promise<void>) {
@@ -280,20 +280,20 @@ test('asserts that a concurrentState can write (unsafely)', (done) => {
     }
 
     promise.then(() => {
-      concurrentState.unsafeWrite({
+      presentation.unsafeWrite({
         age: 22,
       });
 
-      expect(concurrentState.read()).toEqual({
+      expect(presentation.read()).toEqual({
         age: 22,
         userName: 'Robin',
       });
 
-      concurrentState.unsafeWrite((data) => ({
+      presentation.unsafeWrite((data) => ({
         age: data.extract().age + 1,
       }));
 
-      expect(concurrentState.read()).toEqual({
+      expect(presentation.read()).toEqual({
         age: 23,
         userName: 'Robin',
       });
@@ -306,12 +306,12 @@ test('asserts that a concurrentState can write (unsafely)', (done) => {
 });
 
 test('asserts that React suspense works', async () => {
-  const concurrentState = new ConcurrentState<TypicalState>();
+  const presentation = new ConcurrentPresentation<TypicalState>();
 
-  const { findByText, getByText } = render(<ConcurrentParent state={concurrentState} />);
+  const { findByText, getByText } = render(<ConcurrentParent state={presentation} />);
   expect(getByText(/loading/i)).toBeTruthy();
 
-  concurrentState.suspend(fakeApi.get(), (resolve) => {
+  presentation.suspend(fakeApi.get(), (resolve) => {
     return {
       ...resolve,
       age: 20,
@@ -322,12 +322,12 @@ test('asserts that React suspense works', async () => {
 });
 
 test('asserts that React suspense works with initial state', async () => {
-  const concurrentState = new ConcurrentState(getTypicalState());
+  const presentation = new ConcurrentPresentation(getTypicalState());
 
-  const { findByText, getByText } = render(<ConcurrentParent state={concurrentState} />);
+  const { findByText, getByText } = render(<ConcurrentParent state={presentation} />);
   expect(getByText(/loading/i)).toBeTruthy();
 
-  concurrentState.suspend(fakeApi.get(), (resolve) => {
+  presentation.suspend(fakeApi.get(), (resolve) => {
     return {
       ...resolve,
       age: 20,
@@ -338,12 +338,12 @@ test('asserts that React suspense works with initial state', async () => {
 });
 
 test('asserts that gracefulDegradation works', async () => {
-  const concurrentState = new ConcurrentState<TypicalState>();
+  const presentation = new ConcurrentPresentation<TypicalState>();
 
-  const { findByText, getByText } = render(<ConcurrentParent state={concurrentState} />);
+  const { findByText, getByText } = render(<ConcurrentParent state={presentation} />);
   expect(getByText(/loading/i)).toBeTruthy();
 
-  concurrentState
+  presentation
     .suspend(fakeApi.getError(), (data) => {
       return {
         age: 20,
@@ -361,12 +361,12 @@ test('asserts that gracefulDegradation works', async () => {
 });
 
 test('asserts that gracefulDegradation works with initial state', async () => {
-  const concurrentState = new ConcurrentState(getTypicalState());
+  const presentation = new ConcurrentPresentation(getTypicalState());
 
-  const { findByText, getByText } = render(<ConcurrentParent state={concurrentState} />);
+  const { findByText, getByText } = render(<ConcurrentParent state={presentation} />);
   expect(getByText(/loading/i)).toBeTruthy();
 
-  concurrentState
+  presentation
     .suspend(fakeApi.getError(), (data) => {
       return {
         age: 20,
@@ -384,16 +384,16 @@ test('asserts that gracefulDegradation works with initial state', async () => {
 });
 
 test('asserts that gracefulDegradation works', async () => {
-  const concurrentState = new ConcurrentState<TypicalState>();
+  const presentation = new ConcurrentPresentation<TypicalState>();
 
   const { findByText, getByText } = render(
     <ErrorBoundary>
-      <ConcurrentParent state={concurrentState} />
+      <ConcurrentParent state={presentation} />
     </ErrorBoundary>,
   );
   expect(getByText(/loading/i)).toBeTruthy();
 
-  concurrentState
+  presentation
     .suspend(fakeApi.getError(), (data) => {
       return {
         age: 20,
@@ -408,16 +408,16 @@ test('asserts that gracefulDegradation works', async () => {
 });
 
 test('asserts that gracefulDegradation works with initial state', async () => {
-  const concurrentState = new ConcurrentState(getTypicalState());
+  const presentation = new ConcurrentPresentation(getTypicalState());
 
   const { findByText, getByText } = render(
     <ErrorBoundary>
-      <ConcurrentParent state={concurrentState} />
+      <ConcurrentParent state={presentation} />
     </ErrorBoundary>,
   );
   expect(getByText(/loading/i)).toBeTruthy();
 
-  concurrentState
+  presentation
     .suspend(fakeApi.getError(), (data) => {
       return {
         age: 20,

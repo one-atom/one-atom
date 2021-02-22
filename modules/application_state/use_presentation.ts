@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import './_debug_hook';
 import { useEffect, useState } from 'react';
-import { ApplicationState } from './application_state';
-import { ConcurrentState } from './concurrent_state';
-import { FlowState, CurrStateTuple } from './flow_state';
+import { ApplicationState } from './presentation';
+import { ConcurrentPresentation } from './concurrent_presentation';
+import { FlowPresentation, CurrStateTuple } from './flow_presentation';
 
-export function useObservable<T extends object>(state: FlowState<T>, deps?: ReadonlyArray<keyof T>): CurrStateTuple<T>;
-export function useObservable<T extends object>(state: ConcurrentState<T>, deps?: ReadonlyArray<keyof T>): Readonly<T>;
-export function useObservable<T extends object>(state: ApplicationState<T>, deps?: ReadonlyArray<keyof T>): Readonly<T>;
-export function useObservable<T extends object>(
-  state: ApplicationState<T> | ConcurrentState<T> | FlowState<T>,
+export function usePresentation<T extends object>(state: FlowPresentation<T>, deps?: ReadonlyArray<keyof T>): CurrStateTuple<T>;
+export function usePresentation<T extends object>(state: ConcurrentPresentation<T>, deps?: ReadonlyArray<keyof T>): Readonly<T>;
+export function usePresentation<T extends object>(state: ApplicationState<T>, deps?: ReadonlyArray<keyof T>): Readonly<T>;
+export function usePresentation<T extends object>(
+  state: ApplicationState<T> | ConcurrentPresentation<T> | FlowPresentation<T>,
   triggers?: ReadonlyArray<keyof T>,
 ): CurrStateTuple<T> | Readonly<T> {
   const [, forceUpdate] = useState([]);

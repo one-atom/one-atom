@@ -17,11 +17,11 @@ export enum Flow {
 export type CurrStateTuple<T> = [data: Readonly<T>, flow: Flow];
 
 interface Specification<T> {
-  initialState?: T;
+  initialValue?: T;
   designatedFlowState?: Flow;
 }
 
-export class FlowState<T extends object> {
+export class FlowPresentation<T extends object> {
   public error: Error | null = null;
   public flowState: Readonly<Flow> = Flow.UNSET;
   private data: DataStruct<T> | null = null;
@@ -32,12 +32,12 @@ export class FlowState<T extends object> {
       globalThis['__one_atom_debug_ref__'].add(this);
     }
 
-    const { initialState, designatedFlowState } = spec;
+    const { initialValue, designatedFlowState } = spec;
 
     if (designatedFlowState !== undefined) this.flowState = designatedFlowState;
 
-    if (initialState) {
-      this.data = new DataStruct(initialState);
+    if (initialValue) {
+      this.data = new DataStruct(initialValue);
     }
   }
 

@@ -1,10 +1,10 @@
 import { Fragment, FC, Suspense } from 'react';
 import { render } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
-import { Flow, FlowState } from './flow_state';
-import { ConcurrentState } from './concurrent_state';
-import { ApplicationState } from './application_state';
-import { useObservable } from './use_observable';
+import { Flow, FlowPresentation } from './flow_presentation';
+import { ConcurrentPresentation } from './concurrent_presentation';
+import { ApplicationState } from './presentation';
+import { usePresentation } from './use_presentation';
 
 describe('observable with applicationState', () => {
   type TestState = {
@@ -13,26 +13,26 @@ describe('observable with applicationState', () => {
   };
 
   const FlowComp: FC<{ providedState: ApplicationState<TestState> }> = ({ providedState }) => {
-    const state = useObservable(providedState);
+    const presentation = usePresentation(providedState);
 
-    return <p>{state.is ? 'state is true' : 'state is false'}</p>;
+    return <p>{presentation.is ? 'state is true' : 'state is false'}</p>;
   };
 
   test('asserts that components using useApplicationState rerenders after write', () => {
-    const state = new ApplicationState<TestState>({ is: false });
-    const { getByText } = render(<FlowComp providedState={state} />);
+    const presentation = new ApplicationState<TestState>({ is: false });
+    const { getByText } = render(<FlowComp providedState={presentation} />);
 
     getByText(/state is false/i);
 
     act(() => {
-      state.write(() => ({
+      presentation.write(() => ({
         is: true,
       }));
     });
     getByText(/state is true/i);
 
     act(() => {
-      state.write(() => ({
+      presentation.write(() => ({
         is: false,
       }));
     });
@@ -40,36 +40,36 @@ describe('observable with applicationState', () => {
   });
 
   test('asserts that components using useApplicationState only rerender when trigger matches changes', () => {
-    const state = new ApplicationState<TestState>({ is: false });
+    const presentation = new ApplicationState<TestState>({ is: false });
     let renders = 0;
 
     const Child: FC<{ providedState: ApplicationState<TestState> }> = ({ providedState }) => {
-      const state = useObservable(providedState, ['is']);
+      const state = usePresentation(providedState, ['is']);
       renders++;
 
       return <p>{state.is ? 'state is true' : 'state is false'}</p>;
     };
 
     const Parent: FC<{ providedState: ApplicationState<TestState> }> = ({ providedState }) => {
-      useObservable(providedState, []);
+      usePresentation(providedState, []);
       renders++;
 
       return <Child providedState={providedState} />;
     };
 
-    const { getByText } = render(<Parent providedState={state} />);
+    const { getByText } = render(<Parent providedState={presentation} />);
 
     getByText(/state is false/i);
 
     act(() => {
-      state.write(() => ({
+      presentation.write(() => ({
         is: true,
       }));
     });
     expect(renders).toEqual(3);
 
     act(() => {
-      state.write(() => ({
+      presentation.write(() => ({
         is: false,
       }));
     });
@@ -89,15 +89,15 @@ describe('observable with flowState', () => {
     UNSET = 'UNSET',
   }
 
-  const FlowComp: FC<{ providedState: FlowState<TestState> }> = ({ providedState }) => {
-    const [state, flow] = useObservable(providedState);
+  const FlowComp: FC<{ providedState: FlowPresentation<TestState> }> = ({ providedState }) => {
+    const [presentation, flow] = usePresentation(providedState);
 
     return (
       <Fragment>
         {flow === Flow.ACCESSIBLE && (
           <Fragment>
             <p>{FlowTexts.ACCESSIBLE}</p>
-            <p>{state.is ? 'state is true' : 'state is false'}</p>
+            <p>{presentation.is ? 'state is true' : 'state is false'}</p>
           </Fragment>
         )}
         {flow === Flow.ERROR && <p>{FlowTexts.ERROR}</p>}
@@ -108,20 +108,20 @@ describe('observable with flowState', () => {
   };
 
   test('asserts that components rerenders after write', () => {
-    const state = new FlowState<TestState>({
-      initialState: { is: false },
+    const presentation = new FlowPresentation<TestState>({
+      initialValue: { is: false },
     });
     const { getAllByText } = render(
       <Fragment>
-        <FlowComp providedState={state} />
-        <FlowComp providedState={state} />
+        <FlowComp providedState={presentation} />
+        <FlowComp providedState={presentation} />
       </Fragment>,
     );
 
     expect(getAllByText(FlowTexts.UNSET)).toHaveLength(2);
 
     act(() =>
-      state.unsafeWrite(() => ({
+      presentation.unsafeWrite(() => ({
         is: true,
       })),
     );
@@ -129,7 +129,7 @@ describe('observable with flowState', () => {
     expect(getAllByText('state is true')).toHaveLength(2);
 
     act(() =>
-      state.unsafeWrite(() => ({
+      presentation.unsafeWrite(() => ({
         is: false,
       })),
     );
@@ -171,13 +171,13 @@ describe('observable with concurrentState', () => {
       }),
   };
 
-  const ConcurrentChild: FC<{ state: ConcurrentState<TypicalState> }> = ({ state }) => {
-    const data = useObservable(state);
+  const ConcurrentChild: FC<{ state: ConcurrentPresentation<TypicalState> }> = ({ state }) => {
+    const data = usePresentation(state);
 
     return <p>{data.name}</p>;
   };
 
-  const ConcurrentParent: FC<{ state: ConcurrentState<TypicalState> }> = ({ state }) => {
+  const ConcurrentParent: FC<{ state: ConcurrentPresentation<TypicalState> }> = ({ state }) => {
     return (
       <Suspense fallback="loading">
         <ConcurrentChild state={state} />
@@ -186,12 +186,12 @@ describe('observable with concurrentState', () => {
   };
 
   test('asserts that React suspense works', async () => {
-    const concurrentState = new ConcurrentState(getTypicalState());
+    const presentation = new ConcurrentPresentation(getTypicalState());
 
-    const { findByText, getByText } = render(<ConcurrentParent state={concurrentState} />);
+    const { findByText, getByText } = render(<ConcurrentParent state={presentation} />);
     getByText(/loading/i);
 
-    concurrentState.suspend(fakeApi.get(), (resolve) => {
+    presentation.suspend(fakeApi.get(), (resolve) => {
       return {
         ...resolve,
         age: 20,
@@ -202,12 +202,12 @@ describe('observable with concurrentState', () => {
   });
 
   test('asserts that components using useConcurrentState rerenders after write', async () => {
-    const concurrentState = new ConcurrentState(getTypicalState());
-    const { findByText, getByText } = render(<ConcurrentParent state={concurrentState} />);
+    const presentation = new ConcurrentPresentation(getTypicalState());
+    const { findByText, getByText } = render(<ConcurrentParent state={presentation} />);
 
     getByText(/loading/i);
 
-    concurrentState.suspend(fakeApi.get(), (resolve) => {
+    presentation.suspend(fakeApi.get(), (resolve) => {
       return {
         ...resolve,
         age: 20,
@@ -217,14 +217,14 @@ describe('observable with concurrentState', () => {
     await findByText(/Jocke/i);
 
     act(() => {
-      concurrentState.unsafeWrite(() => ({
+      presentation.unsafeWrite(() => ({
         name: 'Anton',
       }));
     });
     await findByText(/Anton/i);
 
     act(() => {
-      concurrentState.unsafeWrite(() => ({
+      presentation.unsafeWrite(() => ({
         name: 'Jocke',
       }));
     });
@@ -232,24 +232,24 @@ describe('observable with concurrentState', () => {
   });
 
   test('asserts that components using useConcurrentState only rerender when trigger matches changes', async () => {
-    const concurrentState = new ConcurrentState(getTypicalState());
+    const presentation = new ConcurrentPresentation(getTypicalState());
     let renders = 0;
 
-    const Child: FC<{ providedState: ConcurrentState<TypicalState> }> = ({ providedState }) => {
-      const state = useObservable(providedState, ['age']);
+    const Child: FC<{ providedState: ConcurrentPresentation<TypicalState> }> = ({ providedState }) => {
+      const state = usePresentation(providedState, ['age']);
       renders++;
 
       return <p>age {state.age}</p>;
     };
 
-    const Parent: FC<{ providedState: ConcurrentState<TypicalState> }> = ({ providedState }) => {
-      useObservable(providedState, []);
+    const Parent: FC<{ providedState: ConcurrentPresentation<TypicalState> }> = ({ providedState }) => {
+      usePresentation(providedState, []);
       renders++;
 
       return <Child providedState={providedState} />;
     };
 
-    const ConcurrentParent: FC<{ providedState: ConcurrentState<TypicalState> }> = ({ providedState }) => {
+    const ConcurrentParent: FC<{ providedState: ConcurrentPresentation<TypicalState> }> = ({ providedState }) => {
       return (
         <Suspense fallback="loading">
           <Parent providedState={providedState} />
@@ -257,9 +257,9 @@ describe('observable with concurrentState', () => {
       );
     };
 
-    const { getByText, findByText } = render(<ConcurrentParent providedState={concurrentState} />);
+    const { getByText, findByText } = render(<ConcurrentParent providedState={presentation} />);
 
-    concurrentState.suspend(fakeApi.get(), (resolve) => {
+    presentation.suspend(fakeApi.get(), (resolve) => {
       return {
         ...resolve,
         age: 20,
@@ -269,7 +269,7 @@ describe('observable with concurrentState', () => {
     getByText(/loading/i);
 
     act(() => {
-      concurrentState.unsafeWrite(() => ({
+      presentation.unsafeWrite(() => ({
         age: 23,
       }));
     });
@@ -277,7 +277,7 @@ describe('observable with concurrentState', () => {
     expect(renders).toEqual(3);
 
     act(() => {
-      concurrentState.unsafeWrite(() => ({
+      presentation.unsafeWrite(() => ({
         age: 20,
       }));
     });

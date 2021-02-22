@@ -1,4 +1,4 @@
-import { ApplicationState } from './application_state';
+import { ApplicationState } from './presentation';
 
 function getTypicalState(): { name: string; age: number } {
   return {
