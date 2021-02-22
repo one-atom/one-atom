@@ -1,12 +1,12 @@
-import { FC, Suspense, Fragment } from 'react';
-import { act } from 'react-dom/test-utils';
+import { Fragment, FC, Suspense } from 'react';
 import { render } from '@testing-library/react';
-import { ApplicationState } from './application_state';
+import { act } from 'react-dom/test-utils';
+import { Flow, FlowState } from './flow_state';
 import { ConcurrentState } from './concurrent_state';
-import { createFlowState, Flow, FlowState } from './flow_state';
+import { ApplicationState } from './application_state';
 import { useObservable } from './use_observable';
 
-describe('application state observe', () => {
+describe('observable with applicationState', () => {
   type TestState = {
     is: boolean;
     opt?: string;
@@ -77,7 +77,67 @@ describe('application state observe', () => {
   });
 });
 
-describe('concurrent state useObservable', () => {
+describe('observable with flowState', () => {
+  type TestState = {
+    is: boolean;
+  };
+
+  enum FlowTexts {
+    ACCESSIBLE = 'ACCESSIBLE',
+    ERROR = 'ERROR',
+    PENDING = 'PENDING',
+    UNSET = 'UNSET',
+  }
+
+  const FlowComp: FC<{ providedState: FlowState<TestState> }> = ({ providedState }) => {
+    const [state, flow] = useObservable(providedState);
+
+    return (
+      <Fragment>
+        {flow === Flow.ACCESSIBLE && (
+          <Fragment>
+            <p>{FlowTexts.ACCESSIBLE}</p>
+            <p>{state.is ? 'state is true' : 'state is false'}</p>
+          </Fragment>
+        )}
+        {flow === Flow.ERROR && <p>{FlowTexts.ERROR}</p>}
+        {flow === Flow.PENDING && <p>{FlowTexts.PENDING}</p>}
+        {flow === Flow.UNSET && <p>{FlowTexts.UNSET}</p>}
+      </Fragment>
+    );
+  };
+
+  test('asserts that components rerenders after write', () => {
+    const state = new FlowState<TestState>({
+      initialState: { is: false },
+    });
+    const { getAllByText } = render(
+      <Fragment>
+        <FlowComp providedState={state} />
+        <FlowComp providedState={state} />
+      </Fragment>,
+    );
+
+    expect(getAllByText(FlowTexts.UNSET)).toHaveLength(2);
+
+    act(() =>
+      state.unsafeWrite(() => ({
+        is: true,
+      })),
+    );
+    expect(getAllByText(FlowTexts.ACCESSIBLE)).toHaveLength(2);
+    expect(getAllByText('state is true')).toHaveLength(2);
+
+    act(() =>
+      state.unsafeWrite(() => ({
+        is: false,
+      })),
+    );
+    expect(getAllByText('state is false')).toHaveLength(2);
+  });
+});
+
+describe('observable with concurrentState', () => {
   type TypicalState = {
     name: string;
     age: number;
@@ -223,63 +283,5 @@ describe('concurrent state useObservable', () => {
     });
     await findByText(/age 20/i);
     expect(renders).toEqual(4);
-  });
-});
-
-describe('flow state observe', () => {
-  type TestState = {
-    is: boolean;
-  };
-
-  enum FlowTexts {
-    ACCESSIBLE = 'ACCESSIBLE',
-    ERROR = 'ERROR',
-    PENDING = 'PENDING',
-    UNSET = 'UNSET',
-  }
-
-  const FlowComp: FC<{ providedState: FlowState<TestState> }> = ({ providedState }) => {
-    const [state, flow] = useObservable(providedState);
-
-    return (
-      <Fragment>
-        {flow === Flow.ACCESSIBLE && (
-          <Fragment>
-            <p>{FlowTexts.ACCESSIBLE}</p>
-            <p>{state.is ? 'state is true' : 'state is false'}</p>
-          </Fragment>
-        )}
-        {flow === Flow.ERROR && <p>{FlowTexts.ERROR}</p>}
-        {flow === Flow.PENDING && <p>{FlowTexts.PENDING}</p>}
-        {flow === Flow.UNSET && <p>{FlowTexts.UNSET}</p>}
-      </Fragment>
-    );
-  };
-
-  test('asserts that components rerenders after write', () => {
-    const state = createFlowState<TestState>({ is: false });
-    const { getAllByText } = render(
-      <Fragment>
-        <FlowComp providedState={state} />
-        <FlowComp providedState={state} />
-      </Fragment>,
-    );
-
-    expect(getAllByText(FlowTexts.UNSET)).toHaveLength(2);
-
-    act(() =>
-      state.unsafeWrite(() => ({
-        is: true,
-      })),
-    );
-    expect(getAllByText(FlowTexts.ACCESSIBLE)).toHaveLength(2);
-    expect(getAllByText('state is true')).toHaveLength(2);
-
-    act(() =>
-      state.unsafeWrite(() => ({
-        is: false,
-      })),
-    );
-    expect(getAllByText('state is false')).toHaveLength(2);
   });
 });

@@ -114,14 +114,3 @@ export class FlowState<T extends object> {
     this.hooks.forEach((hook) => hook(changeSet));
   }
 }
-
-export function createFlowState<T extends object>(initialState?: T, designatedFlowState?: Flow): FlowState<T> {
-  const flowState = new FlowState<T>({
-    initialState,
-    designatedFlowState,
-  });
-
-  // todo, add to window for later debug purposes
-
-  return flowState;
-}
