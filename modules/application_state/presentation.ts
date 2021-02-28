@@ -8,11 +8,11 @@ export namespace Presentation {
     return new SynchronousPresentation(initialValue);
   }
 
-  export function createConcurrent<T extends object>(initialValue: T): ConcurrentPresentation<T> {
+  export function createConcurrent<T extends object>(initialValue?: T): ConcurrentPresentation<T> {
     return new ConcurrentPresentation(initialValue);
   }
 
-  export function createFlow<T extends object>(spec: { initialValue?: T; designatedFlowState?: Flow }): FlowPresentation<T> {
+  export function createFlow<T extends object>(spec: { initialValue?: T; designatedFlowState?: Flow } = {}): FlowPresentation<T> {
     return new FlowPresentation({
       initialValue: spec.initialValue,
       designatedFlowState: spec.designatedFlowState,
