@@ -6,9 +6,11 @@
     "composite": true,
   },
   "files": [
-    "_data_struct.ts",
+    "data_struct/fixed_size_impl.ts",
+    "data_struct/mod.ts",
     "_debug_hook.ts",
     "presentation.ts",
+    "synchronous_presentation.ts",
     "concurrent_presentation.ts",
     "flow_presentation.ts",
     "use_presentation.ts",

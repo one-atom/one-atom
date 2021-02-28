@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import { Flow, FlowPresentation } from './flow_presentation';
 import { ConcurrentPresentation } from './concurrent_presentation';
-import { Presentation } from './presentation';
+import { SynchronousPresentation } from './synchronous_presentation';
 import { usePresentation } from './use_presentation';
 
 describe('observable with Presentation', () => {
@@ -12,14 +12,14 @@ describe('observable with Presentation', () => {
     opt?: string;
   };
 
-  const FlowComp: FC<{ providedState: Presentation<TestState> }> = ({ providedState }) => {
+  const FlowComp: FC<{ providedState: SynchronousPresentation<TestState> }> = ({ providedState }) => {
     const presentation = usePresentation(providedState);
 
     return <p>{presentation.is ? 'state is true' : 'state is false'}</p>;
   };
 
   test('asserts that components using usePresentation rerenders after write', () => {
-    const presentation = new Presentation<TestState>({ is: false });
+    const presentation = new SynchronousPresentation<TestState>({ is: false });
     const { getByText } = render(<FlowComp providedState={presentation} />);
 
     getByText(/state is false/i);
@@ -40,17 +40,17 @@ describe('observable with Presentation', () => {
   });
 
   test('asserts that components using usePresentation only rerender when trigger matches changes', () => {
-    const presentation = new Presentation<TestState>({ is: false });
+    const presentation = new SynchronousPresentation<TestState>({ is: false });
     let renders = 0;
 
-    const Child: FC<{ providedState: Presentation<TestState> }> = ({ providedState }) => {
+    const Child: FC<{ providedState: SynchronousPresentation<TestState> }> = ({ providedState }) => {
       const state = usePresentation(providedState, ['is']);
       renders++;
 
       return <p>{state.is ? 'state is true' : 'state is false'}</p>;
     };
 
-    const Parent: FC<{ providedState: Presentation<TestState> }> = ({ providedState }) => {
+    const Parent: FC<{ providedState: SynchronousPresentation<TestState> }> = ({ providedState }) => {
       usePresentation(providedState, []);
       renders++;
 

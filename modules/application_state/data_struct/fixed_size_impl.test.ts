@@ -1,4 +1,4 @@
-import { DataStruct } from './_data_struct';
+import { FixedSizeImpl } from './fixed_size_impl';
 
 function getTypicalState(): {
   name: string;
@@ -16,8 +16,8 @@ function getTypicalState(): {
   };
 }
 
-test('asserts that a DataStruct inserts new data and does not destroy previous', () => {
-  const data = new DataStruct(getTypicalState());
+test('asserts that a FixedSizeImpl inserts new data and does not destroy previous', () => {
+  const data = new FixedSizeImpl(getTypicalState());
 
   data.insert({
     name: 'ezra',
@@ -78,9 +78,9 @@ test('asserts that a DataStruct inserts new data and does not destroy previous',
   `);
 });
 
-test('asserts that DataStruct keeps object identity', () => {
+test('asserts that FixedSizeImpl keeps object identity', () => {
   const state = getTypicalState();
-  const data = new DataStruct(state);
+  const data = new FixedSizeImpl(state);
 
   state.location.country = 'norway';
   data.insert({
@@ -93,7 +93,7 @@ test('asserts that DataStruct keeps object identity', () => {
 });
 
 test('asserts that iteration over keys works', () => {
-  const data = new DataStruct({
+  const data = new FixedSizeImpl({
     a: '1',
     b: '1',
     c: '1',
@@ -114,14 +114,14 @@ test('asserts that typescript accepts both "type" and "interface"', () => {
   type T1 = {
     a: 'a';
   };
-  new DataStruct<T1>({
+  new FixedSizeImpl<T1>({
     a: 'a',
   });
 
   interface T2 {
     a: 'a';
   }
-  new DataStruct<T2>({
+  new FixedSizeImpl<T2>({
     a: 'a',
   });
 
@@ -129,7 +129,7 @@ test('asserts that typescript accepts both "type" and "interface"', () => {
     a: 'a';
     [index: string]: string;
   }
-  new DataStruct<T3>({
+  new FixedSizeImpl<T3>({
     a: 'a',
   });
 
@@ -137,7 +137,7 @@ test('asserts that typescript accepts both "type" and "interface"', () => {
     a: 'a';
     [index: string]: string;
   };
-  new DataStruct<T4>({
+  new FixedSizeImpl<T4>({
     a: 'a',
   });
 });
@@ -147,7 +147,7 @@ test('asserts that dynamic keys works', () => {
     a: string;
     b?: string;
   };
-  const d = new DataStruct<T1>({
+  const d = new FixedSizeImpl<T1>({
     a: 'a',
   });
 

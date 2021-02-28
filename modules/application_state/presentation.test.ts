@@ -1,83 +1,34 @@
+/* eslint-disable @typescript-eslint/ban-types */
+import { ConcurrentPresentation } from './concurrent_presentation';
+import { FlowPresentation } from './flow_presentation';
 import { Presentation } from './presentation';
+import { SynchronousPresentation } from './synchronous_presentation';
 
-function getTypicalState(): { name: string; age: number } {
-  return {
-    name: 'max',
-    age: 25,
-  };
-}
-
-test('asserts that state is initialized', () => {
-  const state = new Presentation(getTypicalState());
-  expect(state.read()).toMatchInlineSnapshot(`
-    Object {
-      "age": 25,
-      "name": "max",
-    }
-  `);
-});
-
-test('asserts that calling write mutates the state', () => {
-  const state = new Presentation(getTypicalState());
-
-  state.write(() => ({ name: 'kyle' }));
-  expect(state.read()).toMatchInlineSnapshot(`
-    Object {
-      "age": 25,
-      "name": "kyle",
-    }
-  `);
-
-  state.write(() => ({
-    age: 28,
-  }));
-  expect(state.read()).toMatchInlineSnapshot(`
-    Object {
-      "age": 28,
-      "name": "kyle",
-    }
-  `);
-
-  state.write({
-    name: 'ezra',
-    age: 22,
-  });
-  expect(state.read()).toMatchInlineSnapshot(`
-    Object {
-      "age": 22,
-      "name": "ezra",
-    }
-  `);
-});
-
-test('asserts that subscription is working', () => {
-  const state = new Presentation(getTypicalState());
-  const fn = jest.fn();
-  const disposer = state.subscribe(fn);
-
-  state.write({
-    name: 'kyle',
-  });
-  disposer();
-  state.write(() => ({
-    name: 'kyle',
-  }));
-
-  expect(fn).toHaveBeenCalledTimes(1);
-});
-
-test('asserts that changeSet works', () => {
-  const state = new Presentation(getTypicalState());
-  const fn = jest.fn();
-  const disposer = state.subscribe(fn);
-
-  state.write(() => ({
-    name: 'kyle',
-  }));
-  disposer();
-  state.write({
-    name: 'kyle',
+test('asserts SynchronousPresentation is created and added to debug', () => {
+  const presentation = Presentation.create({
+    test: 'test',
   });
 
-  expect(fn).toHaveBeenCalledTimes(1);
+  expect(presentation).toBeInstanceOf(SynchronousPresentation);
+  expect(globalThis['__one_atom_debug_ref__'].has(presentation)).toBeTruthy();
+});
+
+test('asserts  is created and added to debug', () => {
+  const presentation = Presentation.createConcurrent({
+    test: 'test',
+  });
+
+  expect(presentation).toBeInstanceOf(ConcurrentPresentation);
+  expect(globalThis['__one_atom_debug_ref__'].has(presentation)).toBeTruthy();
+});
+
+test('asserts SynchronousPresentation is created and added to debug', () => {
+  const presentation = Presentation.createFlow({
+    initialValue: {
+      test: 'test',
+    },
+  });
+
+  expect(presentation).toBeInstanceOf(FlowPresentation);
+  expect(globalThis['__one_atom_debug_ref__'].has(presentation)).toBeTruthy();
 });

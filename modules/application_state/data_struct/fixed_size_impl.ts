@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/ban-types */
 
-export type MutationFn<T extends object> = (currentState: Readonly<Omit<DataStruct<T>, 'insert'>>) => Partial<T>;
+import { DataStruct } from './mod';
 
-export class DataStruct<T extends object> {
+export type MutationFn<T extends object> = (currentState: Readonly<Omit<FixedSizeImpl<T>, 'insert'>>) => Partial<T>;
+
+export class FixedSizeImpl<T extends object> implements DataStruct {
   private readonly storedData = new Map<keyof T, T[keyof T]>();
   private readonly keys: Set<string | number | Symbol>;
 

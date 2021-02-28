@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/ban-types */
 import './_debug_hook';
-import { DataStruct, MutationFn } from './_data_struct';
+import { FixedSizeImpl, MutationFn } from './data_struct/fixed_size_impl';
 
 type Disposer = () => void;
 
@@ -14,7 +14,7 @@ export enum Flow {
   ERROR,
 }
 
-export type CurrStateTuple<T> = [data: Readonly<T>, flow: Flow];
+export type CurrPresentationTuple<T> = [data: Readonly<T>, flow: Flow];
 
 interface Specification<T> {
   initialValue?: T;
@@ -24,7 +24,7 @@ interface Specification<T> {
 export class FlowPresentation<T extends object> {
   public error: Error | null = null;
   public flowState: Readonly<Flow> = Flow.UNSET;
-  private data: DataStruct<T> | null = null;
+  private data: FixedSizeImpl<T> | null = null;
   private readonly hooks: Map<symbol, HookFn<T>> = new Map();
 
   constructor(spec: Specification<T> = {}) {
@@ -37,7 +37,7 @@ export class FlowPresentation<T extends object> {
     if (designatedFlowState !== undefined) this.flowState = designatedFlowState;
 
     if (initialValue) {
-      this.data = new DataStruct(initialValue);
+      this.data = new FixedSizeImpl(initialValue);
     }
   }
 
@@ -68,7 +68,7 @@ export class FlowPresentation<T extends object> {
     }
   }
 
-  public read(): CurrStateTuple<T> {
+  public read(): CurrPresentationTuple<T> {
     // The following is purposely being ignored by TypeScript, when the state is
     // not accessible it should deliberately cause an error so a correct
     // Behavior can be written
@@ -107,7 +107,7 @@ export class FlowPresentation<T extends object> {
   }
 
   public overwriteData(state: T): void {
-    this.data = new DataStruct(state);
+    this.data = new FixedSizeImpl(state);
   }
 
   private dispatch(changeSet?: Set<keyof T>): void {

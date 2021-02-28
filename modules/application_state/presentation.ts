@@ -1,54 +1,21 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/ban-types */
-import './_debug_hook';
-import { MutationFn, DataStruct } from './_data_struct';
+import { ConcurrentPresentation } from './concurrent_presentation';
+import { Flow, FlowPresentation } from './flow_presentation';
+import { SynchronousPresentation } from './synchronous_presentation';
 
-type Disposer = () => void;
-
-type HookFn<T> = (changeSet?: Set<keyof T>) => void;
-
-export class Presentation<T extends object> {
-  private readonly data: DataStruct<T>;
-  private readonly hooks: Map<symbol, HookFn<T>> = new Map();
-
-  constructor(initialState: T) {
-    if (globalThis['__one_atom_debug_ref__']) {
-      globalThis['__one_atom_debug_ref__'].add(this);
-    }
-
-    if (typeof initialState !== 'object') {
-      throw new Error('a state can only be represented as an object literal');
-    }
-
-    this.data = new DataStruct(initialState);
+export namespace Presentation {
+  export function create<T extends object>(initialValue: T): SynchronousPresentation<T> {
+    return new SynchronousPresentation(initialValue);
   }
 
-  public subscribe(event: HookFn<T>): Disposer {
-    const id = Symbol();
-
-    this.hooks.set(id, event);
-
-    return () => {
-      this.hooks.delete(id);
-    };
+  export function createConcurrent<T extends object>(initialValue: T): ConcurrentPresentation<T> {
+    return new ConcurrentPresentation(initialValue);
   }
 
-  public write(currentState: Partial<T> | MutationFn<T>): void {
-    try {
-      const newState = currentState instanceof Function ? currentState(this.data) : currentState;
-
-      const changeSet = this.data.insert(newState);
-      this.dispatch(changeSet);
-    } catch (error) {
-      console.error(`could not mutate the state:\n\n${error}`);
-    }
-  }
-
-  public read(): Readonly<T> {
-    return this.data.extract();
-  }
-
-  private dispatch(changeSet?: Set<keyof T>): void {
-    this.hooks.forEach((hook) => hook(changeSet));
+  export function createFlow<T extends object>(spec: { initialValue?: T; designatedFlowState?: Flow }): FlowPresentation<T> {
+    return new FlowPresentation({
+      initialValue: spec.initialValue,
+      designatedFlowState: spec.designatedFlowState,
+    });
   }
 }

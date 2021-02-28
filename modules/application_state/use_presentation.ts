@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import './_debug_hook';
 import { useEffect, useState } from 'react';
-import { Presentation } from './presentation';
+import { SynchronousPresentation } from './synchronous_presentation';
 import { ConcurrentPresentation } from './concurrent_presentation';
-import { FlowPresentation, CurrStateTuple } from './flow_presentation';
+import { FlowPresentation, CurrPresentationTuple } from './flow_presentation';
 
-export function usePresentation<T extends object>(state: FlowPresentation<T>, deps?: ReadonlyArray<keyof T>): CurrStateTuple<T>;
+export function usePresentation<T extends object>(state: FlowPresentation<T>, deps?: ReadonlyArray<keyof T>): CurrPresentationTuple<T>;
 export function usePresentation<T extends object>(state: ConcurrentPresentation<T>, deps?: ReadonlyArray<keyof T>): Readonly<T>;
-export function usePresentation<T extends object>(state: Presentation<T>, deps?: ReadonlyArray<keyof T>): Readonly<T>;
+export function usePresentation<T extends object>(state: SynchronousPresentation<T>, deps?: ReadonlyArray<keyof T>): Readonly<T>;
 export function usePresentation<T extends object>(
-  state: Presentation<T> | ConcurrentPresentation<T> | FlowPresentation<T>,
+  state: SynchronousPresentation<T> | ConcurrentPresentation<T> | FlowPresentation<T>,
   triggers?: ReadonlyArray<keyof T>,
-): CurrStateTuple<T> | Readonly<T> {
+): CurrPresentationTuple<T> | Readonly<T> {
   const [, forceUpdate] = useState([]);
 
   useEffect(() => {
